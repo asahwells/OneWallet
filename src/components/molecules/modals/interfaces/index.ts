@@ -1,4 +1,5 @@
 import { ModalContentProps } from "@chakra-ui/react";
+import { ReactNode } from "react";
 
 export interface IForgotPasswordModalProps extends ModalContentProps {
     isOpen: boolean,
@@ -12,4 +13,21 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     title?: string,
     title2?: string,
     onConfirm?: () => void
+  }
+  
+  export interface INotificationModalProps {
+    brandName?: string,
+    modalWidth: string[] | string,
+    cancelTextC?: string,
+    titleC?: string,
+    acceptTextC?: string,
+    isOpen: boolean;
+    onClose: () => void;
+    icon: ReactNode;
+    hasAllow: boolean;
+    title: string;
+    cancelText: string;
+    acceptText: string;
+    onYesClick: () => void;
+    onNoClick: () => void;
   }
