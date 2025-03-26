@@ -3,7 +3,7 @@ import {Box, Button, Text} from '@chakra-ui/react'
 import {IButtonProps} from "../interfaces";
 
 const OutlineButton = ({
-  text, icon, color, textVariant, fontSize, h, mt, ...props
+  text, icon, color, textVariant, fontSize, h, ...props
 }: IButtonProps ) => {
   return (
     <Button
@@ -13,7 +13,6 @@ const OutlineButton = ({
         _disabled={{ bg: '#A0AEC0', cursor: 'not-allowed' }}
         minH={h || '48px'}
         w={'full'}
-        mt={mt || '0'}
       {...props}
 
     >
