@@ -100,7 +100,7 @@ const UserDashboardTemplate = () =>  {
 
             <Stack  w={'full'} direction={['column', 'row']} mt={6} >
                 {/*@ts-ignore*/}
-                <RecentTransactionsTable transactions={transactionsData?.data || []} isLoading={isFetchingUserTransactions} />
+                {/*<RecentTransactionsTable transactions={transactionsData?.data || []} isLoading={isFetchingUserTransactions} />*/}
 
                 <Box>
                  <TransactionReportChart totalTransactionValue={'1242'} rawData={[]} data={getPieChartData([])} labels={getPieChartLabels([])} />

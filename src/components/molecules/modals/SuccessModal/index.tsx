@@ -15,8 +15,9 @@ import BaseButton from 'components/molecules/buttons/BaseButton';
 import Modaltext from 'components/atoms/texts/ModalText';
 import FailedIcon from 'components/atoms/icons/FailedIcon';
 import OutlineButton from 'components/molecules/buttons/OutlineButton';
+import SuccessIcon from 'components/atoms/icons/SuccessIcon';
 
-const FailedModal = ({
+const SuccessModal = ({
   isOpen,
   onClose,
   height,
@@ -36,18 +37,22 @@ const FailedModal = ({
         <ModalBody>
           <VStack spacing={8} mt={-4}>
             <VStack spacing={1}>
-              <FailedIcon />
+              <SuccessIcon />
               <Modaltext title={title} variant={'md'} lineHeight="24px" textAlign={'center'}/>
               {title2 && <Modaltext title={title2} variant={'sm'} lineHeight="24px" textAlign={'center'}/>}
             </VStack>
 
-            <OutlineButton 
-              text="Dismiss" 
-              color={'#EF4444'} 
-              width="full" 
-              height="56px" 
-              mt={5}
-              border={"1px solid #EF4444"} 
+            <BaseButton 
+                text="Continue"
+                marginTop="28px"
+                color="#FCFCFC"
+                width="458px"
+                height="56px"
+                borderRadius="8px"
+                padding="12px, 24px, 12px, 24px"
+                gap="8px"
+                border={"1px solid #0F454F"}
+                bg={"#0F454F"}
             />
           </VStack>
         </ModalBody>
@@ -56,4 +61,4 @@ const FailedModal = ({
   );
 };
 
-export default FailedModal;
+export default SuccessModal;
