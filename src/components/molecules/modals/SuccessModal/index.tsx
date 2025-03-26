@@ -39,7 +39,7 @@ const SuccessModal = ({
             <VStack spacing={1}>
               <SuccessIcon />
               <Modaltext title={title} variant={'md'} lineHeight="24px" textAlign={'center'}/>
-              {title2 && <Modaltext title={title2} variant={'sm'} lineHeight="24px" textAlign={'center'}/>}
+              {title2 && <Modaltext title={title2} variant={'sml'} lineHeight="24px" textAlign={'center'}/>}
             </VStack>
 
             <BaseButton 

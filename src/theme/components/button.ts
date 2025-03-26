@@ -16,7 +16,11 @@ export const buttonStyles = {
       },
       variants: {
         outline: () => ({
-          borderRadius: "16px",
+          borderRadius: "4px",
+          color:'#0F454F',
+          fontWeight: '500',
+          border: "1px",
+          borderColor: '#0F454F'
         }),
         brand: (props: StyleFunctionProps) => ({
           bg: mode("brand.500", "brand.400")(props),

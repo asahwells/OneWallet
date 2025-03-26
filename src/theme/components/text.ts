@@ -68,7 +68,7 @@ export const textStyles = extendTheme({
             color: '#344256'
         }),
 
-        sm: (props: StyleFunctionProps) => ({
+        sml: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '500',
             color: '#344256'

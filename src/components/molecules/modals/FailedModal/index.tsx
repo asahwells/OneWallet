@@ -38,7 +38,7 @@ const FailedModal = ({
             <VStack spacing={1}>
               <FailedIcon />
               <Modaltext title={title} variant={'md'} lineHeight="24px" textAlign={'center'}/>
-              {title2 && <Modaltext title={title2} variant={'sm'} lineHeight="24px" textAlign={'center'}/>}
+              {title2 && <Modaltext title={title2} variant={'sml'} lineHeight="24px" textAlign={'center'}/>}
             </VStack>
 
             <OutlineButton 
