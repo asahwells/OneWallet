@@ -1,0 +1,182 @@
+'use client';
+// Chakra imports
+import {
+  Portal,
+  Box,
+  useDisclosure,
+  useColorModeValue,
+  Image,
+  Flex,
+  HStack,
+  IconButton,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerBody,
+} from '@chakra-ui/react';
+import Footer from '../../components/organisms/footer/FooterAdmin';
+// Layout components
+import navImage from '/public/img/layout/Navbar.png';
+import Sidebar from '../../components/organisms/sidebar/Sidebar';
+import { SidebarContext } from 'contexts/SidebarContext';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import routes from 'routes';
+import {
+  getActiveNavbar,
+  getActiveNavbarText,
+  getActiveRoute,
+} from 'utils/navigation';
+import BellIcon from 'components/atoms/icons/BellIcon';
+import ImageIcon from 'components/atoms/icons/ImageIcon';
+import {useRouter} from "next/navigation";
+import Cookies from "js-cookie";
+import {StorageToken} from "../../constants/token";
+import {useFetchLoggedInUser} from "../../api-services/auth-services";
+import FullScreenLoader from "../../components/organisms/loaders/FullScreenLoader";
+import { IoMenuOutline } from 'react-icons/io5';
+import SidebarContent from 'components/organisms/sidebar/components/Content';
+
+interface DashboardLayoutProps extends PropsWithChildren {
+  [x: string]: any;
+}
+
+// Custom Chakra theme
+export default function AdminLayout(props: DashboardLayoutProps) {
+  const { children, ...rest } = props;
+  const { mutateAsync: fetchUser, isPending: isFetchingUser, isError } = useFetchLoggedInUser();
+  const [isRehydratingUser, setIsRehydratingUser] = useState(true)
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef();
+  const router = useRouter();
+
+  // states and functions
+  const [fixed] = useState(false);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
+  // functions for changing the states from components
+
+
+
+  useEffect(() => {
+    if(isFetchingUser) return
+
+    if(isError) {
+      Cookies.remove(StorageToken);
+      router.replace("/auth/sign-in");
+      return;
+    }
+
+  }, [isError]);
+
+  useEffect(() => {
+    window.document.documentElement.dir = 'ltr';
+  });
+
+  useEffect(() => {
+    async function handleUserFetch() {
+      try {
+        await fetchUser(); 
+      } catch (error) {
+        Cookies.remove(StorageToken);
+      } finally {
+        setIsRehydratingUser(false);
+      }
+    }
+
+    handleUserFetch();
+  }, [router, fetchUser]);
+
+  const bg = useColorModeValue('#FAFAFB', 'navy.900');
+  if(isRehydratingUser) {
+    return <FullScreenLoader />
+  }
+
+  return (
+    <Box h="100vh" w="100vw" bg={bg} >
+      <SidebarContext.Provider
+        value={{
+          toggleSidebar,
+          setToggleSidebar,
+        }}
+      >
+        <Sidebar routes={routes} display="none" {...rest} />
+
+        <Box w={'100vw'} h={'58px'} px={16} py={4} border="1px solid #E5E9EB" pos={'relative'} top={0} zIndex={10}>
+          <Flex justifyContent={"space-between"} alignItems={"center"}>
+            <Image src="/img/layout/navImage.png" w="102.42px" h="23px" alt="Nav Logo" />
+            <HStack align={'center'}>
+              <BellIcon onClick={()=> router.push('/admin/notifications')}/>
+              <ImageIcon/>
+              <IconButton
+                icon={<IoMenuOutline />}
+                display={{ base: 'inline-flex', xl: 'none' }}
+                onClick={onOpen}
+                aria-label="Open menu"
+                size="lg"
+                ref={btnRef}
+              />
+            </HStack>
+          </Flex>
+        </Box>
+
+        {isOpen && <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
+            <DrawerOverlay />
+            <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerBody>
+                    <SidebarContent routes={routes} onClose={onClose}  />
+                </DrawerBody>
+            </DrawerContent>
+        </Drawer>}
+
+        <Box
+          float="right"
+          minHeight="100vh"
+          height="100%"
+          overflow="auto"
+          position="relative"
+          maxHeight="100%"
+          w={{ base: '100%', xl: 'calc( 100% - 290px )' }}
+          maxWidth={{ base: '100%', xl: 'calc( 100% - 290px )' }}
+          transition="all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
+          transitionDuration=".2s, .2s, .35s"
+          transitionProperty="top, bottom, width"
+          transitionTimingFunction="linear, linear, ease"
+
+        >
+          <Portal>
+            <Box>
+
+              {/*Todo: implement our own navbar*/}
+              {/*<Navbar*/}
+              {/*  onOpen={onOpen}*/}
+              {/*  logoText={'Horizon UI Dashboard PRO'}*/}
+              {/*  brandText={getActiveRoute(routes)}*/}
+              {/*  secondary={getActiveNavbar(routes)}*/}
+              {/*  message={getActiveNavbarText(routes)}*/}
+              {/*  fixed={fixed}*/}
+              {/*  {...rest}*/}
+              {/*/>*/}
+
+            </Box>
+          </Portal>
+
+          <Box
+            mx="auto"
+            //px={{ base: '20px', md: '30px' }}
+            pe="20px"
+            minH="100vh"
+            //pt="50px"
+            bg={'#FAFAFB'}
+          >
+            {children}
+          </Box>
+          <Box>
+            {/*<Footer />*/}
+          </Box>
+        </Box>
+      </SidebarContext.Provider>
+    </Box>
+  );
+}
