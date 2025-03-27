@@ -102,7 +102,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Box w={'100vw'} h={'58px'} px={16} py={4} border="1px solid #E5E9EB" pos={'relative'} top={0} zIndex={10}>
+        <Box w={'100vw'} h={'58px'} px={16} py={4} border="1px solid #E5E9EB" pos={'relative'} top={0} zIndex={10} >
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <Image src="/img/layout/navImage.png" w="102.42px" h="23px" alt="Nav Logo" />
             <HStack align={'center'}>
@@ -151,7 +151,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
               {/*Todo: implement our own navbar*/}
               {/*<Navbar*/}
               {/*  onOpen={onOpen}*/}
-              {/*  logoText={'Horizon UI Dashboard PRO'}*/}
+              {/*  logoText={'One Wallet'}*/}
               {/*  brandText={getActiveRoute(routes)}*/}
               {/*  secondary={getActiveNavbar(routes)}*/}
               {/*  message={getActiveNavbarText(routes)}*/}
