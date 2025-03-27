@@ -23,17 +23,21 @@ export const buttonStyles = {
           borderColor: '#0F454F'
         }),
         brand: (props: StyleFunctionProps) => ({
-          bg: mode("brand.500", "brand.400")(props),
-          color: "white",
+          bg: mode("#0F454F", "#0F454F")(props),
+          color: "#FCFCFC",
           _focus: {
-            bg: mode("brand.500", "brand.400")(props),
+            bg: mode("#0F454F", "#0F454F")(props),
           },
           _active: {
-            bg: mode("brand.500", "brand.400")(props),
+            bg: mode("#0F454F", "#0F454F")(props),
           },
           _hover: {
-            bg: mode("brand.600", "brand.400")(props),
+            bg: mode("#0F454F", "#0F454F")(props),
           },
+          fontWeight: '400',
+          fontSize: '16px',
+          letterSpacing:'-2%',
+          borderRadius:'8px'
         }),
 
         ghost: (props: StyleFunctionProps) => ({

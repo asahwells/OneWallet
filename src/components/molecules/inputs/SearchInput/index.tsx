@@ -36,7 +36,7 @@ const SearchInput = ({ value, icon, h, onChange, onFocus, type, errorMessage, pl
                 borderRadius="8px"
                 placeholder={placeholder || "Search by name or acct no."}
                 bg="#FFFFFF"
-                focusBorderColor="transparent"
+                focusBorderColor="whitesmoke"
                 _focus={{
                     boxShadow: 'none',
                 }}
