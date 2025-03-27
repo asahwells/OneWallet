@@ -6,7 +6,7 @@ import React from 'react';
 
 import ResetPasswordTemplate from 'components/templates/AuthTemplates/ResetPasswordTemplate';
 
-export default function SignIn() {
+export default function ResetPassword() {
   
   return (
     <ResetPasswordTemplate/>

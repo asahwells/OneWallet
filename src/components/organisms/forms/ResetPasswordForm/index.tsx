@@ -47,9 +47,7 @@ const ResetPasswordForm = () => {
 
     };
 
-    interface ConfirmPasswordChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
-
-    const handleConfirmPasswordChange = (e: ConfirmPasswordChangeEvent): void => {
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setConfirmNewPassword(e.target.value);
         setPasswordsMatch(newPassword === e.target.value);
     };
