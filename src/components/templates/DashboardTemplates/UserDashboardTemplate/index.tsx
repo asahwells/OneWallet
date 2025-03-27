@@ -24,24 +24,16 @@ import QuickActionCard from "../../../organisms/cards/QuickActionCard";
 import CommissionCard from "../../../organisms/cards/CommissionCard";
 import PendingTasksCard from "../../../organisms/cards/PendingTasksCard";
 import {MockPendingTasks} from "../../../../mock/PendingTasks";
+import {barChartDataDailyTraffic, barChartOptionsDailyTraffic, pieChartData} from "../../../../variables/charts";
+import BarChart from "../../../molecules/charts/BarChart";
+import ExpectedPaymentChart from "../../../molecules/charts/ExpectedPaymentChart";
 // Assets
 
 const UserDashboardTemplate = () =>  {
 
-    const [activeFilter, setActiveFilter] = useState<IDurationFilter>()
-
-
-    const [value, setValue] = useState('User')
-
-
-    const handleFilterChange = (filter : IDurationFilter) => {
-
-        setActiveFilter(filter)
-    }
-
 
         return (
-        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} gap={5} >
+        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} gap={5} pr={5} >
 
             <Stack  >
                 <Text variant={'base'}>
@@ -61,7 +53,7 @@ const UserDashboardTemplate = () =>  {
             >
                 {/* Left Hand Side */}
                 <Stack spacing={5} flex={1}>
-                    <SimpleGrid columns={{ base: 2, md: 2 }} gap="20px">
+                    <SimpleGrid columns={{ base: 2, md: 2 }} gap={["20px", '8px']}>
                         <AnalyticsCard
                             title="Total Application"
                             value="743"
@@ -89,18 +81,34 @@ const UserDashboardTemplate = () =>  {
             </Stack>
 
 
+            <Stack
+                direction={{base: 'column', md: 'row'}} // Responsive layout: column on mobile, row on desktop
+                w="full"
+                spacing={8}
+                align="stretch" // Ensures children stacks stretch to equal height
+            >
 
+               <Show above={'md'}>
+                   <Box w={{
+                          base: 'full',
+                          md: '35%'
+                   }} h={'full'} borderRadius={'4px'}>
+                       <TransactionReportChart totalTransactionValue={''} rawData={pieChartData} data={getPieChartData([])}
+                                               labels={[
+                                                   'Active Devices',
+                                                   'Inactive Devices'
+                                               ]}/>
+                   </Box>
 
-            {/*<Stack*/}
-            {/*    direction={{ base: 'column', md: 'row' }} // Responsive layout: column on mobile, row on desktop*/}
-            {/*    w="full"*/}
-            {/*    gap={10}*/}
-            {/*    align="stretch" // Ensures children stacks stretch to equal height*/}
-            {/*>*/}
-            {/*    <TransactionVolumeChart data={[]} />*/}
-            {/*    <TransactionReportChart totalTransactionValue={'1242'} rawData={[]} data={getPieChartData([])} labels={getPieChartLabels([])} />*/}
+               </Show>
+                <Box w={{
+                    base: 'full',
+                    md: '65%'
+                }} borderRadius={'4px'}>
+                    <ExpectedPaymentChart/>
 
-            {/*</Stack>*/}
+                </Box>
+            </Stack>
 
 
 

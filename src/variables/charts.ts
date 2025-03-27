@@ -309,8 +309,8 @@ export const barChartOptionsConsumption: ApexGeneric = {
 };
 
 export const pieChartOptions: ApexGeneric = {
-  labels: ["₦36,638,465.14", "₦36,638,465.14", "₦36,638,465.14", "₦36,638,465.14", "₦36,638,465.14", "₦36,638,465.14",  "₦36,638,465.14"],
-  colors: ["#7963CD", "#9F00AD", "#51546F", "#5BC7E6", "#FF8F78", "#63CD81", "#EE0B0B"],
+  labels: ["Active Devices", "Inactive Devices"],
+  colors: ["#FFC327", "#5B93FF"],
   chart: {
     width: "50px"
   },
@@ -344,7 +344,7 @@ export const pieChartOptions: ApexGeneric = {
     },
   },
   fill: {
-    colors: ["#7963CD", "#9F00AD", "#51546F", "#5BC7E6", "#FF8F78", "#63CD81", "#EE0B0B"],
+    colors: ["#5B93FF", "#FFC327"],
   },
   tooltip: {
     enabled: true,
@@ -352,7 +352,7 @@ export const pieChartOptions: ApexGeneric = {
   },
 };
 
-export const pieChartData = [63, 25, 12, 50, 21, 54];
+export const pieChartData = [40, 60];
 
 // Total Spent Default
 

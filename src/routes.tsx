@@ -11,6 +11,8 @@ import { IoIosPeople } from "react-icons/io";
 
 import { IRoute } from 'types/navigation';
 import TransactionsIcon from 'components/atoms/icons/TransactionsIcon';
+import BusinessIcon from "./components/atoms/icons/BusinessIcon";
+import DeviceManagerIcon from "./components/atoms/icons/DeviceManagerIcon";
 
 const routes: IRoute[] = [
   {
@@ -20,12 +22,12 @@ const routes: IRoute[] = [
     icon: <Icon as={MdDashboard} width="20px" height="20px" />,
   },
   {
-    name: 'All Users',
+    name: 'Business',
     layout: '/admin',
-    path: '/suspended-users',
+    path: '/dashboard/business',
     icon: (
       <Icon
-        as={IoIosPeople}
+        as={BusinessIcon}
         width="20px"
         height="20px"
       />
@@ -33,10 +35,10 @@ const routes: IRoute[] = [
     secondary: true,
   },
   {
-    name: 'All Transactions',
+    name: 'Device Manager',
     layout: '/admin',
-    icon: <Icon as={TransactionsIcon} width="20px" height="20px" color="#3F6A72"/>,
-    path: '/dashboard/transactions',
+    icon: <Icon as={DeviceManagerIcon} width="20px" height="20px" color="#3F6A72"/>,
+    path: '/dashboard/device-manager',
   }
 ];
 
