@@ -8,7 +8,7 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
 
   export interface IUpdateUserModalProps extends ModalContentProps {
     isOpen: boolean,
-    onClose: () => void,
+    onClose?: () => void,
     height: string,
     title?: string,
     title2?: string,
@@ -22,7 +22,7 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     titleC?: string,
     acceptTextC?: string,
     isOpen: boolean;
-    onClose: () => void;
+    onClose?: () => void;
     icon: ReactNode;
     hasAllow: boolean;
     title: string;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Box, Text, VStack, Link, useDisclosure, useToast} from '@chakra-ui/react';
 import { MdOutlineLocationOn } from "react-icons/md";
+import { LuBellDot } from "react-icons/lu";
 import Button from '../../../molecules/buttons/BaseButton';
 import ForgotPasswordModal from '../../../molecules/modals/ForgotPasswordModal';
 import BaseInput from "../../../molecules/inputs/BaseInput";
@@ -64,34 +65,23 @@ const LoginForm = () => {
         
       }, []);
 
-    const handleYesClick = () => {
-        sessionStorage.setItem('locationPermission', 'granted');
-        setShowLocationModal(false);
-      };
-    
-      const handleNoClick = () => {
-        sessionStorage.setItem('locationPermission', 'denied');
-        setShowLocationModal(false);
+      const handlePermissionClick = (permissionType: 'locationPermission' | 'notificationPermission', value: 'granted' | 'denied') => {
+        sessionStorage.setItem(permissionType, value);
+        if (permissionType === 'locationPermission') {
+            setShowLocationModal(false);
+            setShowNotificationModal(true);
+        } else {
+            setShowNotificationModal(false);
+        }
     };
-
-    const handleNotificationYesClick = () => {
-        sessionStorage.setItem('notificationPermission', 'granted');
-        setShowNotificationModal(false);
-    };
-    
-      const handleNotificationNoClick = () => {
-        sessionStorage.setItem('notificationPermission', 'denied');
-        setShowNotificationModal(false);
-     };
 
     return (
-        <React.Fragment>
+        <>
             {showLocationModal && <GenericPopUpModal
             cancelText='No'
             hasAllow={true}
-            onClose={() => {}}
-            onNoClick={handleNoClick}
-            onYesClick={handleYesClick}
+            onNoClick={() => handlePermissionClick('locationPermission', 'denied')}
+            onYesClick={() => handlePermissionClick('locationPermission', 'granted')}
             title='OneWallet to access this device’s precise location?'
             acceptTextC='#171C23'
             titleC='#344256'
@@ -104,16 +94,15 @@ const LoginForm = () => {
             {showNotificationModal && <GenericPopUpModal
             cancelText='No'
             hasAllow={false}
-            onClose={() => {}}
-            onNoClick={handleNotificationNoClick}
-            onYesClick={handleNotificationYesClick}
+            onNoClick={() => handlePermissionClick('notificationPermission', 'denied')}
+            onYesClick={() => handlePermissionClick('notificationPermission', 'granted')}
             title='OneWallet Would Like to Send You Notifications?'
             acceptTextC='#171C23'
             titleC='#344256'
             cancelTextC='#171C23'
             acceptText='Yes'
             isOpen={showNotificationModal}
-            icon={<MdOutlineLocationOn size={28} color='#0F454F'/>}
+            icon={<LuBellDot size={28} color='#0F454F'/>}
             modalWidth={["90%", "40%", "48%"]}
              />}
             <Box
@@ -188,7 +177,7 @@ const LoginForm = () => {
                     padding="24px"
                 />}
             </Box>
-        </React.Fragment>
+        </>
     );
 };
 
