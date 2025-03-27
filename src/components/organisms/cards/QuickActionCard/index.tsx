@@ -11,7 +11,7 @@ const QuickActionCard = () => {
 
             <Text color={'#C5B27D'} fontWeight={'600'} fontSize={'14px'}>Quick Actions</Text>
 
-            <Stack w={'full'} spacing={5}>
+            <Stack w={'full'} spacing={5} bg={'white'}>
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
                     <Show above={'md'}>

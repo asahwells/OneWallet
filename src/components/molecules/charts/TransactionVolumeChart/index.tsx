@@ -48,8 +48,9 @@ const TransactionVolumeChart = ( {data} : ITransactionVolumeChartProps) => {
                 <Text
                     me='auto'
                     variant={'chartLabel'}
+                    color={'#C5B27D'}
                 >
-                    Average Transaction Value & Volume Per User
+                    Active vs Inactive Devices
                 </Text>
             </Flex>
 

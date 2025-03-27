@@ -1,15 +1,22 @@
-import {Box, HStack, Spinner, Stack, Text} from "@chakra-ui/react";
+import {Box, HStack, Spinner, Stack, Text, useBreakpointValue} from "@chakra-ui/react";
 import {IAnalyticsCardProps} from "../interfaces";
 
 const AnalyticsCard = ({title, value, isLoading, icon, ...props}: IAnalyticsCardProps) => {
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
 
     return (
         <HStack
             border={'0.88px solid #E4E4E7'}
             bg={'white'}
-            px={8}
-            py={4}
+            px={{
+                base: 2,
+                md: 8,
+            }}
+            py={{
+                base: 2,
+                md: 4,
+            }}
             w={'auto'}
             h={'79.63px'}
             borderRadius={'8px'}
@@ -19,7 +26,32 @@ const AnalyticsCard = ({title, value, isLoading, icon, ...props}: IAnalyticsCard
             {...props}
         >
 
+            { isMobile
+                ?
 
+                <Stack>
+
+                    <HStack>
+                        {icon}
+
+
+                        {isLoading ?
+                            <Spinner size={'sm'}/>
+                            :
+                            <Text  fontWeight={'600'} fontSize={'20px'} >
+                                {value}
+                            </Text>}
+
+
+
+                    </HStack>
+                    <Text noOfLines={1} fontWeight={'400'} fontSize={'16px'} color={'#546C8D'} letterSpacing={'-1.2%'}>
+                        {title}
+                    </Text>
+
+                    </Stack>
+                :
+            <>
                 {icon}
 
                 <Stack>
@@ -36,6 +68,9 @@ const AnalyticsCard = ({title, value, isLoading, icon, ...props}: IAnalyticsCard
                     </Text>
 
                 </Stack>
+            </>
+            }
+
 
 
 

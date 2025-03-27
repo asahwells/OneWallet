@@ -3,24 +3,16 @@ import {Box, Flex, Text, HStack, Stack, Center, Select} from '@chakra-ui/react';
 // Custom components
 import Card from '../../../../components/molecules/card/Card';
 import PieChart from '../../../../components/molecules/charts/PieChart';
-import { pieChartData, pieChartOptions } from 'variables/charts';
+import {barChartDataDailyTraffic, barChartOptionsDailyTraffic, pieChartData, pieChartOptions} from 'variables/charts';
 import Circle from '../../../atoms/vectors/Circle';
 import {ITransactionReportChartProps} from "../interfaces";
 import {attachRandomColor, attachStableColor} from "../../../../helpers/chartHelpers";
 import {formatToNaira} from "../../../../helpers/currencyHelper";
 import {removeHyphen} from "../../../../helpers/textHelpers";
+import BarChart from "../BarChart";
 
-const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionValue} : ITransactionReportChartProps ) => {
+const ExpectedPaymentChart = ( ) => {
 
-
-    const rawDataWithRandomColors = attachStableColor(rawData);
-
-    const options = {
-
-        ...pieChartOptions,
-        labels,
-        // colors:  rawDataWithRandomColors.map((item) => item.color)
-    }
 
     return (
         <Card
@@ -40,7 +32,7 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
                     mb="8px"
                 >
                     <Text variant="sm" fontSize={'16px'} mt="4px" color={'#C5B27D'} >
-                        Active vs Inactive Devices
+                        Expected Repayment vs Actual
                     </Text>
 
                     <Select
@@ -49,27 +41,26 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
                         variant='transparent'
                         display='flex'
                         alignItems='center'
-                        defaultValue='This Week'
+                        defaultValue='2025'
                         color={'#344256'}
                     >
-                        <option value='Weekly'>This Week</option>
-                        <option value='Daily'>Daily</option>
-                        <option value='Monthly'>Monthly</option>
+                        <option value='2024'>2024</option>
+                        <option value='2023'>2023</option>
+                        <option value='2022'>2022</option>
                     </Select>
 
                 </Flex>
 
-                {/*<Center>*/}
+                <Box>
+                    <Text variant="sm" fontSize={'14px'} fontWeight={'400'} mt="4px">
+                        January - December 2025
+                    </Text>
 
-                {/*    <Text pos={'absolute'} variant="tableHeader" top={48} zIndex={10}>*/}
-                {/*        {formatToNaira(totalTransactionValue)}*/}
-                {/*    </Text>*/}
+                </Box>
 
-                {/*</Center>*/}
+                <BarChart chartData={barChartDataDailyTraffic} chartOptions={barChartOptionsDailyTraffic} />
 
-                <PieChart h="100%" w="100%" chartData={rawData} chartOptions={options} />
-
-                <HStack  spacing={4} p={8} w={'full'} justifyContent={'space-between'}>
+                <HStack p={[8,0]} w={'full'} gap={[12,4]} justifyContent={'center'}>
 
                     <HStack spacing={4} alignItems="center">
                         <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,4 +88,4 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
     );
 };
 
-export default TransactionReportChart;
+export default ExpectedPaymentChart;
