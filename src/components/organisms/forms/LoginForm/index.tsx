@@ -79,32 +79,39 @@ const LoginForm = () => {
         <>
             {showLocationModal && <GenericPopUpModal
             cancelText='No'
-            hasAllow={true}
             onNoClick={() => handlePermissionClick('locationPermission', 'denied')}
             onYesClick={() => handlePermissionClick('locationPermission', 'granted')}
-            title='OneWallet to access this device’s precise location?'
-            acceptTextC='#171C23'
-            titleC='#344256'
-            cancelTextC='#171C23'
             acceptText='Yes'
             isOpen={showLocationModal}
             icon={<MdOutlineLocationOn size={28} color='#0F454F'/>}
-            modalWidth={["90%", "40%", "48%"]}
+            width={["90%", "40%", "48%"]}
+            minWidth={["90%", "40%", "48%"]}
+            titleText={
+                <Text fontSize="md" fontWeight="medium" textAlign="center">
+                    Allow <Text fontWeight={'700'} fontSize={'18px'} as={'span'}>OneWallet</Text> to access this
+                    device’s precise location?
+                </Text>
+            }
+
              />}
-            {showNotificationModal && <GenericPopUpModal
-            cancelText='No'
-            hasAllow={false}
-            onNoClick={() => handlePermissionClick('notificationPermission', 'denied')}
-            onYesClick={() => handlePermissionClick('notificationPermission', 'granted')}
-            title='OneWallet Would Like to Send You Notifications?'
-            acceptTextC='#171C23'
-            titleC='#344256'
-            cancelTextC='#171C23'
-            acceptText='Yes'
-            isOpen={showNotificationModal}
-            icon={<LuBellDot size={28} color='#0F454F'/>}
-            modalWidth={["90%", "40%", "48%"]}
-             />}
+
+
+            {showNotificationModal &&
+                <GenericPopUpModal
+                    cancelText='No'
+                    onNoClick={() => handlePermissionClick('notificationPermission', 'denied')}
+                    onYesClick={() => handlePermissionClick('notificationPermission', 'granted')}
+                    titleText={<Text fontSize="md" fontWeight="medium" textAlign="center">
+                        <Text fontWeight={'700'} fontSize={'18px'} as={'span'}>OneWallet</Text> Would Like to Send You
+                        Notifications?
+                    </Text>}
+                    acceptText='Yes'
+                    isOpen={showNotificationModal}
+                    icon={<LuBellDot size={28} color='#0F454F'/>}
+                    width={["90%", "40%", "48%"]}
+                    minWidth={["90%", "40%", "48%"]}
+             />
+            }
             <Box
                 padding={{base: '24px', lg: '40px'}}
                 bg="#F1F5F9"
