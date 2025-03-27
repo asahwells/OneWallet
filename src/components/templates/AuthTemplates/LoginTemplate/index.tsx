@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Image, Flex } from '@chakra-ui/react';
 import LoginForm from '../../../organisms/forms/LoginForm';
 import LoginImage from '../../../../img/auth/loginImage.png';
-import Logo from '../../../../img/oneWalletLogo.png';
+import Logo from '../../../../img/oneWalletLogoWhite.png';
 
 const LoginTemplate: React.FC = () => {
     return (
@@ -10,31 +10,16 @@ const LoginTemplate: React.FC = () => {
             height="100vh"
             alignItems="center"
             justifyContent="center"
-            bg={'white'}
+            bg={'#0B343B'}
         >
             <Box
-                top="0"
-                left="0"
-                width="40%"
-                height="100%"
-                zIndex="0"
-                position="relative"
-                overflow="hidden"
-            >
-                <Image
-                    src={LoginImage.src}
-                    alt="Background"
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                    objectPosition="center"
-                />
-            </Box>
-            <Box
-                width="60%"
+                width={{base: '80%', lg: '60%'}}
                 h="100%"
-                pl="40px"
-                pt="37px"
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                flexDirection={'column'}
+                mx={'auto'}
             >
                 <Image
                     src={Logo.src}
@@ -42,8 +27,8 @@ const LoginTemplate: React.FC = () => {
                     objectFit="contain"
                     width="243.95px"
                     height="37.72px"
-                    ml="20px"
-                    mb="90px"
+                    mx="auto"
+                    mb="5%"
                 />
                 <LoginForm />
             </Box>

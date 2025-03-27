@@ -35,6 +35,20 @@ export const buttonStyles = {
             bg: mode("brand.600", "brand.400")(props),
           },
         }),
+
+        ghost: (props: StyleFunctionProps) => ({
+          bg: mode("#CFDADC", "#CFDADC")(props),
+          color: "#171C23",
+          _focus: {
+            bg: mode("#0F454F", "#0F454F")(props),
+          },
+          _active: {
+            bg: mode("#0F454F", "#0F454F")(props),
+          },
+          _hover: {
+            bg: mode("#0F454F", "#0F454F")(props),
+          },
+        }),
         darkBrand: (props: StyleFunctionProps) => ({
           bg: mode("brand.900", "brand.400")(props),
           color: "white",
