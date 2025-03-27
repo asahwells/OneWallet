@@ -21,8 +21,12 @@ const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
 
-    const [showLocationModal, setShowLocationModal] = useState(false);
-    const [showNotificationModal, setShowNotificationModal] = useState(false);
+    const {isOpen: isLocationModalOpen, onClose: onLocationModalClose, onOpen: onLocationModalOpen} = useDisclosure()
+    const {
+        isOpen: isNotificationModalOpen,
+        onClose: onNotificationModalClose,
+        onOpen: onNotificationModalOpen
+    } = useDisclosure()
 
     const {isOpen, onClose, onToggle} =  useDisclosure();
 
@@ -58,45 +62,54 @@ const LoginForm = () => {
         const notificationPermission = sessionStorage.getItem('notificationPermission');
 
         if (!locationPermission) {
-        setShowLocationModal(true);
-        } else if (!notificationPermission) {
-        setShowNotificationModal(true);
+            return onLocationModalOpen();
+        }
+
+        if (!notificationPermission) {
+            return onNotificationModalOpen();
         }
         
       }, []);
 
       const handlePermissionClick = (permissionType: 'locationPermission' | 'notificationPermission', value: 'granted' | 'denied') => {
         sessionStorage.setItem(permissionType, value);
+
         if (permissionType === 'locationPermission') {
-            setShowLocationModal(false);
-            setShowNotificationModal(true);
-        } else {
-            setShowNotificationModal(false);
+            onLocationModalClose();
+            onNotificationModalOpen();
+            return
         }
+
+          onNotificationModalClose();
     };
 
     return (
         <>
-            {showLocationModal && <GenericPopUpModal
-            cancelText='No'
-            onNoClick={() => handlePermissionClick('locationPermission', 'denied')}
-            onYesClick={() => handlePermissionClick('locationPermission', 'granted')}
-            acceptText='Yes'
-            isOpen={showLocationModal}
-            icon={<MdOutlineLocationOn size={28} color='#0F454F'/>}
-            width={["90%", "40%", "48%"]}
-            minWidth={["90%", "40%", "48%"]}
-            titleText={
-                <Text fontSize="md" fontWeight="medium" textAlign="center">
-                    Allow <Text fontWeight={'700'} fontSize={'18px'} as={'span'}>OneWallet</Text> to access this
-                    device’s precise location?
-                </Text>
+
+            {
+                isLocationModalOpen && <GenericPopUpModal
+                    cancelText='No'
+                    onNoClick={() => handlePermissionClick('locationPermission', 'denied')}
+                    onYesClick={() => handlePermissionClick('locationPermission', 'granted')}
+                    acceptText='Yes'
+                    isOpen={isLocationModalOpen}
+                    icon={<MdOutlineLocationOn size={28} color='#0F454F'/>}
+                    width={["90%", "40%", "48%"]}
+                    minWidth={["90%", "40%", "48%"]}
+                    titleText={
+                        <Text fontSize="md" fontWeight="medium" textAlign="center">
+                            Allow <Text fontWeight={'700'} fontSize={'18px'} as={'span'}>OneWallet</Text> to access this
+                            device’s precise location?
+                        </Text>
+                    }
+
+                />
             }
 
-             />}
+
+            {isNotificationModalOpen &&
 
 
-            {showNotificationModal &&
                 <GenericPopUpModal
                     cancelText='No'
                     onNoClick={() => handlePermissionClick('notificationPermission', 'denied')}
@@ -106,12 +119,13 @@ const LoginForm = () => {
                         Notifications?
                     </Text>}
                     acceptText='Yes'
-                    isOpen={showNotificationModal}
+                    isOpen={isNotificationModalOpen}
                     icon={<LuBellDot size={28} color='#0F454F'/>}
                     width={["90%", "40%", "48%"]}
                     minWidth={["90%", "40%", "48%"]}
-             />
-            }
+                />}
+
+
             <Box
                 padding={{base: '24px', lg: '40px'}}
                 bg="#F1F5F9"

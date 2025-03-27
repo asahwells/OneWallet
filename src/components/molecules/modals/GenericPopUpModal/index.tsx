@@ -23,7 +23,7 @@ const GenericPopUpModal = ({
 }: INotificationModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      <ModalOverlay backgroundColor="rgba(0,0,0, 0.6)" />
+      <ModalOverlay backgroundColor="rgba(0,0,0, 0.6)"  />
       <ModalContent borderRadius="2xl" boxShadow="lg" p={6} {...props}>
         <ModalBody>
 
