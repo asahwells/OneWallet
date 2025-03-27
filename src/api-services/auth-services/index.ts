@@ -4,8 +4,9 @@ import Cookies from "js-cookie";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import {StorageToken} from "../../constants/token";
-import {ILoginPayload, IAuthRes} from "./interface";
+import {ILoginPayload, IAuthRes, IResetPasswordPayload} from "./interface";
 import {setIsAuthenticated, setUserState} from "../../redux/slices/user";
+import { IResp } from "api-services/interfaces";
 
 export const useLogin = () => {
     const customToast = useToast();
@@ -41,3 +42,25 @@ export const useFetchLoggedInUser = () => {
         },
     });
 }
+
+export const useResetPassword = () => {
+    const customToast = useToast();
+
+    return useMutation({
+        mutationFn: (data: IResetPasswordPayload): Promise<IResp> =>
+            HttpClient.post(BASE_AXIOS, { url: "auth/reset-password", data }),
+        onSuccess: (res: IResp) => {
+            return res;
+        },
+        onError: (error: any) => {
+            customToast({
+               status: "error",
+                description: error?.response?.data?.message || "Reset Password failed. Please try again.",
+                title: "Error",
+
+            });
+
+            throw new Error(error?.response?.data?.message || "Reset Password failed. Please try again.");
+        },
+    });
+};

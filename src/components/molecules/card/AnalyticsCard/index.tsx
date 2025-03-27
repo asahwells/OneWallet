@@ -1,36 +1,49 @@
-import {Box, Spinner, Stack, Text} from "@chakra-ui/react";
+import {Box, HStack, Spinner, Stack, Text} from "@chakra-ui/react";
 import {IAnalyticsCardProps} from "../interfaces";
 
-const AnalyticsCard = ({title, value, isLoading, ...props}: IAnalyticsCardProps) => {
+const AnalyticsCard = ({title, value, isLoading, icon, ...props}: IAnalyticsCardProps) => {
 
 
     return (
-        <Stack
+        <HStack
             border={'0.88px solid #E4E4E7'}
             bg={'white'}
-            px={6}
+            px={8}
             py={4}
-            w={'210.55px'}
+            w={'auto'}
             h={'79.63px'}
             borderRadius={'8px'}
             spacing={4}
-            alignItems={'start'}
+            alignItems={'center'}
+            justifyContent={'start'}
             {...props}
         >
 
-            <Text noOfLines={1} variant={'xs'} color={'#546C8D'} letterSpacing={2}>
-                {title}
-            </Text>
+
+                {icon}
+
+                <Stack>
+
+                    {isLoading ?
+                        <Spinner size={'sm'}/>
+                        :
+                        <Text  fontWeight={'600'} fontSize={'20px'} >
+                            {value}
+                        </Text>}
+
+                    <Text noOfLines={1} fontWeight={'400'} fontSize={'16px'} color={'#546C8D'} letterSpacing={'-1.2%'}>
+                        {title}
+                    </Text>
+
+                </Stack>
 
 
-            {isLoading ?
-                    <Spinner size={'sm'}/>
-                :
-                <Text variant={'headerBold'}>
-                {value}
-                </Text>}
 
-        </Stack>
+
+
+
+
+        </HStack>
     )
 }
 

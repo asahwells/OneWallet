@@ -17,3 +17,13 @@ export interface IKycComplianceCard {
 pendingApproval : string
     suspendedUsers : string
 }
+
+export interface PendingTasksCardProps {
+    pendingTasks : Array<PendingTask>
+}
+
+export interface PendingTask {
+    id : string,
+    title : string,
+    dueDate : string,
+}

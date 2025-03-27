@@ -5,5 +5,6 @@ export interface IAnalyticsCardProps extends StackProps {
    title: string;
    value: string;
    isLoading?: boolean;
+   icon?: any;
 
 }

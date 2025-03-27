@@ -6,3 +6,8 @@ export interface ILoginPayload {
 export interface IAuthRes {
     token: string;
 }
+
+export interface IResetPasswordPayload {
+    oldPassword: string;
+    newPassword: string;
+}

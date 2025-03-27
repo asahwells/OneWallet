@@ -8,7 +8,7 @@ export interface IInputProps extends InputProps{
 
 
 export interface IPasswordInputProps extends IInputProps {
-
+  
 }
 
 export interface ISelectInputProps extends SelectProps {
