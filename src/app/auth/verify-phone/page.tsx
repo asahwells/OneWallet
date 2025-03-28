@@ -3,8 +3,8 @@
 import VerificationTemplate from "components/templates/AuthTemplates/VerificationTemplate";
 
 
-export default function VerifyOtp() {
+export default function VerifyPhone() {
     return (
-        <VerificationTemplate screen="otp" />
+        <VerificationTemplate screen="phone" />
     )
 }

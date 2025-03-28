@@ -39,14 +39,14 @@ export const buttonStyles = {
         ghost: (props: StyleFunctionProps) => ({
           bg: mode("#CFDADC", "#CFDADC")(props),
           color: "#171C23",
-          _focus: {
-            bg: mode("#0F454F", "#0F454F")(props),
-            color: "#FCFCFC"
-          },
-          _active: {
-            bg: mode("#0F454F", "#0F454F")(props),
-            color: "#FCFCFC"
-          },
+          // _focus: {
+          //   bg: mode("#0F454F", "#0F454F")(props),
+          //   color: "#FCFCFC"
+          // },
+          // _active: {
+          //   bg: mode("#0F454F", "#0F454F")(props),
+          //   color: "#FCFCFC"
+          // },
           _hover: {
             bg: mode("#0F454F", "#0F454F")(props),
             color: "#FCFCFC"

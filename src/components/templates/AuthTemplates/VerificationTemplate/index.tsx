@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Image, Flex, Text } from '@chakra-ui/react';
 import Logo from '../../../../img/oneWalletLogo.png';
-import VerifyOtpForm from 'components/organisms/forms/VerifyOtpForm';
 import { IoChevronBack } from 'react-icons/io5';
+import VerificationForm from 'components/organisms/forms/VerificationForm';
+import { VerificationProps } from 'components/templates/interfaces';
+import { useRouter } from 'next/navigation';
 
-const VerifyOtpTemplate: React.FC = () => {
+const VerificationTemplate: React.FC<VerificationProps> = ({
+    screen = 'phone'
+}) => {
+    const [screenTitle, setScreenTitle] = useState('');
+    const router = useRouter();
+
+    useEffect(() => {
+        if(screen === 'phone') {
+            return setScreenTitle('Phone Number Verification')
+        }
+        return setScreenTitle('OTP Verification')
+    }, [])
+    const responsiveText = {
+            textAlign: 'center',
+            '@media (max-width: 768px)': {
+                textAlign: 'left',
+            },
+    }
     return (
         <Flex
             height="100vh"
@@ -45,6 +64,8 @@ const VerifyOtpTemplate: React.FC = () => {
                             marginRight: 'auto'
                         },
                     }}
+                    cursor={'pointer'}
+                    onClick={() => router.back()} 
                     
                 >
                     <IoChevronBack color='#222B38' size={'20px'} />
@@ -83,10 +104,18 @@ const VerifyOtpTemplate: React.FC = () => {
                 flexDirection={'column'}
                 mx={'auto'}
             >
-                <VerifyOtpForm />
+                <VerificationForm
+                    screen={screen}
+                    title={<Text w='full' sx={
+                        responsiveText
+                    } variant={'otvVerifyTitle'}> {screenTitle}</Text>}
+                    label={<Text w='full'
+                        sx={responsiveText}
+                      variant={'otvVerifySubTitle'}>Enter the code we sent to your phone number</Text>}
+                 />
             </Box>
         </Flex>
     );
 };
 
-export default VerifyOtpTemplate;
+export default VerificationTemplate;

@@ -15,3 +15,7 @@ export interface INotificationProps {
 export interface FormValues {
     attachment: File | null; 
   }
+
+export interface VerificationProps {
+    screen:  string; 
+  }
