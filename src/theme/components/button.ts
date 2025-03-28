@@ -41,12 +41,15 @@ export const buttonStyles = {
           color: "#171C23",
           _focus: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC"
           },
           _active: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC"
           },
           _hover: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC"
           },
         }),
         darkBrand: (props: StyleFunctionProps) => ({

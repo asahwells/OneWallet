@@ -1,4 +1,6 @@
+import { background } from "@chakra-ui/system";
 import { mode, StyleFunctionProps } from "@chakra-ui/theme-tools";
+import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
 export const inputStyles = {
   components: {
     Input: {
@@ -51,6 +53,21 @@ export const inputStyles = {
             py: "11px",
             borderRadius: "inherit",
             _placeholder: { color: "secondaryGray.600" },
+          },
+        }),
+        otpInput: (props: StyleFunctionProps) => ({
+          field: {
+            textAlign: "center",
+            fontSize: '22px',
+            width: "69px",
+            height: "60px",
+            border: "1px solid",
+            background: '#E2E8F0',
+            borderColor: "#E2E8F0",
+            color: '#39605B',
+            fontWeight: '700',
+            borderRadius: "md",
+            _focus: { borderColor: "#0F454F", boxShadow: "none", background: "#FFFFFF" },
           },
         }),
       },
