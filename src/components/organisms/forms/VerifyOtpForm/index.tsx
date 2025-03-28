@@ -84,7 +84,7 @@ import {
                 text={'Verify'}
                 onClick={handleClick}
                 borderRadius={"8px"}
-                h={"152px"}
+                h={"56px"}
                 sx={{
                   backgroundColor: otp.length < 4 ? "#CFDADC" : "#0F454F",
                   color: otp.length < 4 ? "#171C23" : "#FCFCFC",
