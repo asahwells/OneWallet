@@ -3,15 +3,17 @@ import {
     Box,
     Flex,
     IconButton,
-    Text
+    Text, useBreakpointValue
 } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
-import SelectField from 'components/organisms/select/SelectField';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import { IDownloadBoxProps } from '../interfaces';
 import FloatingLabelSelect from "../../../molecules/inputs/FloatingLabelSelect";
 
 const FilterBox = ({ onClose, onFilterChange }: IDownloadBoxProps) => {
+
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
     const [tierLevel, setTierLevel] = useState('');
     const [registrationStatus, setRegistrationStatus] = useState('');
     const [stateValue, setStateValue] = useState('');
@@ -56,31 +58,44 @@ const FilterBox = ({ onClose, onFilterChange }: IDownloadBoxProps) => {
 
     return (
         <Box
-            p="24px"
+            p={{
+                base: '0px',
+                md:"24px"
+            }}
             bg="white"
-            borderRadius="8.75px"
-            boxShadow="lg"
-            width="500px"
+            borderRadius={{
+                base: '0px',
+                md: '8.75px'
+            }}
+            boxShadow={{
+                base: 'none',
+                md: "lg"
+            }}
+            width={{
+                base: '100%',
+                md: '500px'
+            }}
         >
-            {/* Header */}
-            <Flex mb={4} mt={-2} justifyContent="space-between" alignItems="center">
-                <Text
-                    color="#344256"
-                    fontWeight={600}
-                    fontSize="20px"
-                    lineHeight="32px"
-                    letterSpacing="-1.4%"
-                >
-                    Filter By
-                </Text>
-                <IconButton
-                    aria-label="Close filter"
-                    icon={<CloseIcon w="13.5px" h="13.5px" color="#000000" />}
-                    bg="transparent"
-                    onClick={onClose}
-                    _hover={{ bg: '#F1F5F9' }}
-                />
-            </Flex>
+            {!isMobile &&
+
+                <Flex mb={4} mt={-2} justifyContent="space-between" alignItems="center">
+            <Text
+                color="#344256"
+                fontWeight={600}
+                fontSize="20px"
+                lineHeight="32px"
+                letterSpacing="-1.4%"
+            >
+                Filter By
+            </Text>
+            <IconButton
+                aria-label="Close filter"
+                icon={<CloseIcon w="13.5px" h="13.5px" color="#000000" />}
+                bg="transparent"
+                onClick={onClose}
+                _hover={{ bg: '#F1F5F9' }}
+            />
+        </Flex>}
 
             {/* Tier Level */}
             <Box w="100%" mb="20px">
@@ -128,82 +143,6 @@ const FilterBox = ({ onClose, onFilterChange }: IDownloadBoxProps) => {
                     onChange={(e: any) => setStateValue(e.target.value)}
                 />
             </Box>
-
-            {/*/!* Registration Business *!/*/}
-            {/*<Box w="100%" mb="20px">*/}
-            {/*    <Text*/}
-            {/*        mb="8px"*/}
-            {/*        color="#344256"*/}
-            {/*        fontWeight={600}*/}
-            {/*        fontSize="16px"*/}
-            {/*        lineHeight="32px"*/}
-            {/*        letterSpacing="-1.4%"*/}
-            {/*    >*/}
-            {/*        Registration Business*/}
-            {/*    </Text>*/}
-            {/*    <SelectField*/}
-            {/*        placeholder="Select Registration Business"*/}
-            {/*        options={[*/}
-            {/*            { label: 'Business A', value: 'businessA' },*/}
-            {/*            { label: 'Business B', value: 'businessB' },*/}
-            {/*            { label: 'Business C', value: 'businessC' }*/}
-            {/*        ]}*/}
-            {/*        value={registrationBusiness}*/}
-            {/*        onChange={(e: any) => setRegistrationBusiness(e.target.value)}*/}
-            {/*    />*/}
-            {/*</Box>*/}
-
-            {/*/!* Board *!/*/}
-            {/*<Box w="100%" mb="20px">*/}
-            {/*    <Text*/}
-            {/*        mb="8px"*/}
-            {/*        color="#344256"*/}
-            {/*        fontWeight={600}*/}
-            {/*        fontSize="16px"*/}
-            {/*        lineHeight="32px"*/}
-            {/*        letterSpacing="-1.4%"*/}
-            {/*    >*/}
-            {/*        Board*/}
-            {/*    </Text>*/}
-            {/*    <SelectField*/}
-            {/*        placeholder="Select Board"*/}
-            {/*        options={[*/}
-            {/*            { label: 'Board A', value: 'boardA' },*/}
-            {/*            { label: 'Board B', value: 'boardB' },*/}
-            {/*            { label: 'Board C', value: 'boardC' }*/}
-            {/*        ]}*/}
-            {/*        value={board}*/}
-            {/*        onChange={(e: any) => setBoard(e.target.value)}*/}
-            {/*    />*/}
-            {/*</Box>*/}
-
-            {/*/!* Date Submitted *!/*/}
-            {/*<Box w="100%" mb="20px">*/}
-            {/*    <Text*/}
-            {/*        mb="8px"*/}
-            {/*        color="#344256"*/}
-            {/*        fontWeight={600}*/}
-            {/*        fontSize="16px"*/}
-            {/*        lineHeight="32px"*/}
-            {/*        letterSpacing="-1.4%"*/}
-            {/*    >*/}
-            {/*        Date Submitted*/}
-            {/*    </Text>*/}
-            {/*    <Flex w="full" gap={3}>*/}
-            {/*        <SelectField*/}
-            {/*            type="date"*/}
-            {/*            placeholder="From"*/}
-            {/*            value={fromDate}*/}
-            {/*            onChange={(e: any) => setFromDate(e.target.value)}*/}
-            {/*        />*/}
-            {/*        <SelectField*/}
-            {/*            type="date"*/}
-            {/*            placeholder="To"*/}
-            {/*            value={toDate}*/}
-            {/*            onChange={(e: any) => setToDate(e.target.value)}*/}
-            {/*        />*/}
-            {/*    </Flex>*/}
-            {/*</Box>*/}
 
             {/* Buttons */}
             <BaseButton
