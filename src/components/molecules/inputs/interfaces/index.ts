@@ -1,5 +1,6 @@
 import {InputProps} from "@chakra-ui/input";
-import { SelectProps, TextareaProps } from "@chakra-ui/react";
+import {FormControlProps, SelectProps, TextareaProps} from "@chakra-ui/react";
+import {ChangeEventHandler} from "react";
 
 export interface IInputProps extends InputProps{
     icon?: React.ReactNode,
@@ -12,7 +13,7 @@ export interface IPasswordInputProps extends IInputProps {
 }
 
 export interface ISelectInputProps extends SelectProps {
-  options: string[];
+  options: Array<{ label: string; value: string }>;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -26,4 +27,16 @@ export interface IDateInputProps {
 export interface ITextareaProps extends TextareaProps{
   icon?: React.ReactNode
   errorMessage?: string;
+}
+
+interface IOption {
+  label: string;
+  value: string;
+}
+
+export interface IConditionalLabelSelectProps extends FormControlProps {
+  label: string;
+  options: IOption[];
+  value?: string;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
 }

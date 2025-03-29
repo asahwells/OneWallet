@@ -9,6 +9,7 @@ import { textareaStyles } from './components/textarea';
 import { switchStyles } from './components/switch';
 import { linkStyles } from './components/link';
 import { textStyles } from './components/text';
+import { tagTheme as Tag } from './components/tag';
 import { breakpoints } from './foundations/breakpoints';
 import { globalStyles } from './styles';
 import {textStyles as Text} from './components/text';
@@ -18,7 +19,8 @@ export default extendTheme(
 	{ breakpoints,
 		components: {
 			Text,
-			Radio
+			Radio,
+			Tag,
 		},
 
 	}, // Breakpoints
