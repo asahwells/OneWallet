@@ -23,8 +23,8 @@ const SelectInput = ({ options, placeholder, value, onChange, ...props }: ISelec
             {...props}
         >
             {options.map((option, index) => (
-                <option key={index} value={option}>
-                    {option}
+                <option key={index} value={option.value}>
+                    {option.label}
                 </option>
             ))}
         </Select>

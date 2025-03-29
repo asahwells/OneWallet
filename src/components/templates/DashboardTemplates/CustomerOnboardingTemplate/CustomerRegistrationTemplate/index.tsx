@@ -20,11 +20,11 @@ const CustomerRegistrationTemplate = () =>  {
     return (
         <Stack bg={'white'} spacing={5}>
 
-            <HStack w={'full'} justifyContent={'space-between'} alignItems={'center'}>
+            <HStack w={'full'} justifyContent={'space-between'} alignItems={'center'} spacing={24} >
 
-                <HStack w={'full'} mt={2}>
+                <HStack w={'full'} mt={2} spacing={4} >
                     <SearchInput placeholder={'Search by Customer Name'} onChange={console.log} />
-                    <Box position="relative" w={'full'}>
+                    <Box position="relative">
                         <FilterButton onClick={onToggleOne} />
                         {isOpenOne && (
                             <Box position="absolute" top="0" right="5px" zIndex="10">

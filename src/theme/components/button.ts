@@ -27,12 +27,15 @@ export const buttonStyles = {
           color: "#FCFCFC",
           _focus: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC",
           },
           _active: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC",
           },
           _hover: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC",
           },
           fontWeight: '400',
           fontSize: '16px',

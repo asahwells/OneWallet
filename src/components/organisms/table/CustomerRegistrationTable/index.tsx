@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import EmptyTaskIcon from "../../../atoms/icons/EmptyTasksIcon";
 import PaginationComponent from "../../pagination/PaginationComponent";
 
-const SuspendedUsersTableComponent = ({data}: any) => {
+const CustomerRegistrationTable = ({data}: any) => {
   const router = useRouter();
 
   const handleView = (id: string) => {
@@ -35,7 +35,7 @@ const SuspendedUsersTableComponent = ({data}: any) => {
         <>
           {data.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
+                  <TableCell>{index + 1}</TableCell>
                 <TableCell>{row?.fullName ? row?.fullName : 'N/A'}</TableCell>
 
                 <TableCell>{row?.accountNumber ? row?.accountNumber : 'N/A'}</TableCell>
@@ -62,12 +62,33 @@ const SuspendedUsersTableComponent = ({data}: any) => {
       <Table>
         <Thead>
           <TableRow>
-            <TableHeaderCell>SN</TableHeaderCell>
-            <TableHeaderCell>Name</TableHeaderCell>
-            <TableHeaderCell>Account Number</TableHeaderCell>
-            <TableHeaderCell>State</TableHeaderCell>
-            <TableHeaderCell>Tier</TableHeaderCell>
-            <TableHeaderCell>Status</TableHeaderCell>
+              <TableHeaderCell>
+                  <Text variant={'tableHeader'}>
+                      SN
+                  </Text>
+              </TableHeaderCell>
+              <TableHeaderCell>
+                  <Text variant={'tableHeader'}>
+                      Name
+                  </Text>
+              </TableHeaderCell>
+              <TableHeaderCell>
+
+                  <Text variant={'tableHeader'}>Account Number
+                  </Text>
+              </TableHeaderCell>
+              <TableHeaderCell>
+                  <Text variant={'tableHeader'}>State </Text></TableHeaderCell>
+              <TableHeaderCell>
+                  <Text variant={'tableHeader'}>
+                      Tier
+                  </Text>
+              </TableHeaderCell>
+              <TableHeaderCell>
+
+                  <Text variant={'tableHeader'}>Status
+                  </Text>
+              </TableHeaderCell>
           </TableRow>
         </Thead>
         <Tbody >
@@ -80,4 +101,4 @@ const SuspendedUsersTableComponent = ({data}: any) => {
   );
 };
 
-export default SuspendedUsersTableComponent;
+export default CustomerRegistrationTable;
