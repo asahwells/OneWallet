@@ -3,7 +3,7 @@ export interface IFilterFieldProps {
     name?: string;
     type: 'select' | 'date' | 'number';
     placeholder: string;
-    options?: string[];
+    options?: Array<{ label: string; value: string }>;
     bg?:string;
     disabled?: boolean;
     value?: string;

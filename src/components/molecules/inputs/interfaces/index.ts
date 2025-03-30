@@ -1,5 +1,6 @@
 import {InputProps} from "@chakra-ui/input";
-import { SelectProps, TextareaProps, PinInput as ChakraPinInput, PinInputField } from "@chakra-ui/react";
+import { SelectProps, TextareaProps, PinInput as ChakraPinInput, PinInputField, FormControlProps } from "@chakra-ui/react";
+import {ChangeEventHandler} from "react";
 
 export interface IInputProps extends InputProps{
     icon?: React.ReactNode,
@@ -12,7 +13,7 @@ export interface IPasswordInputProps extends IInputProps {
 }
 
 export interface ISelectInputProps extends SelectProps {
-  options: string[];
+  options: Array<{ label: string; value: string }>;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -33,3 +34,19 @@ export interface IPinInputProps extends Omit<React.ComponentProps<typeof ChakraP
   count?: number;
   inputProps?: React.ComponentProps<typeof PinInputField>;
 }
+interface IOption {
+  label: string;
+  value: string;
+}
+
+export interface IConditionalLabelSelectProps extends FormControlProps {
+  label: string;
+  options: IOption[];
+  value?: string;
+}
+
+export interface CustomDateInputProps {
+  value?: string;
+  onClick?: () => void;
+}
+
