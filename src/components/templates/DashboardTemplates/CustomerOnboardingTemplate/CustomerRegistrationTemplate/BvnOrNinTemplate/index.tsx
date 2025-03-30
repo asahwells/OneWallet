@@ -18,15 +18,20 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from "../../../../../molecules/buttons/BaseButton";
 import ErrorModal from "../../../../../molecules/modals/ErrorModal";
 import FailedModal from "../../../../../molecules/modals/FailedModal";
+import ChooseVerificationModal from "../../../../../molecules/modals/ChooseVerificationModal";
 
 interface BvnOrNinTemplateProps {
     onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
     onBack: () => void;
+    onCameraSelect: () => void;
+    onAttachmentSelect: () => void;
 }
 
-const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack }) => {
+const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, onCameraSelect, onAttachmentSelect }) => {
 
      const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
+
+     const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
     const [selectedOption, setSelectedOption] = useState<'BVN' | 'NIN'>('BVN');
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -50,17 +55,14 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack })
 
     const handleVerify = () => {
 
-        console.log({inputValue})
+        if(isButtonDisabled) return
         if(inputValue == invalidBVN){
             setErrorMessage('BVN is already linked to an existing account. Please enter User\'s correct BVN or proceed to Login.')
             onErrorOpen()
             return
         }
 
-        return
-        // if (!isButtonDisabled) {
-        //     onVerify(selectedOption, inputValue);
-        // }
+       onVerificationMethodOpen()
     };
 
     return (
@@ -290,6 +292,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack })
             borderTopRadius={'26.81px'}
             borderBottomRadius={'26.81px'}
     />
+
+            <ChooseVerificationModal isOpen={isVerificationMethodOpen} onClose={onVerificationMethodClose} onChooseCamera={onCameraSelect} onChooseUpload={onAttachmentSelect} />
+
+
 </Flex>
     );
 };

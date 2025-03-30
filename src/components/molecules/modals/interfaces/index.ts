@@ -34,3 +34,10 @@ export interface ErrorModalProps {
   onClose: () => void;
   errorMessage?: string;
 }
+
+export interface ChooseVerificationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onChooseCamera: () => void;    // Callback when user chooses camera
+  onChooseUpload: () => void;    // Callback when user chooses upload
+}
