@@ -38,5 +38,10 @@ export interface IConditionalLabelSelectProps extends FormControlProps {
   label: string;
   options: IOption[];
   value?: string;
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
 }
+
+export interface CustomDateInputProps {
+  value?: string;
+  onClick?: () => void;
+}
+

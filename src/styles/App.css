@@ -9,3 +9,7 @@ body {
 option {
   color: black;
 }
+
+.react-datepicker-wrapper {
+  width: 100% !important;
+}

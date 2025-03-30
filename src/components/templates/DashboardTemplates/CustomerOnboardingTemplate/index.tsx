@@ -5,7 +5,7 @@ import {
     Box, HStack, Radio, RadioGroup, Show,
     SimpleGrid, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text,
 } from '@chakra-ui/react';
-import CustomerRegistrationTemplate from "./CustomerRegistrationTemplate";
+import CustomerRegistrationDashboardTemplate from "./CustomerRegistrationDashboardTemplate";
 
 
 const CustomerOnboardingTemplate = () =>  {
@@ -32,7 +32,7 @@ const CustomerOnboardingTemplate = () =>  {
 
 
                     <TabPanel>
-                    <CustomerRegistrationTemplate />
+                    <CustomerRegistrationDashboardTemplate />
                     </TabPanel>
 
 
