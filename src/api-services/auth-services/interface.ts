@@ -11,3 +11,7 @@ export interface IResetPasswordPayload {
     oldPassword: string;
     password: string;
 }
+
+export interface IVerifyPayload {
+    // add payload
+}
