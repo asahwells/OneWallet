@@ -28,3 +28,9 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     titleText: ReactNode
 
   }
+
+export interface ErrorModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  errorMessage?: string;
+}
