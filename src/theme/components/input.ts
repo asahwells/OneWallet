@@ -55,21 +55,6 @@ export const inputStyles = {
             _placeholder: { color: "secondaryGray.600" },
           },
         }),
-        otpInput: (props: StyleFunctionProps) => ({
-          field: {
-            textAlign: "center",
-            fontSize: '22px',
-            width: "69px",
-            height: "60px",
-            border: "1px solid",
-            background: '#E2E8F0',
-            borderColor: "#E2E8F0",
-            color: '#39605B',
-            fontWeight: '700',
-            borderRadius: "md",
-            _focus: { borderColor: "#0F454F", boxShadow: "none", background: "#FFFFFF" },
-          },
-        }),
       },
     },
     NumberInput: {
@@ -221,5 +206,6 @@ export const inputStyles = {
         }),
       },
     },
+  
   },
 };

@@ -93,20 +93,11 @@ import { useOtpVerification, usePhoneNumberVerification } from "api-services/aut
           alignItems="center"
           justifyContent="center"
           borderRadius={'8px'}
-          sx={{
-            maxHeight: '407px',
-            w: '704px',
-            mt: '64px',
-            p: 8,
-            border: '1px solid #CBD5E1',
-            '@media (max-width: 768px)': {
-                mt: '24px',
-                p: 0,
-                w: '100%',
-                maxHeight: 'auto',
-                border: 'none',
-        },
-        }}
+          p={{base: 0, md: 8}}
+          w={{base: '100%', md: '704px'}}
+          mt={{base: '23px', md: '24px'}}
+          maxHeight={{base: 'auto', md: '407px'}}
+          border={{base: 'none', md: '1px solid #CBD5E1'}}
           bgColor={{base: 'transparent',lg :'#FFFFFF'}}
         >
           <VStack pt={"23px"} w='full'>
@@ -114,7 +105,9 @@ import { useOtpVerification, usePhoneNumberVerification } from "api-services/aut
                 {title}
                 {label}
             </VStack>
-            <BasePinInput count={4} onChange={setOtp} />
+            <BasePinInput count={4} onChange={setOtp}>
+            <></>
+            </BasePinInput>
   
             <VStack w={'100%'} gap={"24px"}>
               <Flex justifyContent="center" marginTop={timeLeft > 0 ? "36px": 0} alignItems="center">
@@ -129,16 +122,11 @@ import { useOtpVerification, usePhoneNumberVerification } from "api-services/aut
                 text={'Verify'}
                 isLoading={isOtpVerifying || isPhoneNumberVerifying}
                 onClick={handleClick}
+                backgroundColor={otp.length < 4 ? "#CFDADC" : "#0F454F"}
+                color={otp.length < 4 ? "#171C23" : "#FCFCFC"}
                 borderRadius={"8px"}
                 h={"56px"}
-                sx={{
-                  backgroundColor: otp.length < 4 ? "#CFDADC" : "#0F454F",
-                  color: otp.length < 4 ? "#171C23" : "#FCFCFC",
-                  w: '520px',
-                  '@media (max-width: 768px)': {
-                        w: '100%',
-                    },
-                }}
+                w={{base: '100%', md: '520px'}}
               />
               <Text mb={"38px"} fontWeight={"400"} fontSize={"16px"} color={"#0F454F"}>
                 Didn&apos;t Receive the code?
@@ -146,11 +134,9 @@ import { useOtpVerification, usePhoneNumberVerification } from "api-services/aut
                   ml={"20px"}
                   fontWeight={"600"}
                   fontSize={"16px"}
-                  sx={{
-                    color: timeLeft > 0 ? "#A0AEC0" : "#0F454F",
-                    cursor: timeLeft > 0 ? "not-allowed" : "pointer",
-                    opacity: timeLeft > 0 ? 0.6 : 1
-                  }}
+                  color={timeLeft > 0 ? "#A0AEC0" : "#0F454F"}
+                  cursor={timeLeft > 0 ? "not-allowed" : "pointer"}
+                  opacity={timeLeft > 0 ? 0.6 : 1}
                   as="button"
                   disabled={timeLeft > 0}
                   onClick={handleResend}

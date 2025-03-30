@@ -30,25 +30,18 @@ const VerificationTemplate: React.FC<VerificationProps> = ({
             width="100vw"
             direction="column"
             alignItems="center"
-            sx={{
-                paddingY: '127px',
-                paddingX: '197px',
-                '@media (max-width: 768px)': {
-                paddingY: '16px',
-                paddingX: '16px'
-            },
-            }}
+            paddingY={{base: '16px', md: '127px'}}
+            paddingX={{base: '16px', md: '197px'}}
             bg={'#F8FAFC'}
         >
             <Flex
                 width={'100%'}
                 position={'relative'}
+                justifyContent={'center'}
                 sx={{
-                    justifyContent: 'center',
                     flexDirection: 'row',
                     '@media (max-width: 768px)': {
                         flexDirection: 'column-reverse',
-                        justifyContent: 'center',
                     },
                 }}
                 alignItems={'center'}
@@ -56,14 +49,9 @@ const VerificationTemplate: React.FC<VerificationProps> = ({
                 <Flex
                     alignItems={'center'}
                     gap={'8px'}
-                    sx={{
-                        position: 'absolute',
-                        left: 0,
-                        '@media (max-width: 768px)': {
-                            position: 'relative',
-                            marginRight: 'auto'
-                        },
-                    }}
+                    position={{base: 'relative', md: 'absolute'}}
+                    left={0}
+                    marginRight={'auto'}
                     cursor={'pointer'}
                     onClick={() => router.back()} 
                     
@@ -75,16 +63,11 @@ const VerificationTemplate: React.FC<VerificationProps> = ({
                 </Flex>
                 <Box
                 display={'flex'}
-                sx={{
-                    marginBottom: 0,
-                    '@media (max-width: 768px)': {
-                    marginBottom: '20px',
-                    borderBottom: '0.1px solid #CBD5E1',
-                    w: '100vw',
-                    paddingTop: '57.14px',
-                    paddingBottom: '26.42px',
-                },
-                }}
+                borderBottom={{base: '0.1px solid #CBD5E1', md: 'none' }}
+                w={'100vw'}
+                pb={{base: '26.42px', md: 0}}
+                pt={{base: '57.14px', md: 0 }}
+                mb={{base: '20px', md: 0}}
                 >
                     <Image
                         src={Logo.src}

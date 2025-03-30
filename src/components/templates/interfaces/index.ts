@@ -17,5 +17,5 @@ export interface FormValues {
   }
 
 export interface VerificationProps {
-    screen:  string; 
+    screen?: 'phone' | 'otp'  ; 
   }

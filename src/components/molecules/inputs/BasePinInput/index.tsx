@@ -1,52 +1,44 @@
-import { HStack, Input } from "@chakra-ui/react";
-import { useState, useRef } from "react";
+import { HStack, PinInput, PinInputField, PinInputProps } from "@chakra-ui/react";
+import { useState } from "react";
 
-interface BasePinInputProps {
+interface BasePinInputProps extends PinInputProps {
   count?: number;
   onChange: (value: string) => void;
   value?: string;
 }
 
 const BasePinInput: React.FC<BasePinInputProps> = ({ count = 4, onChange, value = "" }) => {
-  const [otp, setOtp] = useState(Array(count).fill(""));
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [otp, setOtp] = useState(value);
 
-  const handleChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = event.target.value.replace(/\D/, ""); // Only allow digits
-    if (val.length > 1) return; // Prevent multiple character input
-
-    const newOtp = [...otp];
-    newOtp[index] = val;
-    setOtp(newOtp);
-    onChange(newOtp.join(""));
-
-    // Move to next input if value is entered
-    if (val && index < count - 1) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleKeyDown = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
+  const handleChange = (val: string) => {
+    setOtp(val);
+    onChange(val);
   };
 
   return (
-    <HStack spacing={'18.04px'} justifyContent="center">
-      {Array.from({ length: count }).map((_, i) => (
-        <Input
-          key={i}
-          ref={(el) => (inputRefs.current[i] = el)}
-          value={otp[i]}
-          onChange={(e) => handleChange(i, e)}
-          onKeyDown={(e) => handleKeyDown(i, e)}
-          variant={'otpInput'}
-          autoComplete="off"
-          inputMode="numeric"
-          maxLength={1}
-        />
-      ))}
+    <HStack spacing="18.04px" justifyContent="center">
+      <PinInput value={otp} onChange={handleChange} otp mask>
+        {Array.from({ length: count }).map((_, i) => (
+          <PinInputField 
+            placeholder="" 
+            autoFocus={i===0}
+            width={'69px'}
+            height={'60px'}
+            background={'#F7F8F9'}
+            _focus={{
+              borderColor: "#0F454F",
+              backgroundColor: "#FFFFFF",
+            }}
+            border={"1px solid #E2E8F0"}
+            sx={{
+              "&::placeholder": { color: "transparent" },
+              "&::-webkit-input-placeholder": { color: "transparent" },
+              "&::-moz-placeholder": { color: "transparent" },
+              textAlign: "center",
+            }}
+            key={i} />
+        ))}
+      </PinInput>
     </HStack>
   );
 };
