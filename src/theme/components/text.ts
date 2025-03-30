@@ -161,6 +161,19 @@ export const textStyles = extendTheme({
             color: '#E53E3E'
         }),
 
+        otvVerifyTitle: (props: StyleFunctionProps) => ({
+            fontWeight: '700',
+            fontSize: '18px',
+            color: '#222B38',
+        }),
+        
+        otvVerifySubTitle: (props: StyleFunctionProps) => ({
+            fontWeight: '400',
+            fontSize: '14px',
+            color: '#344256',
+            
+        })
+
     }
 })
 

@@ -17,8 +17,8 @@ const GenericPopUpModal = ({
   acceptText,
   onYesClick,
   onNoClick,
-                             textStyles,
-    titleText,
+  textStyles,
+  titleText,
   ...props
 }: INotificationModalProps) => {
   return (
@@ -49,7 +49,7 @@ const GenericPopUpModal = ({
                 borderTopRadius="sm"
                 borderBottomRadius="xl"
                 w={'full'}
-                  h={'48px'}
+                h={'48px'}
 
               />
             </VStack>
