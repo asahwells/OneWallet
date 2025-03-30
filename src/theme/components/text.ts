@@ -131,7 +131,7 @@ export const textStyles = extendTheme({
 
         tableHeader: (props: StyleFunctionProps) => ({
             fontSize: '14px',
-            fontWeight: '700',
+            fontWeight: '600',
             color: '#344256'
         }),
 
@@ -160,6 +160,19 @@ export const textStyles = extendTheme({
             fontWeight: '400',
             color: '#E53E3E'
         }),
+
+        otvVerifyTitle: (props: StyleFunctionProps) => ({
+            fontWeight: '700',
+            fontSize: '18px',
+            color: '#222B38',
+        }),
+        
+        otvVerifySubTitle: (props: StyleFunctionProps) => ({
+            fontWeight: '400',
+            fontSize: '14px',
+            color: '#344256',
+            
+        })
 
     }
 })

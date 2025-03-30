@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import {StorageToken} from "../../constants/token";
-import {ILoginPayload, IAuthRes, IResetPasswordPayload} from "./interface";
+import {ILoginPayload, IAuthRes, IResetPasswordPayload, IVerifyPayload} from "./interface";
 import {setIsAuthenticated, setUserState} from "../../redux/slices/user";
 import { IResp } from "api-services/interfaces";
 
@@ -45,3 +45,35 @@ export const useResetPassword = (onSuccessCallback: () => void, onErrorCallback:
         },
     });
 };
+
+const useVerificationMutation = (endpoint: string) => {
+    const customToast = useToast();
+
+    return useMutation({
+        mutationFn: (data: IVerifyPayload): Promise<IAuthRes> =>
+            HttpClient.post(BASE_AXIOS, { url: endpoint, data }),
+
+        onSuccess: (res: IAuthRes) => {
+            Cookies.set(StorageToken, res.token);
+        },
+
+        onError: (error: any) => {
+            customToast({
+                status: "error",
+                title: "Error",
+                description:
+                    error?.response?.data?.message ||
+                    "You entered a wrong OTP. The Account will be locked for 3 hours after 4 more attempts.",
+            });
+
+            throw new Error(
+                error?.response?.data?.message ||
+                "You entered a wrong OTP. The Account will be locked for 3 hours after 4 more attempts."
+            );
+        },
+    });
+};
+
+// TODO : DYnamically pass the correct endpoint
+export const usePhoneNumberVerification = () => useVerificationMutation("auth/login");
+export const useOtpVerification = () => useVerificationMutation("auth/login");

@@ -1,4 +1,6 @@
+import { background } from "@chakra-ui/system";
 import { mode, StyleFunctionProps } from "@chakra-ui/theme-tools";
+import { fontWeight } from "html2canvas/dist/types/css/property-descriptors/font-weight";
 export const inputStyles = {
   components: {
     Input: {
@@ -204,5 +206,6 @@ export const inputStyles = {
         }),
       },
     },
+  
   },
 };

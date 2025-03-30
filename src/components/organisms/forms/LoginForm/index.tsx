@@ -193,13 +193,17 @@ const LoginForm = () => {
                 {isOpen &&   <ForgotPasswordModal
                     isOpen={isOpen}
                     onClose={onClose}
-                    width="843px"
-                    height="368px"
-                    borderRadius="8px"
-                    padding="24px"
+                    maxWidth={{base: '100%', md: '678.9px'}}
+                    alignSelf={'center'}
+                    marginX={{base: '26px', md: 0}}
+                    maxHeight={{base: 'auto', md: '383.17px'}}
+                    borderRadius="26.81px"
+                    paddingX={{base: '20px', md: '61px' }}
+                    paddingY={{base: '32.18px', md: '33px' }}
                 />}
             </Box>
         </>
+
     );
 };
 

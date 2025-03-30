@@ -13,6 +13,16 @@ export const buttonStyles = {
         _active: {
           boxShadow: "none",
         },
+        _disabled: {
+          border: "1.2px solid #6F8F95",
+          backgroundColor:"#CFDADC",
+          color:'#6F8F95',
+          _hover:{
+            border: "1.2px solid #6F8F95",
+            backgroundColor:"#CFDADC",
+            color:'#6F8F95'
+          }
+        }
       },
       variants: {
         outline: () => ({
@@ -23,30 +33,40 @@ export const buttonStyles = {
           borderColor: '#0F454F'
         }),
         brand: (props: StyleFunctionProps) => ({
-          bg: mode("brand.500", "brand.400")(props),
-          color: "white",
+          bg: mode("#0F454F", "#0F454F")(props),
+          color: "#FCFCFC",
           _focus: {
-            bg: mode("brand.500", "brand.400")(props),
+            bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC",
           },
           _active: {
-            bg: mode("brand.500", "brand.400")(props),
+            bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC",
           },
           _hover: {
-            bg: mode("brand.600", "brand.400")(props),
+            bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC",
           },
+          fontWeight: '400',
+          fontSize: '16px',
+          letterSpacing:'-2%',
+          borderRadius:'8px'
         }),
 
         ghost: (props: StyleFunctionProps) => ({
           bg: mode("#CFDADC", "#CFDADC")(props),
           color: "#171C23",
-          _focus: {
-            bg: mode("#0F454F", "#0F454F")(props),
-          },
-          _active: {
-            bg: mode("#0F454F", "#0F454F")(props),
-          },
+          // _focus: {
+          //   bg: mode("#0F454F", "#0F454F")(props),
+          //   color: "#FCFCFC"
+          // },
+          // _active: {
+          //   bg: mode("#0F454F", "#0F454F")(props),
+          //   color: "#FCFCFC"
+          // },
           _hover: {
             bg: mode("#0F454F", "#0F454F")(props),
+            color: "#FCFCFC"
           },
         }),
         darkBrand: (props: StyleFunctionProps) => ({

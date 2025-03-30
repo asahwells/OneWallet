@@ -24,7 +24,7 @@ const routes: IRoute[] = [
   {
     name: 'Business',
     layout: '/admin',
-    path: '/dashboard/business',
+    path: '/dashboard/business/customer-onboarding',
     icon: (
       <Icon
         as={BusinessIcon}
