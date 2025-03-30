@@ -13,7 +13,7 @@ export const useLogin = () => {
 
     return useMutation({
         mutationFn: (data: ILoginPayload): Promise<IAuthRes> =>
-            HttpClient.post(BASE_AXIOS, { url: "auth/login", data }),
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/auth/login", data }),
         onSuccess: (res: IAuthRes) => {
             // dispatch(setUserState(res));
             Cookies.set(StorageToken, res.token);
@@ -31,35 +31,16 @@ export const useLogin = () => {
     });
 };
 
-export const useFetchLoggedInUser = () => {
-    const dispatch = useDispatch();
-
-    return useMutation({
-        mutationFn: (): Promise<IAuthRes> => HttpClient.get(BASE_AXIOS, { url: "auth/user" }),
-        onSuccess: (res: IAuthRes) => {
-            dispatch(setUserState(res));
-            dispatch(setIsAuthenticated(true))
-        },
-    });
-}
-
-export const useResetPassword = () => {
-    const customToast = useToast();
-
+export const useResetPassword = (onSuccessCallback: () => void, onErrorCallback: () => void) => {
     return useMutation({
         mutationFn: (data: IResetPasswordPayload): Promise<IResp> =>
-            HttpClient.post(BASE_AXIOS, { url: "auth/reset-password", data }),
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/auth/change-password", data }),
         onSuccess: (res: IResp) => {
+            onSuccessCallback();  // Trigger Success Modal
             return res;
         },
         onError: (error: any) => {
-            customToast({
-               status: "error",
-                description: error?.response?.data?.message || "Reset Password failed. Please try again.",
-                title: "Error",
-
-            });
-
+            onErrorCallback();  // Trigger Failed Modal
             throw new Error(error?.response?.data?.message || "Reset Password failed. Please try again.");
         },
     });

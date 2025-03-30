@@ -1,15 +1,17 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Text, useDisclosure } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import Cookies from 'js-cookie';
 import LogoutIcon from 'components/atoms/icons/LogoutIcon';
 import { StorageToken } from 'constants/token';
 import { useRouter } from 'next/navigation';
+import LogoutConfirmationModal from 'components/organisms/logout/LogoutConfirmModal';
 
 const LogoutCard = () => {
     const router = useRouter();
     const toast = useToast();
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const logout = () => {
+    const handleLogout = () => {
         Cookies.remove(StorageToken);  
 
         toast({
@@ -24,7 +26,7 @@ const LogoutCard = () => {
     };
 
     return (
-        <Flex w={{sm: 'full', lg: '70%'}} align="center" bg="" px={5} borderRadius="lg" cursor={'pointer'} onClick={logout}>
+        <Flex w={{sm: 'full', lg: '70%'}} align="center" bg="" px={5} borderRadius="lg" cursor={'pointer'} onClick={onOpen}>
             <Image
                 boxSize="40px"
                 src="/img/auth/logout.png" 
@@ -39,7 +41,10 @@ const LogoutCard = () => {
                     Admin
                 </Text>
             </Box>
-            <LogoutIcon/>
+            <Box>
+                <LogoutIcon/>
+            </Box>
+            {isOpen && <LogoutConfirmationModal isOpen={isOpen} onClose={onClose} onLogout={handleLogout}/>}
         </Flex>
     );
 };

@@ -30,6 +30,8 @@ const FailedModal = ({
       <ModalOverlay />
       <ModalContent 
         height={height || '419.99px'}
+        w={'full'}
+        mx={'7px'}
         {...props}
       >
         <ModalCloseButton />
@@ -48,6 +50,7 @@ const FailedModal = ({
               height="56px" 
               mt={5}
               border={"1px solid #EF4444"} 
+              onClick={onClose}
             />
           </VStack>
         </ModalBody>

@@ -1,5 +1,5 @@
 export interface ILoginPayload {
-    email: string;
+    phone: string;
     password: string;
 }
 
@@ -9,5 +9,5 @@ export interface IAuthRes {
 
 export interface IResetPasswordPayload {
     oldPassword: string;
-    newPassword: string;
+    password: string;
 }

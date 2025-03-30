@@ -23,7 +23,7 @@ export default function AuthLayout({ children }: AuthProps) {
         const token = Cookies.get(StorageToken);
 
         if (token) {
-            router.replace("/auth/dashboard");
+            router.replace("/admin/dashboard");
             return;
         }
 

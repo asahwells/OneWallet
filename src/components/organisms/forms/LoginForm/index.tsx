@@ -7,9 +7,10 @@ import ForgotPasswordModal from '../../../molecules/modals/ForgotPasswordModal';
 import BaseInput from "../../../molecules/inputs/BaseInput";
 import PasswordInput from "../../../molecules/inputs/PasswordInput";
 import BaseFormControl from "../../../molecules/forms/BaseFormControl";
-import {useFetchLoggedInUser, useLogin} from "../../../../api-services/auth-services";
+import {useLogin} from "../../../../api-services/auth-services";
 import {useRouter} from "next/navigation";
 import GenericPopUpModal from 'components/molecules/modals/GenericPopUpModal';
+import { useFetchLoggedInUser } from 'api-services/dashboard-services';
 
 const LoginForm = () => {
 
@@ -18,7 +19,7 @@ const LoginForm = () => {
     const router = useRouter()
     const customToast = useToast();
 
-    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('')
 
     const {isOpen: isLocationModalOpen, onClose: onLocationModalClose, onOpen: onLocationModalOpen} = useDisclosure()
@@ -31,7 +32,7 @@ const LoginForm = () => {
     const {isOpen, onClose, onToggle} =  useDisclosure();
 
     const handleLogin = async () => {
-        if(!email || !password) {
+        if(!phone || !password) {
             customToast({
                 status: "warning",
                 description: "Please enter email and password",
@@ -41,7 +42,7 @@ const LoginForm = () => {
         };
 
         const data = {
-            email,
+            phone,
             password
         }
 
@@ -147,11 +148,11 @@ const LoginForm = () => {
                     mb={'-10.5px'}
                     bg="transparent"
                 >
-                    <BaseFormControl label={'Enter Email'} >
+                    <BaseFormControl label={'Phone Number'} >
                         <BaseInput
                             placeholder=""
-                            value={email}
-                            onChange={(e: any) => setEmail(e.target.value)}
+                            value={phone}
+                            onChange={(e: any) => setPhone(e.target.value)}
                         />
                     </BaseFormControl>
                     <BaseFormControl label="Enter Password">
@@ -176,17 +177,17 @@ const LoginForm = () => {
                 <Button
                     text="Login"
                     onClick={handleLogin}
-                    disabled={!email || !password}
+                    disabled={!phone || !password}
                     isLoading={isLoggingIn || isFetchingUser}
-                    color={!password || !email ? '#6F8F95' : "white"}
+                    color={!password || !phone ? '#6F8F95' : "white"}
                     width={{base: '100%', lg: "100%"}}
                     height="56px"
                     border={'1px'}
-                    borderColor={!email || !password ? '#6F8F95' : '#0F454F'}
+                    borderColor={!phone || !password ? '#6F8F95' : '#0F454F'}
                     borderRadius="8px"
                     padding="12px 24px"
                     gap="8px"
-                    bg={!email || !password ? "#CFDADC" : "#0F454F"}
+                    bg={!phone || !password ? "#CFDADC" : "#0F454F"}
                 />
                 {/* Forgot Password Modal */}
                 {isOpen &&   <ForgotPasswordModal

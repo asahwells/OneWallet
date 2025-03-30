@@ -1,5 +1,5 @@
 import {InputProps} from "@chakra-ui/input";
-import { SelectProps, TextareaProps } from "@chakra-ui/react";
+import { ModalProps, SelectProps, TextareaProps } from "@chakra-ui/react";
 
 export interface IInputProps extends InputProps{
     icon?: React.ReactNode,
@@ -26,4 +26,17 @@ export interface IDateInputProps {
 export interface ITextareaProps extends TextareaProps{
   icon?: React.ReactNode
   errorMessage?: string;
+}
+
+export interface ConfirmationModalProps extends Omit<ModalProps, "children"> {
+  isOpen: boolean
+  onClose: () => void
+  title: string
+  primaryButtonText: string
+  secondaryButtonText: string
+  onPrimaryAction: () => void
+  onSecondaryAction: () => void
+  icon?: React.ReactNode
+  primaryButtonIcon?: React.ReactNode
+  secondaryButtonIcon?: React.ReactNode
 }
