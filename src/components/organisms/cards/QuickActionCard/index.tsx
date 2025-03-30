@@ -1,10 +1,17 @@
+"use client"
+
 import {Box, HStack, Show, Stack, Text, VStack} from "@chakra-ui/react";
 import RegisterCustomerIcon from "../../../atoms/icons/RegisterCustomerIcon";
 import BaseButton from "../../../molecules/buttons/BaseButton";
 import DeviceInventoryIcon from "../../../atoms/icons/DeviceInventoryIcon";
+import {useRouter} from "next/navigation";
 
 const QuickActionCard = () => {
 
+    const router = useRouter()
+    const navigateToRegisterCustomer = () => {
+        router.push('/admin/dashboard/business/customer-onboarding/registration')
+    }
     return (
         <Stack h={'full'} spacing={8} py={'11px'} px={4} border={'0.5px'} borderColor={'#E2E8F0'} borderRadius={'8px'} w={'full'}
                bg={'white'}>
@@ -27,7 +34,7 @@ const QuickActionCard = () => {
                         </Stack>
 
                         <Box w={'full'}>
-                            <BaseButton w={'full'} borderRadius={'4px'} color={'white'} bg={'#0F454F'} text={'Register a Customer'}/>
+                            <BaseButton onClick={navigateToRegisterCustomer} w={'full'} borderRadius={'4px'} color={'white'} bg={'#0F454F'} text={'Register a Customer'}/>
                         </Box>
 
                     </VStack>

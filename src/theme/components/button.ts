@@ -13,6 +13,16 @@ export const buttonStyles = {
         _active: {
           boxShadow: "none",
         },
+        _disabled: {
+          border: "1.2px solid #6F8F95",
+          backgroundColor:"#CFDADC",
+          color:'#6F8F95',
+          _hover:{
+            border: "1.2px solid #6F8F95",
+            backgroundColor:"#CFDADC",
+            color:'#6F8F95'
+          }
+        }
       },
       variants: {
         outline: () => ({
