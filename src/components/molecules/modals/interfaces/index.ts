@@ -23,8 +23,16 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     acceptText: string;
     onYesClick: () => void;
     onNoClick: () => void;
-
     textStyles?: TextProps
     titleText: ReactNode
+  }
 
+  export interface OtpVerificationModalProps extends ModalContentProps {
+    isOpen: boolean;
+    count: number;
+    textTitle: React.ReactNode,
+    textLable?: React.ReactNode,
+    buttonText?: string;
+    onClose?: () => void;
+    handleClick: () => void;
   }
