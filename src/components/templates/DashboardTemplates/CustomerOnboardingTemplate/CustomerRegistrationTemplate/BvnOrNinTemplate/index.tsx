@@ -12,22 +12,36 @@ import {
     HStack,
     Checkbox,
     Button,
-    Link
+    Link, useDisclosure
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from "../../../../../molecules/buttons/BaseButton";
+import ErrorModal from "../../../../../molecules/modals/ErrorModal";
+import FailedModal from "../../../../../molecules/modals/FailedModal";
+import ChooseVerificationModal from "../../../../../molecules/modals/ChooseVerificationModal";
 
 interface BvnOrNinTemplateProps {
     onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
     onBack: () => void;
+    onCameraSelect: () => void;
+    onAttachmentSelect: () => void;
 }
 
-const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack }) => {
+const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, onCameraSelect, onAttachmentSelect }) => {
+
+     const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
+
+     const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
     const [selectedOption, setSelectedOption] = useState<'BVN' | 'NIN'>('BVN');
+    const [errorMessage, setErrorMessage] = useState('')
+
     const [inputValue, setInputValue] = useState('');
     const [hasAgreed, setHasAgreed] = useState(false);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+
+    const invalidBVN = '1111111111'
 
     // If "BVN" is selected => max length = 10, else 11 for "NIN"
     const isBvn = selectedOption === 'BVN';
@@ -40,9 +54,15 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack })
     const isButtonDisabled = inputValue.length !== maxLength || !hasAgreed;
 
     const handleVerify = () => {
-        if (!isButtonDisabled) {
-            onVerify(selectedOption, inputValue);
+
+        if(isButtonDisabled) return
+        if(inputValue == invalidBVN){
+            setErrorMessage('BVN is already linked to an existing account. Please enter User\'s correct BVN or proceed to Login.')
+            onErrorOpen()
+            return
         }
+
+       onVerificationMethodOpen()
     };
 
     return (
@@ -258,7 +278,25 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack })
                     </Text>
                 </HStack>
             </Flex>
-        </Flex>
+
+
+        <FailedModal
+            isOpen={isErrorOpen}
+            onClose={() => onErrorClose()}
+            title={'Error Message:'}
+            title2={errorMessage}
+            width={{xs: "95%", lg: "843px"}}
+            height="auto"
+            borderRadius="8px"
+            padding="24px"
+            borderTopRadius={'26.81px'}
+            borderBottomRadius={'26.81px'}
+    />
+
+            <ChooseVerificationModal isOpen={isVerificationMethodOpen} onClose={onVerificationMethodClose} onChooseCamera={onCameraSelect} onChooseUpload={onAttachmentSelect} />
+
+
+</Flex>
     );
 };
 
