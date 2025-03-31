@@ -32,4 +32,6 @@ const CustomDateInput = forwardRef<HTMLInputElement, CustomDateInputProps>(
     }
 );
 
+CustomDateInput.displayName = "CustomDateInput";
+
 export default CustomDateInput;

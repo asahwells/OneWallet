@@ -16,6 +16,7 @@ import Modaltext from 'components/atoms/texts/ModalText';
 import FailedIcon from 'components/atoms/icons/FailedIcon';
 import OutlineButton from 'components/molecules/buttons/OutlineButton';
 import SuccessIcon from 'components/atoms/icons/SuccessIcon';
+import { useRouter } from 'next/navigation';
 
 const SuccessModal = ({
   isOpen,
@@ -25,12 +26,14 @@ const SuccessModal = ({
   title2,
   ...props
 }: IUpdateUserModalProps) => {
-
+  const router = useRouter();
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg" trapFocus={true} autoFocus={false}>
       <ModalOverlay />
       <ModalContent 
         height={height || '419.99px'}
+        w={'full'}
+        mx={'7px'}
         {...props}
       >
         <ModalCloseButton />
@@ -46,13 +49,16 @@ const SuccessModal = ({
                 text="Continue"
                 marginTop="28px"
                 color="#FCFCFC"
-                width="458px"
+                width="full"
                 height="56px"
                 borderRadius="8px"
                 padding="12px, 24px, 12px, 24px"
                 gap="8px"
                 border={"1px solid #0F454F"}
                 bg={"#0F454F"}
+                onClick={() => {
+                  router.replace('/admin/dashboard');
+                }}
             />
           </VStack>
         </ModalBody>
