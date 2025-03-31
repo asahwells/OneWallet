@@ -49,3 +49,13 @@ export interface ChooseVerificationModalProps {
   onChooseCamera: () => void;    // Callback when user chooses camera
   onChooseUpload: () => void;    // Callback when user chooses upload
 }
+
+
+export type VerificationStatus = 'PENDING' | 'FAIL' | 'SUCCESS';
+
+export interface VerificationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  status: VerificationStatus;
+  onPrimaryAction?: () => void;
+}

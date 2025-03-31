@@ -17,6 +17,7 @@ import { FiUpload } from 'react-icons/fi';
 import InfoIcon from "../../../../../atoms/icons/InfoIcon";
 import ExclamationIcon from "../../../../../atoms/icons/ExclamationIcon";
 import {ArrowBackIcon} from "@chakra-ui/icons";
+import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 
 interface PhotoUploadStepProps {
     onContinue: (file: File | null) => void;
@@ -45,40 +46,8 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
 
     return (
         <>
-            {/* Mobile Top Bar */}
-            {isMobile ? (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Register a User
-                    </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
-                </Flex>
-            ) : (
-                // Desktop: Back button outside the card
-                <Box as="header" p={4}>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        onClick={onBack}
-                    />
-                </Box>
-            )}
+
+            <HeaderBackButton onBack={onBack} />
 
         <Flex
             direction="column"
