@@ -20,7 +20,7 @@ export const useFetchDashboardGraph = () => {
   
   return useMutation({
       mutationFn: (): Promise<IDashboardGraphRes> => {
-         return HttpClient.get(BASE_AXIOS, { url: "sales-agent/graph/dashboard" })
+         return HttpClient.get(BASE_AXIOS, { url: "sales-agent/dashboard/graph" })
       },
       onSuccess: (res: IDashboardGraphRes) => {
         return res;
@@ -36,7 +36,7 @@ export const useFetchLoggedInUser = () => {
           return HttpClient.get(BASE_AXIOS, { url: "sales-agent/auth/user" })
       },
       onSuccess: (res: IUserInfomationRes) => {
-        dispatch(setUserState(res));
+        dispatch(setUserState(res.data));
         dispatch(setIsAuthenticated(true))
       },
   });

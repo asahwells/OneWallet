@@ -1,10 +1,6 @@
 import {InputProps} from "@chakra-ui/input";
-<<<<<<< HEAD
-import { ModalProps, SelectProps, TextareaProps } from "@chakra-ui/react";
-=======
 import { SelectProps, TextareaProps, PinInput as ChakraPinInput, PinInputField, FormControlProps } from "@chakra-ui/react";
 import {ChangeEventHandler} from "react";
->>>>>>> main
 
 export interface IInputProps extends InputProps{
     icon?: React.ReactNode,
@@ -33,20 +29,6 @@ export interface ITextareaProps extends TextareaProps{
   errorMessage?: string;
 }
 
-<<<<<<< HEAD
-export interface ConfirmationModalProps extends Omit<ModalProps, "children"> {
-  isOpen: boolean
-  onClose: () => void
-  title: string
-  primaryButtonText: string
-  secondaryButtonText: string
-  onPrimaryAction: () => void
-  onSecondaryAction: () => void
-  icon?: React.ReactNode
-  primaryButtonIcon?: React.ReactNode
-  secondaryButtonIcon?: React.ReactNode
-}
-=======
 
 export interface IPinInputProps extends Omit<React.ComponentProps<typeof ChakraPinInput>, 'children'> {
   count?: number;
@@ -68,4 +50,3 @@ export interface CustomDateInputProps {
   onClick?: () => void;
 }
 
->>>>>>> main

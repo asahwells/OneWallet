@@ -28,31 +28,29 @@ import {barChartDataDailyTraffic, barChartOptionsDailyTraffic, pieChartData} fro
 import BarChart from "../../../molecules/charts/BarChart";
 import ExpectedPaymentChart from "../../../molecules/charts/ExpectedPaymentChart";
 import { useFetchDashboard, useFetchDashboardGraph, useFetchLoggedInUser } from 'api-services/dashboard-services';
+import { useAppSelector } from '../../../../redux/store'; 
 // Assets
 
 const UserDashboardTemplate = () =>  {
-    const { mutateAsync: fetchUser, data: user, isPending: isFetchingUser } = useFetchLoggedInUser();
+    const { userDetails } = useAppSelector(state => state.user)
+    //const { mutateAsync: fetchUser, data: user, isPending: isFetchingUser } = useFetchLoggedInUser();
     const { mutateAsync: fetchDashboardInfo, data: dashboard, isPending: isFetchingDashboard } = useFetchDashboard();
     const { mutateAsync: fetchDashboardGraph, data: dashboardGraph, isPending: isFetchingDashboardGraph } = useFetchDashboardGraph();
 
     useEffect(() => {
-        fetchUser();
+        //fetchUser();
         fetchDashboardInfo();
-        //fetchDashboardGraph();
+        fetchDashboardGraph();
     }, []);
+
         return (
         <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} gap={5} pr={5} >
 
-            {isFetchingUser ?
-
-                <Spinner size={'sm'}/> 
-                :
-                <Stack>
-                    <Text variant={'base'}>
-                    {user ? `Welcome, ${user.data.firstName}` : 'No name available'}
-                    </Text>
-                </Stack>
-            }
+            <Stack>
+                <Text variant={'base'}>
+                {userDetails?.firstName ? `Welcome, ${userDetails.firstName}` : 'No name available'}
+                </Text>
+            </Stack>
 
             <Show below={'md'}>
                 <CommissionCard commission={dashboard?.data?.totalCommissions} isLoading={isFetchingDashboard}/>

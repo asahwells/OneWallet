@@ -5,8 +5,10 @@ import LogoutIcon from 'components/atoms/icons/LogoutIcon';
 import { StorageToken } from 'constants/token';
 import { useRouter } from 'next/navigation';
 import LogoutConfirmationModal from 'components/organisms/logout/LogoutConfirmModal';
+import { useAppSelector } from '../../../../redux/store'; 
 
 const LogoutCard = () => {
+    const { userDetails } = useAppSelector(state => state.user)
     const router = useRouter();
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -35,7 +37,7 @@ const LogoutCard = () => {
             />
             <Box flex="1">
                 <Text variant={'logout'}>
-                    Emmanuel
+                   {userDetails?.firstName ?? "N/A"} 
                 </Text>
                 <Text variant={'logoutBase'}>
                     Admin
