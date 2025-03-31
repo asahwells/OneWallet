@@ -36,3 +36,16 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     onClose?: () => void;
     handleClick: () => void;
   }
+
+export interface ErrorModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  errorMessage?: string;
+}
+
+export interface ChooseVerificationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onChooseCamera: () => void;    // Callback when user chooses camera
+  onChooseUpload: () => void;    // Callback when user chooses upload
+}
