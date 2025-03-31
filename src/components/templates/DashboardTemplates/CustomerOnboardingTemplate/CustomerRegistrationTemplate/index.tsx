@@ -7,6 +7,7 @@ import EnterPinTemplate from "./EnterPinTemplate";
 import SelectBirthTemplate from "./SelectBirthTemplate";
 import BvnOrNinTemplate from "./BvnOrNinTemplate";
 import UploadCustomerImageTemplate from "./UploadCustomerImageTemplate";
+import CaptureCustomerImageTemplate from "./CaptureCustomerImageTemplate";
 // import RegisterUserStepTwo from './RegisterUserStepTwo';
  enum RegisterSteps {
     EnterPhone = 'ENTER_PHONE',
@@ -14,7 +15,8 @@ import UploadCustomerImageTemplate from "./UploadCustomerImageTemplate";
     SelectBirth = 'SELECT_BIRTH',
     BvnOrNin = 'BVN_OR_NIN',
     PhotoUpload = 'PHOTO_UPLOAD',
-    Complete = 'COMPLETE'
+    Complete = 'COMPLETE',
+     CaptureCustomerImage = 'CAPTURE_CUSTOMER_IMAGE'
 }
 
 const RegisterUserForm = () => {
@@ -84,13 +86,25 @@ const RegisterUserForm = () => {
                     onVerify={handleNext}
                     onBack={handleBack}
                     onAttachmentSelect={() => goToStep(RegisterSteps.PhotoUpload)}
-                    onCameraSelect={() => goToStep(RegisterSteps.PhotoUpload)}
+                    onCameraSelect={() => goToStep(RegisterSteps.CaptureCustomerImage)}
                 />
             )}
             {step === RegisterSteps.PhotoUpload && (
-                <UploadCustomerImageTemplate onContinue={handleNext} />
+                <UploadCustomerImageTemplate onContinue={handleNext} onBack={()=> {
+                    goToStep(RegisterSteps.BvnOrNin);
+                }} />
             )}
+            {step === RegisterSteps.CaptureCustomerImage && <CaptureCustomerImageTemplate
+                onBack={() => {
+                    goToStep(RegisterSteps.BvnOrNin);
+                }}
+                onContinue={(capturedPhoto) => {
+                    console.log('Photo captured:', capturedPhoto);
+                    // proceed to next step
+                }}
+            />}
             {step === RegisterSteps.Complete && <Box p={4}>Form Complete!</Box>}
+
         </Box>
     );
 };

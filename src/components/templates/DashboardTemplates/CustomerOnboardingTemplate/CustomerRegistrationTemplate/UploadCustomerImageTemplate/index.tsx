@@ -11,17 +11,19 @@ import {
     Heading,
     Text,
     VStack,
-    useBreakpointValue, HStack,
+    useBreakpointValue, HStack, IconButton,
 } from '@chakra-ui/react';
 import { FiUpload } from 'react-icons/fi';
 import InfoIcon from "../../../../../atoms/icons/InfoIcon";
 import ExclamationIcon from "../../../../../atoms/icons/ExclamationIcon";
+import {ArrowBackIcon} from "@chakra-ui/icons";
 
 interface PhotoUploadStepProps {
     onContinue: (file: File | null) => void;
+    onBack: () => void;
 }
 
-const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
+const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -42,6 +44,42 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
     };
 
     return (
+        <>
+            {/* Mobile Top Bar */}
+            {isMobile ? (
+                <Flex
+                    as="header"
+                    alignItems="center"
+                    justifyContent="center"
+                    h="60px"
+                    borderBottom="1px solid #E2E8F0"
+                    position="relative"
+                    bg="white"
+                >
+                    <Text fontSize="16px" fontWeight="600">
+                        Register a User
+                    </Text>
+                    <IconButton
+                        aria-label="Go back"
+                        icon={<ArrowBackIcon />}
+                        variant="ghost"
+                        position="absolute"
+                        left="16px"
+                        onClick={onBack}
+                    />
+                </Flex>
+            ) : (
+                // Desktop: Back button outside the card
+                <Box as="header" p={4}>
+                    <IconButton
+                        aria-label="Go back"
+                        icon={<ArrowBackIcon />}
+                        variant="ghost"
+                        onClick={onBack}
+                    />
+                </Box>
+            )}
+
         <Flex
             direction="column"
             bg="white"
@@ -146,6 +184,8 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
                 Continue
             </Button>
         </Flex>
+
+        </>
     );
 };
 
