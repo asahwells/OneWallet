@@ -3,7 +3,7 @@
 
 import {
     Box, HStack, Radio, RadioGroup, Show,
-    SimpleGrid, Stack, Text,
+    SimpleGrid, Spinner, Stack, Text,
 } from '@chakra-ui/react';
 
 import AnalyticsCard from "../../../molecules/card/AnalyticsCard";
@@ -27,22 +27,33 @@ import {MockPendingTasks} from "../../../../mock/PendingTasks";
 import {barChartDataDailyTraffic, barChartOptionsDailyTraffic, pieChartData} from "../../../../variables/charts";
 import BarChart from "../../../molecules/charts/BarChart";
 import ExpectedPaymentChart from "../../../molecules/charts/ExpectedPaymentChart";
+import { useFetchDashboard, useFetchDashboardGraph, useFetchLoggedInUser } from 'api-services/dashboard-services';
+import { useAppSelector } from '../../../../redux/store'; 
 // Assets
 
 const UserDashboardTemplate = () =>  {
+    const { userDetails } = useAppSelector(state => state.user)
+    //const { mutateAsync: fetchUser, data: user, isPending: isFetchingUser } = useFetchLoggedInUser();
+    const { mutateAsync: fetchDashboardInfo, data: dashboard, isPending: isFetchingDashboard } = useFetchDashboard();
+    const { mutateAsync: fetchDashboardGraph, data: dashboardGraph, isPending: isFetchingDashboardGraph } = useFetchDashboardGraph();
 
+    useEffect(() => {
+        //fetchUser();
+        fetchDashboardInfo();
+        fetchDashboardGraph();
+    }, []);
 
         return (
         <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} gap={5} pr={5} >
 
-            <Stack  >
+            <Stack>
                 <Text variant={'base'}>
-                    Welcome, Emmanuel
+                {userDetails?.firstName ? `Welcome, ${userDetails.firstName}` : 'No name available'}
                 </Text>
             </Stack>
 
             <Show below={'md'}>
-                <CommissionCard />
+                <CommissionCard commission={dashboard?.data?.totalCommissions} isLoading={isFetchingDashboard}/>
             </Show>
 
             <Stack
@@ -56,14 +67,14 @@ const UserDashboardTemplate = () =>  {
                     <SimpleGrid columns={{ base: 2, md: 2 }} gap={["20px", '8px']}>
                         <AnalyticsCard
                             title="Total Application"
-                            value="743"
-                            isLoading={false}
+                            value={dashboard ? `${dashboard.data?.totalApplications}`: 'N/A'}    
+                            isLoading={isFetchingDashboard}
                             icon={<TotalApplicationIcon />}
                         />
                         <AnalyticsCard
                             title="Total Devices Sold"
-                            value="204"
-                            isLoading={false}
+                            value={dashboard ? `${dashboard.data?.totalDevicesSold}`: 'N/A'}    
+                            isLoading={isFetchingDashboard}
                             icon={<TotalDevicesSoldIcon />}
                         />
                     </SimpleGrid>
@@ -73,7 +84,7 @@ const UserDashboardTemplate = () =>  {
                 {/* Right Hand Side */}
                 <Stack spacing={5} flex={1}>
                    <Show above={'md'}>
-                       <CommissionCard />
+                       <CommissionCard commission={dashboard?.data?.totalCommissions} isLoading={isFetchingDashboard}/>
                    </Show>
                     <PendingTasksCard pendingTasks={MockPendingTasks} />
                 </Stack>

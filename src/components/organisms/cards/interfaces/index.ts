@@ -27,3 +27,8 @@ export interface PendingTask {
     title : string,
     dueDate : string,
 }
+
+export interface CommissionCardProps {
+    commission: number;
+    isLoading: boolean;
+}

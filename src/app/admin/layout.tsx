@@ -32,10 +32,10 @@ import ImageIcon from 'components/atoms/icons/ImageIcon';
 import {useRouter} from "next/navigation";
 import Cookies from "js-cookie";
 import {StorageToken} from "../../constants/token";
-import {useFetchLoggedInUser} from "../../api-services/auth-services";
 import FullScreenLoader from "../../components/organisms/loaders/FullScreenLoader";
 import { IoMenuOutline } from 'react-icons/io5';
 import SidebarContent from 'components/organisms/sidebar/components/Content';
+import { useFetchLoggedInUser } from 'api-services/dashboard-services';
 
 interface DashboardLayoutProps extends PropsWithChildren {
   [x: string]: any;

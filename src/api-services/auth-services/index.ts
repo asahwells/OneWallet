@@ -4,19 +4,20 @@ import Cookies from "js-cookie";
 import { useToast } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import {StorageToken} from "../../constants/token";
-import {ILoginPayload, IAuthRes, IResetPasswordPayload, IVerifyPayload} from "./interface";
+import {ILoginPayload, IAuthRes, IResetPasswordPayload, IVerifyPayload, ILoginInfoRes} from "./interface";
 import {setIsAuthenticated, setUserState} from "../../redux/slices/user";
 import { IResp } from "api-services/interfaces";
 
 export const useLogin = () => {
     const customToast = useToast();
+    const dispatch = useDispatch();
 
     return useMutation({
-        mutationFn: (data: ILoginPayload): Promise<IAuthRes> =>
-            HttpClient.post(BASE_AXIOS, { url: "auth/login", data }),
-        onSuccess: (res: IAuthRes) => {
-            // dispatch(setUserState(res));
+        mutationFn: (data: ILoginPayload): Promise<ILoginInfoRes> =>
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/auth/login", data }),
+        onSuccess: (res: ILoginInfoRes) => {
             Cookies.set(StorageToken, res.token);
+            return res;
         },
         onError: (error: any) => {
             customToast({
@@ -31,68 +32,68 @@ export const useLogin = () => {
     });
 };
 
-export const useFetchLoggedInUser = () => {
-    const dispatch = useDispatch();
-
-    return useMutation({
-        mutationFn: (): Promise<IAuthRes> => HttpClient.get(BASE_AXIOS, { url: "auth/user" }),
-        onSuccess: (res: IAuthRes) => {
-            dispatch(setUserState(res));
-            dispatch(setIsAuthenticated(true))
-        },
-    });
-}
-
-export const useResetPassword = () => {
-    const customToast = useToast();
-
+export const useResetPassword = (onSuccessCallback: () => void, onErrorCallback: () => void) => {
     return useMutation({
         mutationFn: (data: IResetPasswordPayload): Promise<IResp> =>
-            HttpClient.post(BASE_AXIOS, { url: "auth/reset-password", data }),
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/auth/change-password", data }),
         onSuccess: (res: IResp) => {
+            onSuccessCallback();  // Trigger Success Modal
             return res;
         },
         onError: (error: any) => {
-            customToast({
-               status: "error",
-                description: error?.response?.data?.message || "Reset Password failed. Please try again.",
-                title: "Error",
-
-            });
-
+            onErrorCallback();  // Trigger Failed Modal
             throw new Error(error?.response?.data?.message || "Reset Password failed. Please try again.");
         },
     });
 };
 
-const useVerificationMutation = (endpoint: string) => {
+export const usePhoneNumberVerification = () => {
     const customToast = useToast();
+    const dispatch = useDispatch();
 
     return useMutation({
         mutationFn: (data: IVerifyPayload): Promise<IAuthRes> =>
-            HttpClient.post(BASE_AXIOS, { url: endpoint, data }),
-
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/auth/verify-phone", data }),
         onSuccess: (res: IAuthRes) => {
             Cookies.set(StorageToken, res.token);
+            return res;
         },
-
         onError: (error: any) => {
             customToast({
-                status: "error",
+               status: "error",
+                description: error?.response?.data?.message || "You entered a wrong OTP.",
                 title: "Error",
-                description:
-                    error?.response?.data?.message ||
-                    "You entered a wrong OTP. The Account will be locked for 3 hours after 4 more attempts.",
+
             });
 
-            throw new Error(
-                error?.response?.data?.message ||
-                "You entered a wrong OTP. The Account will be locked for 3 hours after 4 more attempts."
-            );
+            throw new Error(error?.response?.data?.message || "You entered a wrong OTP.");
         },
     });
 };
 
-// TODO : DYnamically pass the correct endpoint
-export const usePhoneNumberVerification = () => useVerificationMutation("auth/login");
-export const useOtpVerification = () => useVerificationMutation("auth/login");
+export const useResendOTP = () => {
+    const customToast = useToast();
+
+    return useMutation({
+        mutationFn: (data: IVerifyPayload): Promise<IAuthRes> =>
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/auth/resend-phone-otp", data }),
+        onSuccess: (res: IAuthRes) => {
+            customToast({
+                status: "success",
+                description: "OTP resent successfully.",
+                title: "Success",
+            });
+            return res;
+        },
+        onError: (error: any) => {
+            customToast({
+               status: "error",
+                description: error?.response?.data?.message || "Something went wrong. Please try again.",
+                title: "Error",
+
+            });
+
+            throw new Error(error?.response?.data?.message || "Something went wrong. Please try again.");
+        },
+    });
+};
