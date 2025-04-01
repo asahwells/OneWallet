@@ -18,6 +18,7 @@ import {
     PinInputField,
 } from '@chakra-ui/react';
 import BaseButton from '../../../../../molecules/buttons/BaseButton';
+import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 
 interface EnterPinTemplateProps {
     onVerify: (code: string) => void; // Called when the user successfully enters the OTP
@@ -66,30 +67,7 @@ const EnterPinTemplate = ({
 
     return (
         <Flex direction="column" minH="100vh" bg="#F8FAFC">
-            {/* Mobile Top Bar */}
-            {isMobile && (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Create Your Account
-                    </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
-                </Flex>
-            )}
+            <HeaderBackButton onBack={onBack} />
 
             {/* Desktop "Back" outside the card */}
             {!isMobile && (
