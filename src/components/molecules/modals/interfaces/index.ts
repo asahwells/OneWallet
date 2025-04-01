@@ -49,3 +49,21 @@ export interface ChooseVerificationModalProps {
   onChooseCamera: () => void;    // Callback when user chooses camera
   onChooseUpload: () => void;    // Callback when user chooses upload
 }
+
+export interface ConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  subTitle?: string; 
+  color?: string;
+  border?: string
+  primaryButtonText?: string;
+  secondaryButtonText?: string;
+  onPrimaryAction?: () => void;
+  onSecondaryAction?: () => void;
+  icon?: ReactNode; 
+  primaryButtonIcon?: ReactNode; 
+  secondaryButtonIcon?: ReactNode; 
+  rest?: ModalContentProps; 
+  textStyles?: TextProps; 
+}

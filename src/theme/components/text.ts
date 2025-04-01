@@ -44,10 +44,22 @@ export const textStyles = extendTheme({
             color: '#344256'
         }),
 
+        md2: (props: StyleFunctionProps) => ({
+            fontSize: '14px',
+            fontWeight: '600',
+            color: '#344256'
+        }),
+
         base: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '400',
             color: '#344256'
+        }),
+
+        sm2: (props: StyleFunctionProps) => ({
+            fontSize: '14px',
+            fontWeight: '400',
+            color: '#222B38'
         }),
 
         logout: (props: StyleFunctionProps) => ({
@@ -77,6 +89,12 @@ export const textStyles = extendTheme({
         norm: (props: StyleFunctionProps) => ({
             fontSize: '18px',
             fontWeight: '600',
+            color: '#222B38'
+        }),
+
+        head: (props: StyleFunctionProps) => ({
+            fontSize: '18px',
+            fontWeight: '700',
             color: '#222B38'
         }),
 
