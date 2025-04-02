@@ -3,11 +3,11 @@ import { Button } from '@chakra-ui/react'
 import {IButtonProps} from "../interfaces";
 
 const BaseButton = ({
-  text, onClick, ...props
+  text, bg, onClick, ...props
 }: IButtonProps ) => {
   return (
     <Button
-
+      bg={bg ?? ''}
       onClick={onClick}
       _hover={{ bg: '#0C363E', color: 'white' }}
       fontWeight={400}
