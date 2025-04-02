@@ -50,6 +50,16 @@ export interface ChooseVerificationModalProps {
   onChooseUpload: () => void;    // Callback when user chooses upload
 }
 
+
+export type VerificationStatus = 'PENDING' | 'FAIL' | 'SUCCESS';
+
+export interface VerificationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  status: VerificationStatus;
+  onPrimaryAction?: () => void;
+}
+
 export interface ConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;

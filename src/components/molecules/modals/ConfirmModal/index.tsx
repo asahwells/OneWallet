@@ -13,11 +13,12 @@ import {
   CloseButton,
   type ModalProps,
 } from "@chakra-ui/react"
+// import { ConfirmationModalProps } from "components/molecules/inputs/interfaces"
 import QuestionIcon from "components/atoms/icons/QuestionIcon"
 import { ConfirmationModalProps } from "../interfaces"
 import BaseButton from "components/molecules/buttons/BaseButton"
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+const ConfirmationModal: React.FC<any> = ({
   isOpen,
   onClose,
   title,

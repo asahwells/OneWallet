@@ -11,15 +11,20 @@ import {
     Heading,
     Text,
     VStack,
-    useBreakpointValue,
+    useBreakpointValue, HStack, IconButton,
 } from '@chakra-ui/react';
 import { FiUpload } from 'react-icons/fi';
+import InfoIcon from "../../../../../atoms/icons/InfoIcon";
+import ExclamationIcon from "../../../../../atoms/icons/ExclamationIcon";
+import {ArrowBackIcon} from "@chakra-ui/icons";
+import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 
 interface PhotoUploadStepProps {
     onContinue: (file: File | null) => void;
+    onBack: () => void;
 }
 
-const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
+const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -31,7 +36,8 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        accept: ['image/jpeg'],
+        // @ts-ignore
+        accept: { 'image/jpeg': ['.jpeg', '.jpg'] },
         maxSize: 2 * 1024 * 1024, // 2MB
     });
 
@@ -40,6 +46,10 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
     };
 
     return (
+        <>
+
+            <HeaderBackButton onBack={onBack} />
+
         <Flex
             direction="column"
             bg="white"
@@ -52,35 +62,44 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
         >
             {/* Title / Subtitle */}
             <Heading
-                as="h1"
-                fontSize={isMobile ? '20px' : '24px'}
-                fontWeight="700"
-                color="#344256"
+                variant={'headerBold'}
+                fontSize={'18px'}
                 textAlign={isMobile ? 'left' : 'center'}
                 mb={2}
             >
                 Photo Upload
             </Heading>
             <Text
-                fontSize="14px"
-                color="#475569"
+                variant={'sm'}
                 textAlign={isMobile ? 'left' : 'center'}
                 mb={6}
             >
                 Verify user’s identity by attaching their photo
             </Text>
 
+
+            <Text
+                textAlign={isMobile ? 'left' : 'center'}
+                mb={6}
+                mt={10}
+                variant={'base'}
+            >
+                Upload Document
+            </Text>
             {/* Drag-and-Drop Upload Zone */}
             <Box
                 {...getRootProps()}
-                border="2px dashed #CBD5E1"
+                border="2px dashed #64748B"
                 borderRadius="8px"
                 p={6}
                 textAlign="center"
                 cursor="pointer"
+                bg={'#F8FAFC'}
                 mb={4}
             >
-                <input {...getInputProps()} />
+
+
+            <input {...getInputProps()} />
                 <Flex direction="column" align="center">
                     <Box color="#94A3B8" mb={2}>
                         <FiUpload size="24px" />
@@ -95,16 +114,30 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
             </Box>
 
             {/* Red Tip Messages */}
-            <VStack align="flex-start" spacing={1} mt={4} mb={6}>
-                <Text fontSize="14px" color="#EF4444">
-                    • Make sure the person’s face is captured properly
+            <VStack align={{
+                base: 'flex-start',
+                md: 'start',
+            }} alignSelf={'center'} spacing={4} mt={4} mb={6}>
+                <HStack spacing={1}>
+                    <ExclamationIcon/>
+                    <Text variant={'chartLabel'} color={'#EF4444'}>
+                        Make sure the person’s face is captured properly
+                    </Text>
+                </HStack>
+
+                <HStack spacing={1}>
+                    <ExclamationIcon/>
+                    <Text variant={'chartLabel'} color={'#EF4444'}>
+                        Remove glasses for a clear photo
                 </Text>
-                <Text fontSize="14px" color="#EF4444">
-                    • Remove glasses for a clear photo
+                </HStack>
+
+                <HStack spacing={1}>
+                    <ExclamationIcon/>
+                    <Text variant={'chartLabel'} color={'#EF4444'}>
+                        Ensure the picture is clear and in focus
                 </Text>
-                <Text fontSize="14px" color="#EF4444">
-                    • Ensure the picture is clear and in focus
-                </Text>
+                </HStack>
             </VStack>
 
             {/* Continue Button */}
@@ -121,6 +154,8 @@ const UploadCustomerImageTemplate = ({ onContinue }: PhotoUploadStepProps) => {
                 Continue
             </Button>
         </Flex>
+
+        </>
     );
 };
 

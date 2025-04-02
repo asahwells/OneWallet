@@ -52,7 +52,6 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   const router = useRouter();
 
   // states and functions
-  const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
   // functions for changing the states from components
 

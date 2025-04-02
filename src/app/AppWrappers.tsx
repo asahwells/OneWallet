@@ -24,6 +24,7 @@ export default function AppWrappers({children}: { children: ReactNode }) {
         <StoreProvider>
 
             <QueryClientProvider client={queryClient}>
+                {/*@ts-ignore*/}
             <CacheProvider>
                 <ChakraProvider theme={theme}>{children}</ChakraProvider>{' '}
             </CacheProvider>

@@ -49,9 +49,9 @@ const ConditionalLabelSelect: React.FC<IConditionalLabelSelectProps & SelectProp
                 value={value}
                 onChange={onChange}
                 size="sm"
-                border="1px solid #E2E8F0"
+                border="2px solid #E2E8F0"
                 borderRadius="8px"
-                h="40px"
+                h="56px"
                 bg="#FFFFFF"
                 focusBorderColor="#E2E8F0"
                 color="#344256"

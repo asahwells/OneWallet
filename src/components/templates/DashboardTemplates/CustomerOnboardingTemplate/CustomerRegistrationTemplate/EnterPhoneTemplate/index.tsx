@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from '../../../../../molecules/buttons/BaseButton';
+import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 
 interface EnterPhoneTemplateProps {
     onNext: () => void;
@@ -41,43 +42,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
 
     return (
         <Flex direction="column"  bg="#F8FAFC"  w={'full'}>
-            {/* Mobile Top Bar */}
-            {isMobile && (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                    w={'full'}
-
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Register a User
-                    </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
-                </Flex>
-            )}
-
-            {/* Desktop "Back" outside the card */}
-            {!isMobile && (
-                <HStack as="header" p={4} color={'#344256'} cursor={'pointer'} onClick={onBack}>
-                   <ArrowBackIcon w={5} h={5}  />
-
-                    <Text  fontSize={'16px'} fontWeight={'500'}>
-                        Back
-                    </Text>
-                </HStack>
-            )}
+           <HeaderBackButton onBack={onBack} />
 
             {/* Main Content (Card near the top, not centered vertically) */}
             <Box px={4} pt={4} pb={8}>

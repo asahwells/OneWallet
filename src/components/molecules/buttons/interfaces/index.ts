@@ -28,3 +28,6 @@ export interface IRadioProps extends RadioProps{
 export interface ICheckProps extends CheckboxProps{
     text?: string;
 }
+export interface HeaderBackButtonProps {
+    onBack: () => void;
+}

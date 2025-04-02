@@ -15,6 +15,7 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomDateInput from "../../../../../molecules/inputs/CustomDateInput";
+import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 
 interface SelectBirthtemplateProps {
     onNext: () => void;
@@ -27,40 +28,7 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
 
     return (
         <Flex direction="column" minH="100vh" bg="#F8FAFC">
-            {/* Mobile Top Bar */}
-            {isMobile ? (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Enter Date of Birth
-                    </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
-                </Flex>
-            ) : (
-                // Desktop: Back button outside the card
-                <Box as="header" p={4}>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        onClick={onBack}
-                    />
-                </Box>
-            )}
+            <HeaderBackButton onBack={onBack} />
 
             {/* Main Content */}
             <Box px={4} pt={4} pb={8}>

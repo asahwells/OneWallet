@@ -19,6 +19,7 @@ import BaseButton from "../../../../../molecules/buttons/BaseButton";
 import ErrorModal from "../../../../../molecules/modals/ErrorModal";
 import FailedModal from "../../../../../molecules/modals/FailedModal";
 import ChooseVerificationModal from "../../../../../molecules/modals/ChooseVerificationModal";
+import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 
 interface BvnOrNinTemplateProps {
     onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
@@ -67,40 +68,7 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
 
     return (
         <Flex direction="column" minH="100vh" bg="#F8FAFC">
-            {/* Mobile Top Bar */}
-            {isMobile ? (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Register a User
-                    </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
-                </Flex>
-            ) : (
-                // Desktop: Back button outside the card
-                <Box as="header" p={4}>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        onClick={onBack}
-                    />
-                </Box>
-            )}
+            <HeaderBackButton onBack={onBack} />
 
             {/* Main Content */}
             <Box px={4} pt={4} pb={8}>
