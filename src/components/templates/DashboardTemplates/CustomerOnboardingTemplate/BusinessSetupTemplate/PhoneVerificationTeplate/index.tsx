@@ -14,11 +14,9 @@ import {
     PinInputField,
     useDisclosure
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import FailedModal from 'components/molecules/modals/FailedModal';
 import { PhoneVerificationTemplateProps } from '../interfaces';
-import GoBack from 'components/molecules/buttons/BackBotton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 const PhoneVerificationTemplate = ({ onNext, onBack, phoneNumber }: PhoneVerificationTemplateProps) => {

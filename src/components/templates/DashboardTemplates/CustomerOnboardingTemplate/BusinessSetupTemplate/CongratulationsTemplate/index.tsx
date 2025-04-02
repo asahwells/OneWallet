@@ -16,7 +16,6 @@ import {
     Icon,
     IconButton
 } from '@chakra-ui/react';
-import { ArrowBackIcon, CheckIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import CopyIcon from 'components/atoms/icons/CopyIcon';
 import TierIcon from 'components/atoms/icons/TierIcon';

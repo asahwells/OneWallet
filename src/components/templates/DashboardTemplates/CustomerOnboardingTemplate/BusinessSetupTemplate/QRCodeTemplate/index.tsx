@@ -21,7 +21,6 @@ import BaseButton from 'components/molecules/buttons/BaseButton';
 import CardTypeIcons from 'components/atoms/icons/CardTypeIcons';
 import LogoIcon from 'components/atoms/icons/LogoIcon';
 import { QrCodeTemplateProps } from '../interfaces';
-import GoBack from 'components/molecules/buttons/BackBotton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 const QrCodeTemplate = ({ 
@@ -52,7 +51,7 @@ const QrCodeTemplate = ({
                 {/* QR Code Card */}
                 <Box 
                     bg="#0F454F" 
-                    borderRadius="8px" 
+                    //borderRadius="8px" 
                     p={6} 
                     maxW="500px" 
                     w="full" 

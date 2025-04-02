@@ -25,7 +25,6 @@ import BaseButton from 'components/molecules/buttons/BaseButton';
 import PoliticalPersonIcon from 'components/atoms/icons/PoliticalPersonIcon';
 import ConfirmationModal from 'components/molecules/modals/ConfirmModal';
 import { PepVerificationTemplateProps } from '../interfaces';
-import GoBack from 'components/molecules/buttons/BackBotton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 const PepVerificationTemplate = ({ onNext, onBack }: PepVerificationTemplateProps) => {

@@ -15,13 +15,10 @@ import {
     Image,
     Button
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
-import EditIcon from 'components/atoms/icons/EditIcon';
 import EditButton from 'components/molecules/buttons/EditButton';
 import StarIcon from 'components/atoms/icons/StarIcon';
 import { AttestationTemplateProps } from '../interfaces';
-import GoBack from 'components/molecules/buttons/BackBotton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 

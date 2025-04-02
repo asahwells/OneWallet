@@ -27,7 +27,6 @@ import VerifyUserIcon from 'components/atoms/icons/VerifyUserIcon';
 import OutlineButton from 'components/molecules/buttons/OutlineButton';
 import { useRouter } from 'next/navigation';
 import { VerificationUsersTemplateProps } from '../interfaces';
-import GoBack from 'components/molecules/buttons/BackBotton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplateProps) => {
