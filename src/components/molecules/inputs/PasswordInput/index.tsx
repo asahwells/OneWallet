@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EyeIcon from 'components/atoms/icons/EyeIcon';
 import BaseInput from 'components/molecules/inputs/BaseInput';
 import { IPasswordInputProps } from '../interfaces';
+import EyeClosedIcon from "../../../atoms/icons/EyeClosedIcon";
 
 const PasswordInput = ({ placeholder, value, onChange, onFocus, onBlur }: IPasswordInputProps) => {
     const [isVisible, setIsVisible] = useState(false);
@@ -13,12 +14,24 @@ const PasswordInput = ({ placeholder, value, onChange, onFocus, onBlur }: IPassw
     return (
         <BaseInput
             type={isVisible ? 'text' : 'password'}
-            placeholder={placeholder || "Enter Password"}
+            // placeholder={placeholder || "Enter Password"}
             value={value}
             onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
-            icon={<EyeIcon onClick={toggleVisibility} />}
+            icon={
+                isVisible ? (
+                    <EyeIcon
+                        onClick={toggleVisibility}
+                        cursor={'pointer'}
+                    />
+                ) : (
+                    <EyeClosedIcon
+                        onClick={toggleVisibility}
+                        cursor={'pointer'}
+                    />
+                )
+            }
         />
     );
 };
