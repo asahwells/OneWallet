@@ -69,7 +69,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
                     <Text fontSize="16px" fontWeight="600">
                         Business Setup
                     </Text>
-                    <GoBack onClick={onBack} />
+                    <GoBack />
                 </Flex>
             )}
 
