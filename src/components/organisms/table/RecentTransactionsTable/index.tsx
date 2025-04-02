@@ -7,7 +7,6 @@ import FailedPill from "../../../molecules/pills/FailedPill";
 import PendingPill from "../../../molecules/pills/PendingPill";
 import Card from '../../../../components/molecules/card/Card';
 import { useRouter } from 'next/navigation';
-import {ITransaction} from "../../../../api-services/dashboard-services/interfaces";
 import {TransactionTableProps} from "../interfaces";
 import {formatToNaira} from "../../../../helpers/currencyHelper";
 

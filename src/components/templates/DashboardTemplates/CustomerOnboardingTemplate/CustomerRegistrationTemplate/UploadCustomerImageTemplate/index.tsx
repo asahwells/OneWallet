@@ -36,6 +36,7 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
+        // @ts-ignore
         accept: { 'image/jpeg': ['.jpeg', '.jpg'] },
         maxSize: 2 * 1024 * 1024, // 2MB
     });

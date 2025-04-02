@@ -84,7 +84,7 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                     textAlign={isMobile ? 'left' : 'center'}
                     lineHeight={'22px'}
                 >
-                    Enter user's house address. Ensure the address they are using match same on their Utility Bill.
+                    Enter user&apos;s house address. Ensure the address they are using match same on their Utility Bill.
                 </Text>
 
                 <VStack spacing={6} w={'full'}>
@@ -97,7 +97,7 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                             {label: 'Rivers', value: 'rivers'}
                         ]}
                         value={stateValue}
-                        onChange={(e) => setStateValue(e.target.value)}
+                        onChange={(e: any) => setStateValue(e.target.value)}
                     />
 
 
@@ -110,7 +110,7 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                             {label: 'Wuse', value: 'wuse'}
                         ]}
                         value={lgaValue}
-                        onChange={(e) => setLgaValue(e.target.value)}
+                        onChange={(e: any) => setLgaValue(e.target.value)}
                     />
 
                     <BaseInput

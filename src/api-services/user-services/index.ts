@@ -3,7 +3,6 @@ import {BASE_AXIOS, HttpClient} from "../http";
 
 import {IFilterParams, IPendingMerchantRes, IPendingUserRes, ISuspendedMerchantRes, ISuspendedUserRes, ISuspendImageMetadata, ISuspensionHistoryRes, IUpdateSuspendedUserPayload, IUserInfoRes} from "./interfaces";
 import { IResp } from "api-services/interfaces";
-import { uploadFilesToFirebase } from "api-services/firebase-services";
 
 export const useFetchSuspendedUsers = () => {
   return useMutation({
@@ -152,59 +151,7 @@ export const useFetchSuspensionHistory = (id : string) => {
   });
 }
 
-export const useUpdateSuspendedUser = (id: string) => {
-  return useMutation({
-    mutationFn: async ({ category, subCategory, notes, images, rawDocs }: IUpdateSuspendedUserPayload & { rawDocs?: Array<File> }): Promise<IResp> => {
-      let uploadedImages: Array<ISuspendImageMetadata> = images || [];
 
-      // If there are files (rawDocs) that need to be uploaded
-      if (rawDocs && rawDocs.length > 0) {
-        const uploadedFiles = await uploadFilesToFirebase(rawDocs); 
-        uploadedImages = [...uploadedImages, ...uploadedFiles]; 
-      }
-
-      return HttpClient.put(BASE_AXIOS, {
-        url: `suspended-users/${id}`,
-        data: { category, subCategory, notes, images: uploadedImages } // Pass the uploaded image URLs
-      });
-    },
-    onSuccess: (res: IResp) => {
-      return res;
-    },
-    onError: (error: any) => {
-      throw new Error(error?.response?.data?.message || "Failed to update suspended user.");
-    }
-  });
-};
-
-
-
-
-
-export const useSuspendUser = () => {
-  return useMutation({
-    mutationFn: async ({ category, subCategory, user, notes, images, rawDocs }: IUpdateSuspendedUserPayload & { rawDocs?: Array<File> }): Promise<IResp> => {
-      let uploadedImages: Array<ISuspendImageMetadata> = images || [];
-
-      if (rawDocs && rawDocs.length > 0) {
-        // Upload new files to Firebase 
-        const uploadedFiles = await uploadFilesToFirebase(rawDocs);
-        uploadedImages = [...uploadedImages, ...uploadedFiles];
-      }
-
-      return HttpClient.post(BASE_AXIOS, {
-        url: `suspended-users`,
-        data: { category, subCategory, notes, images: uploadedImages, user }
-      });
-    },
-    onSuccess: (res: IResp) => {
-      return res;
-    },
-    onError: (error: any) => {
-      throw new Error(error?.response?.data?.message || "Failed to suspend user.");
-    }
-  });
-};
 
 
 
