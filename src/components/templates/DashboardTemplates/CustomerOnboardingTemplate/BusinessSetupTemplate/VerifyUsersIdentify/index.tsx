@@ -28,6 +28,7 @@ import OutlineButton from 'components/molecules/buttons/OutlineButton';
 import { useRouter } from 'next/navigation';
 import { VerificationUsersTemplateProps } from '../interfaces';
 import GoBack from 'components/molecules/buttons/BackBotton';
+import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplateProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -54,34 +55,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
 
     return (
         <Flex direction="column" bg="#F8FAFC" w={'full'} minH="100vh">
-            {/* Mobile Top Bar */}
-            {isMobile && (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                    w={'full'}
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Business Setup
-                    </Text>
-                    <GoBack />
-                </Flex>
-            )}
-
-            {/* Desktop "Back" outside the card */}
-            {!isMobile && (
-                <HStack as="header" p={4} color={'#344256'} cursor={'pointer'} onClick={onBack}>
-                    <ArrowBackIcon w={5} h={5} />
-                    <Text fontSize={'16px'} fontWeight={'500'}>
-                        Back
-                    </Text>
-                </HStack>
-            )}
+            <HeaderBackButton onBack={onBack} header='Business Setup' />
 
             {/* Main Content */}
             <Flex 

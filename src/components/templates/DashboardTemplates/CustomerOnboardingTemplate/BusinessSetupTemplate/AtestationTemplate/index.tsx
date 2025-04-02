@@ -22,6 +22,7 @@ import EditButton from 'components/molecules/buttons/EditButton';
 import StarIcon from 'components/atoms/icons/StarIcon';
 import { AttestationTemplateProps } from '../interfaces';
 import GoBack from 'components/molecules/buttons/BackBotton';
+import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 
 
@@ -72,34 +73,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
 
     return (
         <Flex direction="column" bg="#F8FAFC" w={'full'}>
-            {/* Mobile Top Bar */}
-            {isMobile && (
-                <Flex
-                    as="header"
-                    alignItems="center"
-                    justifyContent="center"
-                    h="60px"
-                    borderBottom="1px solid #E2E8F0"
-                    position="relative"
-                    bg="white"
-                    w={'full'}
-                >
-                    <Text fontSize="16px" fontWeight="600">
-                        Business Setup
-                    </Text>
-                    <GoBack onClick={onBack} />
-                </Flex>
-            )}
-
-            {/* Desktop "Back" outside the card */}
-            {!isMobile && (
-                <HStack as="header" p={4} color={'#344256'} cursor={'pointer'} onClick={onBack}>
-                    <ArrowBackIcon w={5} h={5} />
-                    <Text fontSize={'16px'} fontWeight={'500'}>
-                        Back
-                    </Text>
-                </HStack>
-            )}
+            <HeaderBackButton onBack={onBack} header='Business Setup' />
 
             {/* Main Content */}
             <Box px={4} pt={4} pb={8} maxW={isMobile ? "100%" : "800px"} mx="auto">

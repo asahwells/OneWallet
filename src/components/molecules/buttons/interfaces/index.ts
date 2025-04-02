@@ -30,4 +30,5 @@ export interface ICheckProps extends CheckboxProps{
 }
 export interface HeaderBackButtonProps {
     onBack: () => void;
+    header?: string;
 }

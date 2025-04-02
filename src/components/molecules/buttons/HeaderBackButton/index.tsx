@@ -5,7 +5,7 @@ import {ArrowBackIcon} from "@chakra-ui/icons";
 import React from "react";
 import {HeaderBackButtonProps} from "../interfaces";
 
-const HeaderBackButton = ({ onBack}: HeaderBackButtonProps) => {
+const HeaderBackButton = ({ onBack, header}: HeaderBackButtonProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     return (
         <>
@@ -29,7 +29,7 @@ const HeaderBackButton = ({ onBack}: HeaderBackButtonProps) => {
                     </Box>
                    <Box>
                        <Text variant={'md'}>
-                           Register a User
+                           {header || `Register a User`}
                        </Text>
                    </Box>
 
