@@ -33,7 +33,11 @@ const FilterSuspendBox = ({ onClose, onFilterChange }: IDownloadBoxProps) => {
                 label="Tier Level"
                 type="select"
                 placeholder="Tier Level"
-                options={['one', 'two', 'three']}
+                options={[
+                    { value: 'Tier 1', label: 'Tier 1' },
+                    { value: 'Tier 2', label: 'Tier 2' },
+                    { value: 'Tier 3', label: 'Tier 3' }
+                ]}
                 value={tierLevel}
                 onChange={(e: any) => setTierLevel(e.target.value)} 
             />

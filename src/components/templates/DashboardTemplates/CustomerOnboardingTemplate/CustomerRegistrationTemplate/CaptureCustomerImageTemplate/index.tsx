@@ -8,7 +8,7 @@ import {
     Heading,
     Text,
     VStack,
-    useBreakpointValue, IconButton, HStack
+    useBreakpointValue, IconButton, HStack, Image
 } from '@chakra-ui/react';
 import Webcam from 'react-webcam';
 import {ArrowBackIcon} from "@chakra-ui/icons";
@@ -111,15 +111,19 @@ const CaptureCustomerImageTemplate=  ({ onContinue, onBack }:TakePhotoStepProps)
                     />
                 ) : (
                     // Show captured photo
-                    <img
+                    <Image
                         src={photo}
                         alt="Captured"
-                        style={{
-                            width: isMobile ? '100%' : '400px',
-                            height: isMobile ? 'auto' : '300px',
-                            objectFit: 'cover',
-                            borderRadius: '8px'
+                        borderRadius="8px"
+                        w={{
+                            base: '100%',
+                            md: '400px'
                         }}
+                        h={{
+                            base: 'auto',
+                            md: '300px'
+                        }}
+                        objectFit="cover"
                     />
                 )}
             </Box>

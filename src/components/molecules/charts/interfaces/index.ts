@@ -1,14 +1,13 @@
-import {IGraphData, IGraphResp, IPieChartData} from "../../../../api-services/dashboard-services/interfaces";
 
 export interface ITransactionReportChartProps {
     data: Array<number>;
     labels: Array<string>;
-    rawData: Array<IPieChartData>
+    rawData: Array<any>
     isLoading?: boolean;
     h?: number;
     totalTransactionValue: string;
 }
 
 export interface ITransactionVolumeChartProps {
-    data: Array<IGraphData>
+    data: Array<any>
 }
