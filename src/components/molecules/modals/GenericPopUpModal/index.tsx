@@ -24,19 +24,20 @@ const GenericPopUpModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay backgroundColor="rgba(0,0,0, 0.6)"  />
-      <ModalContent borderRadius="2xl" boxShadow="lg" p={6} {...props}>
-        <ModalBody>
+      <ModalContent borderRadius="2xl" boxShadow="lg" {...props}>
+        <ModalBody w={'full'} >
 
-          <VStack spacing={6} align="center" px={15} py={6}>
+          <VStack w={'full'} spacing={6} align="center" py={6}>
             {icon && React.isValidElement(icon) ? icon : null}
 
             {titleText}
 
-            <VStack spacing={4} width="full">
+            <VStack spacing={4} width="full" >
               <BaseButton
                   variant={'ghost'}
                 text={acceptText}
                 onClick={onYesClick}
+                  bg={'#CFDADC'}
                 borderTopRadius="xl"
                 borderBottomRadius="sm"
                 w={'full'}
@@ -44,6 +45,7 @@ const GenericPopUpModal = ({
               />
               <BaseButton
                   variant={'ghost'}
+                  bg={'#CFDADC'}
                 text={cancelText}
                 onClick={onNoClick}
                 borderTopRadius="sm"

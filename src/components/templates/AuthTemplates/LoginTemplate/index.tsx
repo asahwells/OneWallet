@@ -11,6 +11,10 @@ const LoginTemplate: React.FC = () => {
             alignItems="center"
             justifyContent="center"
             bg={'#0B343B'}
+            bgImage={`url(/img/auth/auth-bg.png)`}
+            bgSize={'cover'}
+            bgPosition={'center'}
+            bgRepeat={'no-repeat'}
         >
             <Box
                 width={{base: '80%', lg: '60%'}}
