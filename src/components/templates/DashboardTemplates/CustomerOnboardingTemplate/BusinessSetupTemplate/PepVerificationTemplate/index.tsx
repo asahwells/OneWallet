@@ -24,11 +24,8 @@ import { ArrowBackIcon, QuestionIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import PoliticalPersonIcon from 'components/atoms/icons/PoliticalPersonIcon';
 import ConfirmationModal from 'components/molecules/modals/ConfirmModal';
-
-interface PepVerificationTemplateProps {
-    onNext: () => void;
-    onBack: () => void;
-}
+import { PepVerificationTemplateProps } from '../interfaces';
+import GoBack from 'components/molecules/buttons/BackBotton';
 
 const PepVerificationTemplate = ({ onNext, onBack }: PepVerificationTemplateProps) => {
     const [isPep, setIsPep] = useState<boolean | null>(null);
@@ -72,14 +69,7 @@ const PepVerificationTemplate = ({ onNext, onBack }: PepVerificationTemplateProp
                     <Text fontSize="16px" fontWeight="600">
                         Business Setup
                     </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
+                    <GoBack onClick={onBack} />
                 </Flex>
             )}
 

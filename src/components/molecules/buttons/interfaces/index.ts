@@ -4,6 +4,8 @@ export interface IButtonProps extends ButtonProps{
     text?: string;
     textVariant?: string;
     icon?: React.ReactNode;
+    bg?: string;
+    onClick?: () => void;
 }
 
 export interface IBoxProps extends BoxProps{

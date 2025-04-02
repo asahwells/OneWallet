@@ -6,12 +6,18 @@ import SourceOfIncomeTemplate from './SourceOfIncomeTemplate';
 import PepVerificationTemplate from './PepVerificationTemplate';
 import AttestationTemplate from './AtestationTemplate';
 import VerificationUsersTemplate from './VerifyUsersIdentify';
+import PhoneVerificationTemplate from './PhoneVerificationTeplate';
+import SuccessTemplate from './CongratulationsTemplate';
+import QrCodeTemplate from './QRCodeTemplate';
 
  enum BusinessSteps {
     SourceOfIncome = 'SOURCE_OF_INCOME',
     PoliticalExposure = 'POLITICAL_EXPOSURE',
     Atestation = 'ATESTATION',
-    VerifyUsersIdentity = 'VERIFY_USERS_IDENTITY'
+    VerifyUsersIdentity = 'VERIFY_USERS_IDENTITY',
+    PhoneVerification = 'PHONE_VERIFICATION',
+    Success = 'SUCCESS',
+    QRCode = 'QR_CODE'
 }
 
 const BusinessSetupTemplate = () => {
@@ -34,6 +40,15 @@ const BusinessSetupTemplate = () => {
             case BusinessSteps.Atestation:
                 setStep(BusinessSteps.VerifyUsersIdentity);
                 break;
+            case BusinessSteps.VerifyUsersIdentity:
+                setStep(BusinessSteps.PhoneVerification);
+                break;
+            case BusinessSteps.PhoneVerification:
+                setStep(BusinessSteps.Success);
+                break;
+            case BusinessSteps.Success:
+                setStep(BusinessSteps.QRCode);
+                break;
             default:
                 break;
         }
@@ -50,6 +65,15 @@ const BusinessSetupTemplate = () => {
                 break;
             case BusinessSteps.VerifyUsersIdentity:
                 setStep(BusinessSteps.Atestation);
+                break;
+            case BusinessSteps.PhoneVerification:
+                setStep(BusinessSteps.VerifyUsersIdentity);
+                break;
+            case BusinessSteps.Success:
+                setStep(BusinessSteps.PhoneVerification);
+                break;
+            case BusinessSteps.QRCode:
+                setStep(BusinessSteps.Success);
                 break;
             default:
                 break;
@@ -70,10 +94,15 @@ const BusinessSetupTemplate = () => {
             {step === BusinessSteps.VerifyUsersIdentity && (
                 <VerificationUsersTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {/*step === RegisterSteps.PhotoUpload && (
-                <UploadCustomerImageTemplate onContinue={handleNext} />
+            {step === BusinessSteps.PhoneVerification && (
+                <PhoneVerificationTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === RegisterSteps.Complete && <Box p={4}>Form Complete!</Box>*/}
+            {step === BusinessSteps.Success && (
+                <SuccessTemplate onViewQR={handleNext} onDone={handleBack} />
+            )}
+            {step === BusinessSteps.QRCode && (
+                <QrCodeTemplate onOkay={handleNext} onBack={handleBack} />
+            )}
         </Box>
     );
 };

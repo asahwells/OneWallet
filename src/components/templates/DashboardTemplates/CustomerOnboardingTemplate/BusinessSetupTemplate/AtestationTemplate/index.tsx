@@ -20,11 +20,10 @@ import BaseButton from 'components/molecules/buttons/BaseButton';
 import EditIcon from 'components/atoms/icons/EditIcon';
 import EditButton from 'components/molecules/buttons/EditButton';
 import StarIcon from 'components/atoms/icons/StarIcon';
+import { AttestationTemplateProps } from '../interfaces';
+import GoBack from 'components/molecules/buttons/BackBotton';
 
-interface AttestationTemplateProps {
-    onNext: () => void;
-    onBack: () => void;
-}
+
 
 const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
     const [isAttested, setIsAttested] = useState(false);
@@ -88,14 +87,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                     <Text fontSize="16px" fontWeight="600">
                         Business Setup
                     </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
+                    <GoBack onClick={onBack} />
                 </Flex>
             )}
 

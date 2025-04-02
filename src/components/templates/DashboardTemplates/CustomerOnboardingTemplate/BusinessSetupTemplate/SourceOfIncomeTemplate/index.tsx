@@ -19,11 +19,8 @@ import {
 import { ArrowBackIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import SelectField from 'components/organisms/select/SelectField';
-
-interface SourceOfIncomeTemplateProps {
-    onNext: () => void;
-    onBack: () => void;
-}
+import { SourceOfIncomeTemplateProps } from '../interfaces';
+import GoBack from 'components/molecules/buttons/BackBotton';
 
 const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps) => {
     const [annualRevenue, setAnnualRevenue] = useState('');
@@ -56,14 +53,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
                     <Text fontSize="16px" fontWeight="600">
                         Business Setup
                     </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
+                    <GoBack onClick={onBack} />
                 </Flex>
             )}
 

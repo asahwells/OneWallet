@@ -26,11 +26,8 @@ import ConfirmationModal from 'components/molecules/modals/ConfirmModal';
 import VerifyUserIcon from 'components/atoms/icons/VerifyUserIcon';
 import OutlineButton from 'components/molecules/buttons/OutlineButton';
 import { useRouter } from 'next/navigation';
-
-interface VerificationUsersTemplateProps {
-    onNext: () => void;
-    onBack: () => void;
-}
+import { VerificationUsersTemplateProps } from '../interfaces';
+import GoBack from 'components/molecules/buttons/BackBotton';
 
 const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplateProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -39,7 +36,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const handleYesClick = () => {
-        //onNext();
+        onNext();
     };
 
     const handleNoClick = () => {
@@ -72,14 +69,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
                     <Text fontSize="16px" fontWeight="600">
                         Business Setup
                     </Text>
-                    <IconButton
-                        aria-label="Go back"
-                        icon={<ArrowBackIcon />}
-                        variant="ghost"
-                        position="absolute"
-                        left="16px"
-                        onClick={onBack}
-                    />
+                    <GoBack onClick={onBack} />
                 </Flex>
             )}
 
