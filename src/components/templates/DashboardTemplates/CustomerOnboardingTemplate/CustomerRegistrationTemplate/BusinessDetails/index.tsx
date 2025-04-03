@@ -109,6 +109,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
             mt={'36px'}
             _focus={'none'}
             h={'56px'}
+            
           />
           </VStack>
         </Box>
