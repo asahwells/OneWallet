@@ -104,12 +104,13 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
             text={'Continue'}
             onClick={onNext}
             borderRadius={'8px'}
+            border={'1.2px solid #6F8F95'}
             w={'full'}
             disabled={isButtonDisabled}
             mt={'36px'}
             _focus={'none'}
             h={'56px'}
-            
+
           />
           </VStack>
         </Box>

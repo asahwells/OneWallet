@@ -39,7 +39,9 @@ export const ProfileCreated = ({
                         </Text>
 
                         <BaseButton
-                            variant={'brand'}
+                            variant={'outline'}
+                            bgColor={'#0F454F'}
+                            color={'#FCFCFC'}
                         text={'Setup Business'}
                         onClick={onNext}
                         borderRadius={'8px'}

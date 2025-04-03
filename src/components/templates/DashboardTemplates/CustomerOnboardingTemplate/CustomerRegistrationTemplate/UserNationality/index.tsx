@@ -70,9 +70,10 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
           />
 
           <BaseButton
-            variant={'brand'}
+            variant={'ghost'}
             text={'Continue'}
             onClick={onNext}
+            border={'1.2px solid #6F8F95'}
             borderRadius={'8px'}
             w={'full'}
             mt={'36px'}
