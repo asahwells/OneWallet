@@ -18,7 +18,7 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
   export interface INotificationModalProps extends ModalContentProps {
     isOpen: boolean;
     onClose?: () => void;
-    icon: ReactNode;
+    icon?: ReactNode;
     cancelText: string;
     acceptText: string;
     onYesClick: () => void;

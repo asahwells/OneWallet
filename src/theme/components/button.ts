@@ -1,3 +1,4 @@
+import { border } from "@chakra-ui/system";
 import { mode, StyleFunctionProps } from "@chakra-ui/theme-tools";
 export const buttonStyles = {
   components: {
@@ -69,6 +70,11 @@ export const buttonStyles = {
             color: "#FCFCFC"
           },
         }),
+        camera: (props: StyleFunctionProps) => ({
+          outline: "2px dashed #64748B",
+          borderRadius: "md",
+          padding: "4",
+        }),
         darkBrand: (props: StyleFunctionProps) => ({
           bg: mode("brand.900", "brand.400")(props),
           color: "white",
@@ -121,6 +127,7 @@ export const buttonStyles = {
             bg: mode("secondaryGray.200", "brand.400")(props),
           },
         }),
+        
         setup: (props: StyleFunctionProps) => ({
           fontWeight: "500",
           borderRadius: "50px",

@@ -3,7 +3,7 @@ import { FormControl } from "@chakra-ui/react";
 import FormLabel from "../../../atoms/labels/FormLabel";
 import { IFormControl } from "../interfaces";
 
-const BaseFormControl = ({ label, children, ...props }: IFormControl) => {
+const BaseFormControl = ({ label, children,labelPt, ...props }: IFormControl) => {
     const [isFocused, setIsFocused] = useState(false);
     const [hasValue, setHasValue] = useState(false);
 
@@ -30,13 +30,13 @@ const BaseFormControl = ({ label, children, ...props }: IFormControl) => {
             {...props}
             position="relative"
             h="56px"
-            border="2px"
+            // border="2px"
             borderRadius="8px"
             borderColor="#E2E8F0"
         >
             <FormLabel
                 title={label}
-                top={isFocused || hasValue ? '-1px' : '50%'}
+                top={isFocused || hasValue ? (labelPt || '-1px') : '50%'}
                 left={'16px'}
                 fontSize={isFocused || hasValue ? '10px' : '16px'}
                 color={'#344256'}

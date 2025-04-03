@@ -13,6 +13,12 @@ import {VerificationStatus} from "../../../../molecules/modals/interfaces";
 import HouseDetailsTemplate from "./HouseDetailsTemplate";
 import EnterEmailTemplate from "./EnterEmailTemplate";
 import EmailOtpVerificationTemplate from "./EmailOtpVerificationTemplate";
+import VerificationProgressTemplate from './VerificationProgressTemplate';
+import UserBvnDetails from './UserBvnDetails';
+import { ProfileCreated } from './ProfileCreated';
+import UserNationality from './UserNationality';
+import BusinesAddress from './BusinessAddress';
+import BusinessDetails from './BusinessDetails';
 // import RegisterUserStepTwo from './RegisterUserStepTwo';
  enum RegisterSteps {
     EnterPhone = 'ENTER_PHONE',
@@ -21,10 +27,15 @@ import EmailOtpVerificationTemplate from "./EmailOtpVerificationTemplate";
     BvnOrNin = 'BVN_OR_NIN',
     PhotoUpload = 'PHOTO_UPLOAD',
     Complete = 'COMPLETE',
-     CaptureCustomerImage = 'CAPTURE_CUSTOMER_IMAGE',
-     HouseDetails = 'HOUSE_DETAILS',
-     EnterEmail = 'ENTER_EMAIL',
-     VerifyEmail = 'VERIFY_EMAIL',
+    CaptureCustomerImage = 'CAPTURE_CUSTOMER_IMAGE',
+    HouseDetails = 'HOUSE_DETAILS',
+    EnterEmail = 'ENTER_EMAIL',
+    VerifyEmail = 'VERIFY_EMAIL',
+    UserBvnDetails = 'USER_BVN_DETAILS',
+    ProfileCreated = 'PROFILE_CREATED',
+    UserNationality = 'USER_NATIONALITY',
+    BusinessAddress = 'BUSINESS_ADDRESS',
+    BusinessDetails = 'BUSINESS_DETAILS',
 }
 
 const RegisterUserForm = () => {
@@ -33,10 +44,11 @@ const RegisterUserForm = () => {
     const [documentsVerificationStatus, setDocumentsVerificationStatus] = useState<VerificationStatus>('PENDING');
 
 
-    const [step, setStep] = useState<RegisterSteps>(RegisterSteps.EnterPhone);
+    const [step, setStep] = useState<RegisterSteps>(RegisterSteps.UserBvnDetails);
 
     // Navigate to a specific step
     const goToStep = (nextStep: RegisterSteps) => {
+        console.log(nextStep)
         setStep(nextStep);
     };
 
@@ -58,6 +70,22 @@ const RegisterUserForm = () => {
             case RegisterSteps.PhotoUpload:
                 setStep(RegisterSteps.Complete);
                 break;
+            case RegisterSteps.Complete:
+                setStep(RegisterSteps.UserBvnDetails);
+                break;
+            case RegisterSteps.UserBvnDetails:
+                setStep(RegisterSteps.ProfileCreated);
+                break;
+            case RegisterSteps.ProfileCreated:
+                setStep(RegisterSteps.UserNationality);
+                break;
+            case RegisterSteps.UserNationality:
+                setStep(RegisterSteps.BusinessAddress);
+                break;
+            case RegisterSteps.BusinessAddress:
+                setStep(RegisterSteps.BusinessDetails);
+                break;
+
             default:
                 break;
         }
@@ -82,6 +110,22 @@ const RegisterUserForm = () => {
             case RegisterSteps.HouseDetails:
                 setStep(RegisterSteps.BvnOrNin);
                 break;
+            case RegisterSteps.UserBvnDetails:
+                setStep(RegisterSteps.Complete);
+                break;
+            case RegisterSteps.ProfileCreated:
+                setStep(RegisterSteps.UserBvnDetails);
+                break;
+            case RegisterSteps.UserNationality:
+                setStep(RegisterSteps.ProfileCreated);
+                break;
+            case RegisterSteps.BusinessAddress:
+                setStep(RegisterSteps.UserNationality);
+                break;
+            case RegisterSteps.BusinessDetails:
+                setStep(RegisterSteps.BusinessAddress);
+                break;
+
             default:
                 break;
         }
@@ -167,7 +211,24 @@ const RegisterUserForm = () => {
             }} />}
 
 
-            {step === RegisterSteps.Complete && <Box p={4}>Form Complete!</Box>}
+            {step === RegisterSteps.Complete && 
+                <VerificationProgressTemplate onBack={goToStep} />
+            }
+            {step === RegisterSteps.UserBvnDetails && 
+                <UserBvnDetails onNext={handleNext} onBack={handleBack} />
+            }
+            {step === RegisterSteps.ProfileCreated && 
+                <ProfileCreated onNext={handleNext} onBack={handleBack} />
+            }
+            {step === RegisterSteps.UserNationality && 
+                <UserNationality onNext={handleNext} onBack={handleBack} />
+            }
+            {step === RegisterSteps.BusinessAddress && 
+                <BusinesAddress onNext={handleNext} onBack={handleBack} />
+            }
+            {step === RegisterSteps.BusinessDetails && 
+                <BusinessDetails onNext={handleNext} onBack={handleBack} />
+            }
 
 
             <DocumentsVerificationModal

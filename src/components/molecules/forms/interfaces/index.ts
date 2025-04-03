@@ -5,4 +5,5 @@ export interface IFormControl extends FormControlProps {
     children: React.ReactNode;
     label?: string;
     value?: any;
+    labelPt?: string | number;
 }

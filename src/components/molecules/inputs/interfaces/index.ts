@@ -1,5 +1,5 @@
 import {InputProps} from "@chakra-ui/input";
-import { SelectProps, TextareaProps, PinInput as ChakraPinInput, PinInputField, FormControlProps } from "@chakra-ui/react";
+import {FormControlProps, SelectProps, TextareaProps} from "@chakra-ui/react";
 import {ChangeEventHandler} from "react";
 
 export interface IInputProps extends InputProps{
@@ -29,11 +29,6 @@ export interface ITextareaProps extends TextareaProps{
   errorMessage?: string;
 }
 
-
-export interface IPinInputProps extends Omit<React.ComponentProps<typeof ChakraPinInput>, 'children'> {
-  count?: number;
-  inputProps?: React.ComponentProps<typeof PinInputField>;
-}
 interface IOption {
   label: string;
   value: string;
