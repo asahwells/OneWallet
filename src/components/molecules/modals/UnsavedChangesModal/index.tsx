@@ -44,7 +44,7 @@ const UnsaveChangesModal = ({
                   onClick={onNoClick}
                   borderRadius={'8px'}
                   w={'full'}
-                  _focus={'none'}
+                  _focus={{ outline: 'none' }}
                   h={'56px'}
   
                 />

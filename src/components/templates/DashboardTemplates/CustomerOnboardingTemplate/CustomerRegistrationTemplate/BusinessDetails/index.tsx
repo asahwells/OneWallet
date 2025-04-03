@@ -108,7 +108,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
             w={'full'}
             disabled={isButtonDisabled}
             mt={'36px'}
-            _focus={'none'}
+            _focus={{ outline: 'none' }}
             h={'56px'}
 
           />

@@ -47,7 +47,7 @@ export const ProfileCreated = ({
                         borderRadius={'8px'}
                         w={'full'}
                         mt={24}
-                        _focus={'none'}
+                        _focus={{ outline: 'none' }}
                         h={'56px'}
         
                         />
