@@ -77,7 +77,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
             borderRadius={'8px'}
             w={'full'}
             mt={'36px'}
-            _focus={'none'}
+            _focus={{ outline: 'none' }}
             h={'56px'}
           />
         </Box>
