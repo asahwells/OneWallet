@@ -169,7 +169,7 @@ const LoginForm = () => {
                     </BaseFormControl>
 
                     <BaseFormControl label="Enter Password">
-                        <PasswordInput value={password} onChange={(e: any) => setPassword(e.target.value)} />
+                        <PasswordInput placeholder="" value={password} onChange={(e: any) => setPassword(e.target.value)} />
                     </BaseFormControl>
 
                     <Box color="#344256" fontSize={'14px'} fontWeight={500} lineHeight={'22px'} letterSpacing={'-1%'} alignSelf="flex-end" onClick={onToggle} cursor="pointer">

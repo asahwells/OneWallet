@@ -207,5 +207,54 @@ export const inputStyles = {
       },
     },
   
+    Radio: { // Added Radio component to the theme
+      variants: {
+        radioButton: (props: StyleFunctionProps) => ({ // Define the new variant
+          control: { // Styles for the radio button control (the circle)
+            width: '18px',
+            height: '18px',
+            border: '1px solid',
+            borderColor: mode('#E2E8F0', '#E2E8F0')(props), // Adjust as needed
+            borderRadius: 'full',
+            bg: mode('white', '#FEFEFE')(props),
+            _checked: { // Styles when the radio button is checked
+              bg: mode('#0F454F', '#0F454F')(props),
+              borderColor: mode('#0F454F', '#0F454F')(props),
+              _before: { // Style for the inner dot
+                content: `""`,
+                display: 'block',
+                width: '10px',
+                height: '10px',
+                borderRadius: 'full',
+                bg: 'white',
+                margin: 'auto',
+              },
+            },
+          },
+          label: { // Styles for the label text
+            fontWeight: 400,
+            fontSize: '16px',
+            lineHeight: '24px',
+            letterSpacing: '-1.2%',
+            color: mode('#0F454F', 'white')(props),
+            paddingLeft: '8px', // Space between radio and label
+          },
+        }),
+      },
+    },
+    Checkbox: { // Added checkbox component to the theme.
+      variants: {
+          attestation: (props:StyleFunctionProps) => ({
+              control: {
+                  backgroundColor: '#FEFEFE',
+                  border: '1.8px solid #E2E8F0',
+                  _checked: {
+                      backgroundColor: '#0F454F',
+                      border: '1.8px solid #E2E8F0',
+                  },
+              }
+          })
+      }
+    }
   },
 };

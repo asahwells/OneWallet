@@ -9,15 +9,8 @@ import { useRouter } from 'next/navigation';
 const VerificationTemplate: React.FC<VerificationProps> = ({
     screen = 'phone'
 }) => {
-    const [screenTitle, setScreenTitle] = useState('');
     const router = useRouter();
 
-    const responsiveText = {
-        textAlign: 'center',
-        '@media (max-width: 768px)': {
-            textAlign: 'left',
-        },
-    }
     return (
         <Flex
             height="100vh"
@@ -82,12 +75,12 @@ const VerificationTemplate: React.FC<VerificationProps> = ({
             >
                 <VerificationForm
                     screen={screen}
-                    title={<Text w='full' sx={
-                        responsiveText
-                    } variant={'otvVerifyTitle'}> Phone Number Verification</Text>}
+                    title={<Text w='full' 
+                        textAlign={{base: 'left', md: 'center'}}
+                        variant={'otvVerifyTitle'}> Phone Number Verification</Text>}
                     label={<Text w='full'
-                        sx={responsiveText}
-                      variant={'otvVerifySubTitle'}>Enter the code we sent to your phone number</Text>}
+                        textAlign={{base: 'left', md: 'center'}}
+                        variant={'otvVerifySubTitle'}>Enter the code we sent to your phone number</Text>}
                  />
             </Box>
         </Flex>

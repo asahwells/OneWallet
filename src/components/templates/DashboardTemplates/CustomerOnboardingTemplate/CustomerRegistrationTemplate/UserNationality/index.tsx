@@ -1,0 +1,88 @@
+import React, { useState } from 'react';
+import { Box, Flex, Heading, Text, useBreakpointValue } from '@chakra-ui/react';
+import BaseButton from 'components/molecules/buttons/BaseButton';
+import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
+import BaseFormControlButton from 'components/molecules/buttons/FormControlButton'; // Import your BaseFormControlButton
+
+interface ListProps {
+  value?: string;
+  name?: string;
+  id?: string | number;
+}
+
+interface UserNationalityProps {
+  onBack: () => void;
+  onNext: () => void;
+}
+
+const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const [nationality, setNationality] = useState('');
+
+  const handleNationalityChange = (item: ListProps) => {
+    setNationality(item.value);
+  };
+
+  return (
+    <Flex direction="column" bg="#F8FAFC" w="full">
+      <HeaderBackButton onBack={onBack} />
+      <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
+        <Box
+          bg={isMobile ? '#F8FAFC' : 'white'}
+          width={isMobile ? '100%' : '941px'}
+          mx="auto"
+          h={isMobile ? 'auto' : '317px'}
+          borderRadius="8px"
+          pt={isMobile ? '15px' : '30px'}
+          pb="30px"
+          px={isMobile ? '0px' : 124}
+          border={isMobile ? 'none' : '0.5px solid #E2E8F0'}
+        >
+          <Heading
+            as="h1"
+            fontSize="18px"
+            fontWeight={700}
+            color="#222B38"
+            textAlign={isMobile ? 'left' : 'center'}
+            mb={2}
+          >
+            What is User&apos;s Nationality?
+          </Heading>
+
+          <Text
+            fontSize="14px"
+            color="#344256"
+            fontWeight={400}
+            mb={6}
+            textAlign={isMobile ? 'left' : 'center'}
+          >
+            Select User&apos;s Country
+          </Text>
+
+          <BaseFormControlButton
+            label="Nationality"
+            items={[
+              { name: 'Nigeria', value: 'nigeria', id: 'NG' },
+              { name: 'Ghana', value: 'ghana', id: 'GH' },
+              { name: 'Libya', value: 'libya', id: 'LIB' },
+            ]}
+            onChange={handleNationalityChange}
+          />
+
+          <BaseButton
+            variant={'brand'}
+            text={'Continue'}
+            onClick={onNext}
+            borderRadius={'8px'}
+            w={'full'}
+            mt={'36px'}
+            _focus={'none'}
+            h={'56px'}
+          />
+        </Box>
+      </Box>
+    </Flex>
+  );
+};
+
+export default UserNationality;
