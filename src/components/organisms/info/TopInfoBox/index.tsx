@@ -10,6 +10,7 @@ import SuspendDownloadBox from 'components/organisms/radio/SuspendDownloadBox';
 import DownloadBox from 'components/organisms/radio/DownloadBox';
 import { IPendingUserRes, ISuspendedUserRes } from 'api-services/user-services/interfaces';
 import { useFetchPendingUsers, useFetchSuspendedUsers } from 'api-services/user-services';
+// @ts-ignore
 import { mkConfig, generateCsv, download } from "export-to-csv";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";

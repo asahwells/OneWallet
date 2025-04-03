@@ -9,12 +9,11 @@ import LineAreaChart from "../LineAreaChart";
 import {getMonthName} from "../../../../helpers/dateHelpers";
 import {lineChartOptionsTotalSpent} from "../../../../variables/charts";
 import {ITransactionVolumeChartProps} from "../interfaces";
-import {IGraphData} from "../../../../api-services/dashboard-services/interfaces";
 
 
 
 // Helper function to transform the incoming data into the chart format
-const transformChartData = (data: Array<IGraphData>) => {
+const transformChartData = (data: Array<any>) => {
 
     const volumes = data?.map((item) => parseFloat(item.transactionVolume));
     const months = data?.map((item) => getMonthName(item.month));

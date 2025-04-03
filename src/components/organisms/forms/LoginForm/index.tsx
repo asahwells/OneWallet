@@ -124,11 +124,14 @@ const LoginForm = () => {
                 acceptText="Yes"
                 isOpen={isLocationModalOpen}
                 icon={<MdOutlineLocationOn size={28} color="#0F454F" />}
-                width={["90%", "40%", "48%"]}
-                minWidth={["90%", "40%", "48%"]}
+                width={{
+                    base: '90%',
+                    md: '50%'
+                }}
                 titleText={
-                    <Text fontSize="md" fontWeight="medium" textAlign="center">
-                        Allow <Text fontWeight="700" fontSize="18px" as="span">OneWallet</Text> to access this device’s precise location?
+
+                    <Text lineHeight={'130%'} fontSize="md" fontWeight="medium" textAlign="center">
+                        Allow <Text variant={'headerBold'}  as="span">OneWallet</Text> to access this device’s precise location?
                     </Text>
                 }
             />}
@@ -138,14 +141,16 @@ const LoginForm = () => {
                 cancelText="No"
                 onNoClick={() => handlePermissionClick('notificationPermission', 'denied')}
                 onYesClick={() => requestNotificationPermission()} // Trigger notification permission request
-                titleText={<Text fontSize="md" fontWeight="medium" textAlign="center">
-                    <Text fontWeight="700" fontSize="18px" as="span">OneWallet</Text> Would Like to Send You Notifications?
+                titleText={<Text lineHeight={'130%'} variant={'headerBold'}  textAlign="center">
+                    <Text variant={'headerBold'} as="span">OneWallet</Text> Would Like to Send You Notifications?
                 </Text>}
                 acceptText="Yes"
                 isOpen={isNotificationModalOpen}
                 icon={<LuBellDot size={28} color="#0F454F" />}
-                width={["90%", "40%", "48%"]}
-                minWidth={["90%", "40%", "48%"]}
+                width={{
+                    base: '90%',
+                    md: '50%'
+                }}
             />}
 
             {/* Forgot Password Modal */}

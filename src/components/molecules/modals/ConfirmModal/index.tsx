@@ -13,13 +13,18 @@ import {
   CloseButton,
   type ModalProps,
 } from "@chakra-ui/react"
-import { ConfirmationModalProps } from "components/molecules/inputs/interfaces"
+// import { ConfirmationModalProps } from "components/molecules/inputs/interfaces"
 import QuestionIcon from "components/atoms/icons/QuestionIcon"
+import { ConfirmationModalProps } from "../interfaces"
+import BaseButton from "components/molecules/buttons/BaseButton"
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+const ConfirmationModal: React.FC<any> = ({
   isOpen,
   onClose,
   title,
+  subTitle,
+  color,
+  border,
   primaryButtonText,
   secondaryButtonText,
   onPrimaryAction,
@@ -32,17 +37,16 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md" {...rest}>
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(5px)" />
-      <ModalContent borderRadius="md" boxShadow="xl" maxW="716px" w="100%" borderTopRadius={'8px'} borderBottomRadius={'8px'} position="relative" pb={8}>
-        <CloseButton position="absolute" right={4} top={4} color="red.500" onClick={onClose} size="lg" />
-        <ModalBody pt={12} pb={4} px={6}>
+      <ModalContent borderRadius="26.81px" boxShadow="xl" maxW={"700px"} w="full" borderTopRadius={'26.81px'} borderBottomRadius={'26.81px'} position="relative" pb={4} mx={4}>
+        <CloseButton position="absolute" right={4} top={6} color="" onClick={onClose} size="md" />
+        <ModalBody pt={3} pb={4} px={6}>
           <Flex direction="column" align="center">
             <QuestionIcon />
 
             {/* Title */}
             <Text
-              fontSize="2xl"
-              fontWeight="medium"
-              my={8}
+              variant={'md'}
+              my={4}
               textAlign="center"
               color="#004052"
               position="relative"
@@ -51,10 +55,27 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               {title}
             </Text>
 
+            {/* Subtitle */}
+            {subTitle && (
+              <Text
+                variant={"sm2"}
+                mb={4}
+                maxW={'343px'}
+                textAlign="center"
+                position="relative"
+                zIndex={2}
+              >
+                {subTitle}
+              </Text>
+            )}
+
+            {/* Icon */}
+
             {/* Primary Button */}
-            <Button
+            <BaseButton
+              text={primaryButtonText}
               bg="#004052"
-              color="white"
+              color={"white"}
               size="lg"
               width="100%"
               mb={4}
@@ -62,7 +83,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               onClick={onPrimaryAction}
               position="relative"
               zIndex={2}
-              height="60px"
+              height="56px"
               borderRadius="md"
             >
               {primaryButtonText}
@@ -71,38 +92,25 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                   {primaryButtonIcon}
                 </Box>
               )}
-            </Button>
+            </BaseButton>
 
             {/* Secondary Button */}
-            <Button
-              variant="outline"
-              borderColor="red.500"
-              color="red.500"
-              size="lg"
-              width="100%"
+            <BaseButton
+              text={secondaryButtonText}
+              h="56px"
+              w="full"
+              bg="white"
+              color={color ?? "#344256"}
+              borderRadius="8px"
+              fontSize="16px"
+              fontWeight="600"
+              border={border ?? "1px solid #E2E8F0"}
+              _hover={{ bg: "#F8FAFC" }}
               onClick={onSecondaryAction}
-              position="relative"
-              zIndex={2}
-              height="60px"
-              borderRadius="md"
             >
               {secondaryButtonText}
               
-            </Button>
-
-            {/* Red Triangle */}
-            <Box
-              position="absolute"
-              bottom="-8px"
-              left="50%"
-              transform="translateX(-50%)"
-              width="0"
-              height="0"
-              borderLeft="10px solid transparent"
-              borderRight="10px solid transparent"
-              borderTop="10px solid red.500"
-              zIndex={1}
-            />
+            </BaseButton>
           </Flex>
         </ModalBody>
       </ModalContent>

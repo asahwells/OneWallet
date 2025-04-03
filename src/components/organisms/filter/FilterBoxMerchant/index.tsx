@@ -27,7 +27,11 @@ const FilterMerchantBox = ({onClose, onFilterChange}: IDownloadBoxProps) => {
             </Flex>
 
             <Box mb={3} mx="-24px" px="24px" pt={"12px"} borderBottom="1px solid #E5E9EB" w="500px">
-                <SelectField label="Approval Type" type="select" placeholder="Approval Type" options={['Address Verification', 'Shop Verification', 'CAC Verification']} />
+                <SelectField label="Approval Type" type="select" placeholder="Approval Type" options={[
+                    { value: 'Address Verification', label: 'Address Verification' },
+                    { value: 'Shop Verification', label: 'Shop Verification' },
+                    { value: 'CAC Verification', label: 'CAC Verification' }
+                ]} />
             </Box>
             
             {/*<Box my={3} mx="-24px" px="24px" pt={"12px"} border="1px solid #E5E9EB" w="500px">
