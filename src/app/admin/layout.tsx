@@ -14,6 +14,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
   DrawerBody,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import Footer from '../../components/organisms/footer/FooterAdmin';
 // Layout components
@@ -27,7 +28,7 @@ import {
   getActiveNavbarText,
   getActiveRoute,
 } from 'utils/navigation';
-import BellIcon from 'components/atoms/icons/BellIcon';
+import BellIcon, { BellIconFill } from 'components/atoms/icons/BellIcon';
 import ImageIcon from 'components/atoms/icons/ImageIcon';
 import {useRouter} from "next/navigation";
 import Cookies from "js-cookie";
@@ -36,6 +37,8 @@ import FullScreenLoader from "../../components/organisms/loaders/FullScreenLoade
 import { IoMenuOutline } from 'react-icons/io5';
 import SidebarContent from 'components/organisms/sidebar/components/Content';
 import { useFetchLoggedInUser } from 'api-services/dashboard-services';
+import ImageIconDesktop from 'components/atoms/icons/ImageIconDesktop';
+import { Armburger } from 'components/atoms/icons/Armburger';
 
 interface DashboardLayoutProps extends PropsWithChildren {
   [x: string]: any;
@@ -46,6 +49,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   const { children, ...rest } = props;
   const { mutateAsync: fetchUser, isPending: isFetchingUser, isError } = useFetchLoggedInUser();
   const [isRehydratingUser, setIsRehydratingUser] = useState(true)
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -101,20 +105,21 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Box w={'100vw'} h={'58px'} px={16} py={4} border="1px solid #E5E9EB" pos={'relative'} top={0} zIndex={10} >
-          <Flex justifyContent={"space-between"} alignItems={"center"}>
-            <Image src="/img/layout/navImage.png" w="102.42px" h="23px" alt="Nav Logo" />
-            <HStack align={'center'}>
-              <BellIcon onClick={()=> router.push('/admin/notifications')}/>
-              <ImageIcon/>
-              <IconButton
-                icon={<IoMenuOutline />}
-                display={{ base: 'inline-flex', xl: 'none' }}
-                onClick={onOpen}
-                aria-label="Open menu"
-                size="lg"
-                ref={btnRef}
-              />
+        <Box w={'100vw'} h={'58px'} display={'flex'} alignItems={'center'} px={16} height={'80px'}  backgroundColor={'#FFFFFF'}  pos={'relative'} top={0} zIndex={10} >
+          <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
+            <IconButton
+              icon={<Armburger />}
+              display={{ base: 'inline-flex', xl: 'none' }}
+              onClick={onOpen}
+              aria-label="Open menu"
+              size="lg"
+              ref={btnRef}
+            />
+            <Image src={isMobile ? '/img/layout/brandImage.png' : '/img/layout/navImage.png'} w="102.42px" h="23px" alt="Nav Logo" />
+            <HStack gap={isMobile? '30px': '28px'} align={'center'}>
+              <BellIconFill onClick={()=> router.push('/admin/notifications')} />
+              {isMobile && <ImageIcon />}
+              {!isMobile &&<ImageIconDesktop />}
             </HStack>
           </Flex>
         </Box>
@@ -136,8 +141,8 @@ export default function AdminLayout(props: DashboardLayoutProps) {
           overflow="auto"
           position="relative"
           maxHeight="100%"
-          w={{ base: '100%', xl: 'calc( 100% - 290px )' }}
-          maxWidth={{ base: '100%', xl: 'calc( 100% - 290px )' }}
+          w={{ base: '100%', xl: 'calc( 100% - 250px )' }}
+          maxWidth={{ base: '100%', xl: 'calc( 100% - 250px )' }}
           transition="all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1)"
           transitionDuration=".2s, .2s, .35s"
           transitionProperty="top, bottom, width"
@@ -163,8 +168,8 @@ export default function AdminLayout(props: DashboardLayoutProps) {
 
           <Box
             mx="auto"
-            //px={{ base: '20px', md: '30px' }}
-            pe="20px"
+            // px={{ base: '20px', md: '30px' }}
+            // pe="20px"
             minH="100vh"
             //pt="50px"
             bg={'#FAFAFB'}

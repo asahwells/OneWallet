@@ -58,6 +58,7 @@ const FormControlButton = ({ label, labelPt, items, onChange, ...props }: IFormC
 
       {isModalOpen && (
         <SearchableListModal
+            pt={8}
           minWidth={{ base: '100%', md: '40%', lg: '980px' }}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
