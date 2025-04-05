@@ -29,7 +29,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
-          width={isMobile ? '100%' : '941px'}
+          width={{base : '100%', lg : '941px'}}
           mx="auto"
           h={isMobile ? 'auto' : '317px'}
           borderRadius="8px"

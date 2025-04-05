@@ -41,7 +41,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
-          width={isMobile ? '100%' : '940px'}
+          width={{base : '100%', lg : '941px'}}
           mx="auto"
           h={isMobile ? 'auto' : '482px'}
           borderRadius="8px"
