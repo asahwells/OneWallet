@@ -29,6 +29,7 @@ interface EnterPhoneTemplateProps {
 
 const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [errorMessage, setErrorMessage] = useState('')
 
 
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -39,22 +40,22 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
     const { customerDetails } = useAppSelector(state => state.customer)
 
     const { mutateAsync: sendPhoneOTP, isPending: isSendingOTP } = useSendPhoneOTP();
-
     const [phoneNumber, setPhoneNumber] = useState('');
 
 
     const handleContinue = async() => {
-        if (phoneNumber.length !== 11) {
-            toast({
-                title: 'Invalid phone number',
-                description: 'Phone number must be 11 digits',
-                status: 'error',
-                duration: 3000,
-                isClosable: true
-            });
-            return;
-        }
         try {
+            if (phoneNumber?.length !== 11) {
+                toast({
+                    title: 'Invalid phone number',
+                    description: 'Phone number must be 11 digits',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true
+                });
+                return;
+            }
+
             const resp = await sendPhoneOTP({ phone: phoneNumber });
 
             dispatch(setCustomer({ ...customerDetails,
@@ -64,8 +65,8 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
 
             onNext();
           } catch (error) {
-            console.error('Error sending OTP:', error);
             // Show the error modal
+            setErrorMessage(error?.message)
             onOpen();
           }
     };
@@ -147,7 +148,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
                 isOpen={isOpen}
                 onClose={onClose}
                 title="Error Message:"
-                title2="This user is already registered on OneWallet. Kindly check the number and try again"
+                title2={errorMessage  || "Something went wrong. Please try again."}
                 //width={{ xs: "95%", lg: "843px" }}
                 height="auto"
                 borderRadius="8px"

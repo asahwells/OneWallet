@@ -52,7 +52,7 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
 
     // If "BVN" is selected => max length = 10, else 11 for "NIN"
     const isBvn = customerDetails?.selectedDocumentType === DocumentType.BVN;
-    const maxLength = isBvn ? 10 : 11;
+    const maxLength = isBvn ? 11 : 11;
 
     // The button label changes depending on the selection
     const buttonLabel = isBvn ? 'Verify BVN' : 'Verify NIN';

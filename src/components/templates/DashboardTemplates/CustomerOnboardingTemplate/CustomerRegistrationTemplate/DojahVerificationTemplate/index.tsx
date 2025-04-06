@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Dojah from 'react-dojah'
-import {Box, CloseButton} from '@chakra-ui/react';
+import {Box, CloseButton, useToast} from '@chakra-ui/react';
 import {useAppSelector} from "../../../../../../redux/store";
 
 interface DojahVerificationTemplateProps {
@@ -15,7 +15,27 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
                                                                                  onBack
                                                                              }) => {
 
+    const toast = useToast()
+
     const {customerDetails} = useAppSelector(state => state.customer)
+
+
+    // Workaround: Override document.head.removeChild to suppress errors
+    useEffect(() => {
+        const originalRemoveChild = document.head.removeChild;
+        document.head.removeChild = function (child: Node) {
+            try {
+                return originalRemoveChild.call(document.head, child);
+            } catch (e) {
+                console.warn('Suppressed removeChild error:', e);
+                return child;
+            }
+        };
+        return () => {
+            document.head.removeChild = originalRemoveChild;
+        };
+    }, []);
+
     // Replace these with your actual Dojah credentials from the dashboard
     const appID = process.env.DOJAH_APP_ID
     const publicKey = process.env.DOJAH_PUBLIC_KEY
@@ -45,8 +65,9 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
     };
 
     const metadata = {
-        user_id: "121", // replace or dynamically set as needed
+        user_id: customerDetails?.id,
     };
+
 
     /**
      * Response callback from Dojah widget.
@@ -54,20 +75,41 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
      */
     const response = (responseType: string, data: any) => {
         console.log("Dojah response:", responseType, data);
-        if (responseType === 'success' && data?.status) {
+        if (responseType === 'success') {
             // Verification successful – move to next step
             onVerificationComplete();
-        } else if (responseType === 'error') {
+
+            return
+        }
+
+        if (responseType === 'error') {
             // Handle error (for example, show an error modal or log it)
             console.error("Dojah error:", data);
+            toast({
+                title: "Verification Error",
+                description: data.message || "An error occurred during verification.",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+            })
+            onBack()
+
+            return
         }
+
+        if(responseType === 'close') {
+            // Handle close event
+        }
+
         // You can handle other response types ('begin', 'loading', 'close') as needed
     };
     console.log({govData, userData, metadata, appID, publicKey})
 
+    // if (isClosed) return <Box />;
+
     return (
-        <Box pos={'relative'}>
-            <CloseButton position="absolute" right={4} top={6} color="" onClick={onBack} size="md" />
+        <Box>
+            {/*<CloseButton zIndex={9999999} position="absolute" right={4} top={6} color="" onClick={handleClose} size="md" />*/}
             <Dojah
                 response={response}
                 appID={appID}
@@ -78,6 +120,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
                 govData={govData}
                 metadata={metadata}
             />
+
         </Box>
     );
 };
