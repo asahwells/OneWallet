@@ -16,24 +16,21 @@ import BaseInput from 'components/molecules/inputs/BaseInput';
 import BaseButton from "../../../../../molecules/buttons/BaseButton";
 import {ArrowBackIcon} from "@chakra-ui/icons";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { useAddAddress } from 'api-services/business-registration-services';
+import { useAppSelector } from '../../../../../../redux/store'; 
 
 // or your normal input component
 
 interface IHouseDetailsTemplateProps {
-    onNext: (data: {
-        state: string;
-        lga: string;
-        houseNumber: string;
-        streetName: string;
-        landmark: string;
-    }) => void;
-    onBack?: () => void;
+    onNext: () => void;
+    onBack: () => void;
 }
 
-const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
-                                                                        onNext,
-                                                                        onBack
-                                                                    }) => {
+const HouseDetailsTemplate = ({
+        onNext,
+        onBack
+    }: IHouseDetailsTemplateProps) => {
+    const { userDetails } = useAppSelector(state => state.user)
     const isMobile = useBreakpointValue({base: true, md: false});
     const [stateValue, setStateValue] = useState('');
     const [lgaValue, setLgaValue] = useState('');
@@ -41,15 +38,26 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
     const [streetName, setStreetName] = useState('');
     const [landmark, setLandmark] = useState('');
 
-    const handleContinue = () => {
-        // Pass the form data upward
-        onNext({
+    const { mutateAsync: addAddress, isPending } = useAddAddress();
+
+    const handleContinue = async() => {
+        console.log('House Number:', houseNumber);
+
+        const payload ={
             state: stateValue,
             lga: lgaValue,
-            houseNumber,
+            address: houseNumber,
             streetName,
-            landmark
-        });
+            landmark,
+            userId: userDetails?.id,
+        };
+
+        try {
+            await addAddress(payload);
+            //onNext(); // Proceed to the next step
+        } catch (error) {
+            console.error('Error adding address:', error);
+        }
     };
 
     return (
@@ -159,6 +167,7 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                     mt={9}
                     variant={'brand'}
                     w={'full'}
+                    isLoading={isPending}
                     onClick={handleContinue}
                 >
                     Continue

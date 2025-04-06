@@ -20,6 +20,8 @@ import ErrorModal from "../../../../../molecules/modals/ErrorModal";
 import FailedModal from "../../../../../molecules/modals/FailedModal";
 import ChooseVerificationModal from "../../../../../molecules/modals/ChooseVerificationModal";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { useVerifyBVN, useVerifyNIN } from 'api-services/business-registration-services';
+import { useAppSelector } from '../../../../../../redux/store'; 
 
 interface BvnOrNinTemplateProps {
     onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
@@ -29,10 +31,13 @@ interface BvnOrNinTemplateProps {
 }
 
 const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, onCameraSelect, onAttachmentSelect }) => {
+    const { userDetails } = useAppSelector(state => state.user)
+    const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
 
-     const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
+    const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure()
+    const { isOpen: isOpenTwo, onOpen: onOpenTwo, onClose: onCloseTwo } = useDisclosure()
 
-     const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
+    const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
     const [selectedOption, setSelectedOption] = useState<'BVN' | 'NIN'>('BVN');
     const [errorMessage, setErrorMessage] = useState('')
 
@@ -40,6 +45,9 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
     const [hasAgreed, setHasAgreed] = useState(false);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+    const { mutateAsync: verifyBVN, isPending: isverifyingBVN } = useVerifyBVN();
+    const { mutateAsync: verifyNIN, isPending: isverifyingNIN } = useVerifyNIN();
 
 
     const invalidBVN = '1111111111'
@@ -54,16 +62,39 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
     // Button is enabled only if length matches and checkbox is checked
     const isButtonDisabled = inputValue.length !== maxLength || !hasAgreed;
 
-    const handleVerify = () => {
-
+    const handleVerify = async() => {
         if(isButtonDisabled) return
-        if(inputValue == invalidBVN){
-            setErrorMessage('BVN is already linked to an existing account. Please enter User\'s correct BVN or proceed to Login.')
-            onErrorOpen()
-            return
-        }
+        if (isBvn) {
+            const payload = {
+                type: 'bvn',
+                bvn: inputValue,
+                userId: userDetails?.id,
+            };
+            try {
+                await verifyBVN(payload);
+                onVerificationMethodOpen();
+                //onVerify(); // Proceed to the next step
+            } catch (error) {
+                console.error('Error verifying BVN:', error);
+                onOpenOne()
+            }
+            return;
+        };
 
-       onVerificationMethodOpen()
+        const payload = {
+            //type: 'nin',
+            bvn: inputValue,
+            userId: userDetails?.id,
+        };
+
+        try {
+            await verifyNIN(payload);
+            onVerificationMethodOpen();
+            //onNext(); // Proceed to the next step
+        } catch (error) {
+            console.error('Error verifying NIN:', error);
+            onOpenTwo()
+        }
     };
 
     return (
@@ -216,6 +247,7 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                             bg={!isButtonDisabled ? '#0F454F' : '#E2E8F0'}
                             color={!isButtonDisabled ? 'white' : '#94A3B8'}
                             fontWeight="600"
+                            isLoading={isverifyingBVN || isverifyingNIN}
                             onClick={handleVerify}
                             isDisabled={isButtonDisabled}
                             text=   {buttonLabel}
@@ -248,18 +280,32 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
             </Flex>
 
 
-        <FailedModal
-            isOpen={isErrorOpen}
-            onClose={() => onErrorClose()}
-            title={'Error Message:'}
-            title2={errorMessage}
-            width={{xs: "95%", lg: "843px"}}
+        {/* Failed Modal */}
+        {isOpenOne && <FailedModal
+            isOpen={isOpenOne}
+            onClose={onCloseOne}
+            title="Error Message:"
+            title2="BVN is already linked to an existing account, Please Enter User's BVN or proceed to Login"
+            //width={{ xs: "95%", lg: "843px" }}
             height="auto"
             borderRadius="8px"
             padding="24px"
             borderTopRadius={'26.81px'}
             borderBottomRadius={'26.81px'}
-    />
+        />}
+
+        {isOpenTwo && <FailedModal
+            isOpen={isOpenTwo}
+            onClose={onCloseTwo}
+            title="Error Message:"
+            title2="NIN is already linked to an existing account, Please Enter User's NIN or proceed to Login"
+            //width={{ xs: "95%", lg: "843px" }}
+            height="auto"
+            borderRadius="8px"
+            padding="24px"
+            borderTopRadius={'26.81px'}
+            borderBottomRadius={'26.81px'}
+        />}
 
             <ChooseVerificationModal isOpen={isVerificationMethodOpen} onClose={onVerificationMethodClose} onChooseCamera={onCameraSelect} onChooseUpload={onAttachmentSelect} />
 

@@ -10,11 +10,14 @@ import {
     useToast,
     HStack,
     Heading,
-    Input
+    Input,
+    useDisclosure
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from '../../../../../molecules/buttons/BaseButton';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { useSendPhoneOTP } from 'api-services/business-registration-services';
+import FailedModal from 'components/molecules/modals/FailedModal';
 
 interface EnterPhoneTemplateProps {
     onNext: () => void;
@@ -22,11 +25,14 @@ interface EnterPhoneTemplateProps {
 }
 
 const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [phoneNumber, setPhoneNumber] = useState('');
     const isMobile = useBreakpointValue({ base: true, md: false });
     const toast = useToast();
 
-    const handleContinue = () => {
+    const { mutateAsync: sendPhoneOTP, isPending: isSendingOTP } = useSendPhoneOTP();
+
+    const handleContinue = async() => {
         if (phoneNumber.length !== 11) {
             toast({
                 title: 'Invalid phone number',
@@ -37,7 +43,17 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
             });
             return;
         }
-        onNext();
+        try {
+            await sendPhoneOTP({ phone: phoneNumber });
+
+            localStorage.setItem('userPhoneNumber', phoneNumber);
+    
+            onNext();
+          } catch (error) {
+            console.error('Error sending OTP:', error);
+            // Show the error modal
+            onOpen();
+          }
     };
 
     return (
@@ -98,12 +114,27 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
                         bg={phoneNumber.length === 11 ? '#0F454F' : '#E2E8F0'}
                         color={phoneNumber.length === 11 ? 'white' : '#94A3B8'}
                         fontWeight="600"
+                        isLoading={isSendingOTP}
                         onClick={handleContinue}
                         isDisabled={phoneNumber.length !== 11}
                         text="Continue"
                     />
                 </Box>
             </Box>
+            
+            {/* Failed Modal */}
+            {isOpen && <FailedModal
+                isOpen={isOpen}
+                onClose={onClose}
+                title="Error Message:"
+                title2="This user is already registered on OneWallet. Kindly check the number and try again"
+                //width={{ xs: "95%", lg: "843px" }}
+                height="auto"
+                borderRadius="8px"
+                padding="24px"
+                borderTopRadius={'26.81px'}
+                borderBottomRadius={'26.81px'}
+            />}
         </Flex>
     );
 };

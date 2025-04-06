@@ -7,7 +7,7 @@ const BaseButton = ({
 }: IButtonProps ) => {
   return (
     <Button
-      bg={bg ?? ''}
+      bg={bg ?? '#0F454F'}
       onClick={onClick}
       _hover={{ bg: '#0C363E', color: 'white' }}
       fontWeight={400}

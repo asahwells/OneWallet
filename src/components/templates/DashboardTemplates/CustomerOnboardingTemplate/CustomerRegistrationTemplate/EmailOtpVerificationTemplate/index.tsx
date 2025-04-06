@@ -10,10 +10,15 @@ import {
     Button,
     useBreakpointValue,
     HStack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { PinInput, PinInputField } from '@chakra-ui/react';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { useEmailVerification } from 'api-services/business-registration-services';
+import { useAppSelector } from '../../../../../../redux/store'; 
+import FailedModal from 'components/molecules/modals/FailedModal';
+import SuccessModal from 'components/molecules/modals/SuccessModal';
 
 interface EmailOtpVerificationTemplateProps {
     onVerify: (otp: string) => void;
@@ -21,14 +26,22 @@ interface EmailOtpVerificationTemplateProps {
     userEmail?: string; // e.g. "johndoe@gmail.com"
 }
 
-const EmailOtpVerificationTemplate: React.FC<EmailOtpVerificationTemplateProps> = ({
-                                                                                       onVerify,
-                                                                                       onBack,
-                                                                                       userEmail = '*****@gmail.com',
-                                                                                   }) => {
+const EmailOtpVerificationTemplate = ({
+        onVerify,
+        onBack,
+        userEmail,
+    }: EmailOtpVerificationTemplateProps) => {
+    const { userDetails } = useAppSelector(state => state.user)
+    const { isOpen: isOpenOne, onClose: onCloseOne, onToggle: onToggleOne } = useDisclosure();
+    const { isOpen: isOpenTwo, onClose: onCloseTwo, onToggle: onToggleTwo } = useDisclosure();
+
     const [otp, setOtp] = useState('');
     const [timer, setTimer] = useState(60); // 60-second countdown
+
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const storedEmail = localStorage.getItem('userEmail');
+
+    const { mutateAsync: verifyEmail, isPending: isVerifyingEmail } = useEmailVerification();
 
     // Decrement timer
     useEffect(() => {
@@ -39,10 +52,21 @@ const EmailOtpVerificationTemplate: React.FC<EmailOtpVerificationTemplateProps> 
 
     const formattedTime = `0:${String(timer).padStart(2, '0')}`;
 
-    const handleVerify = () => {
-        if (otp.length === 4) {
-            onVerify(otp);
-        }
+    const handleVerify = async() => {
+        const payload = {
+            email: storedEmail,
+            otp,
+            userId: userDetails?.id,
+        };
+        try {
+            await verifyEmail(payload);
+            onToggleTwo();
+            //onVerify();
+          } catch (error) {
+            console.error('Error verifying email:', error);
+            // Show the error modal
+            onToggleOne();
+          }
     };
 
     const handleResend = () => {
@@ -133,6 +157,7 @@ const EmailOtpVerificationTemplate: React.FC<EmailOtpVerificationTemplateProps> 
                     bg={otp.length === 4 ? '#0F454F' : '#E2E8F0'}
                     color={otp.length === 4 ? 'white' : '#94A3B8'}
                     fontWeight="600"
+                    isLoading={isVerifyingEmail}
                     onClick={handleVerify}
                     isDisabled={otp.length !== 4}
                 >
@@ -160,6 +185,33 @@ const EmailOtpVerificationTemplate: React.FC<EmailOtpVerificationTemplateProps> 
                         </Button>
                     </HStack>
                 </Flex>
+
+                {isOpenTwo && <SuccessModal
+                    isOpen={isOpenTwo}
+                    onClose={onCloseTwo}
+                    title="Congratulations!"
+                    title2="Successful Email Verification"
+                    //width={{ xs: "95%", lg: "843px" }}
+                    height="240px"
+                    borderRadius="8px"
+                    padding="24px"
+                    borderTopRadius={'26.81px'}
+                    borderBottomRadius={'26.81px'}
+                />}
+
+                {/* Failed Modal */}
+                {isOpenOne && <FailedModal
+                    isOpen={isOpenOne}
+                    onClose={onCloseOne}
+                    title="Error Message:"
+                    title2="You entered a wrong OTP. This account will be locked for 3 hours after 2 more attempts."
+                    //width={{ xs: "95%", lg: "843px" }}
+                    height="auto"
+                    borderRadius="8px"
+                    padding="24px"
+                    borderTopRadius={'26.81px'}
+                    borderBottomRadius={'26.81px'}
+                />}
             </Flex>
         </>
     );

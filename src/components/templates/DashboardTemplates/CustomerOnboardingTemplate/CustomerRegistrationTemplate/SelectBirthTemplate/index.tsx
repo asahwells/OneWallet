@@ -16,6 +16,8 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomDateInput from "../../../../../molecules/inputs/CustomDateInput";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { useAddDateOfBirth } from 'api-services/business-registration-services';
+import { useAppSelector } from '../../../../../../redux/store'; 
 
 interface SelectBirthtemplateProps {
     onNext: () => void;
@@ -23,8 +25,28 @@ interface SelectBirthtemplateProps {
 }
 
 const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
+    const { userDetails } = useAppSelector(state => state.user)
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+    const { mutateAsync: addDOB, isPending } = useAddDateOfBirth();
+
+    const handleContinue = async () => {
+        if (!selectedDate) return;
+        const formattedDate = selectedDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+
+        const payload = {
+            dob: formattedDate,
+            userId: userDetails?.id,
+        };
+
+        try {
+            await addDOB(payload);
+            onNext(); // Proceed to the next step
+        } catch (error) {
+            console.error('Error adding date of birth:', error);
+        }
+    };
 
     return (
         <Flex direction="column" minH="100vh" bg="#F8FAFC">
@@ -76,7 +98,8 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         bg={selectedDate ? '#0F454F' : '#E2E8F0'}
                         color={selectedDate ? 'white' : '#94A3B8'}
                         fontWeight="600"
-                        onClick={onNext}
+                        isLoading={isPending}
+                        onClick={handleContinue}
                         isDisabled={!selectedDate}
                     >
                         Continue

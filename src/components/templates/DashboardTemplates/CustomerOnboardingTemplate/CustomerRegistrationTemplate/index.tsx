@@ -184,13 +184,7 @@ const RegisterUserForm = () => {
             />}
 
             {step === RegisterSteps.HouseDetails && <HouseDetailsTemplate
-                onNext={(data) => {
-                    console.log('House Details:', data);
-                    setStep(RegisterSteps.EnterEmail);
-                }
-
-
-                }
+                onNext={handleNext}
                 onBack={handleBack}
 
             />}
