@@ -28,7 +28,7 @@ export interface IIdentityResponse {
 
 export interface IResponse {
     message: string,
-    data: {},
+    data: any,
     state: string,
     status: number
 }

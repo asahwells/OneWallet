@@ -45,13 +45,7 @@ return useMutation({
     mutationFn: (data: IRegistrationPayload): Promise<IResponse> =>
         HttpClient.post(BASE_AXIOS, { url: "sales-agent/onboarding/issue-phone-otp", data }),
     onSuccess: (res: IResponse) => {
-        // toast({
-        // title: 'Success',
-        // description: 'OTP sent successfully.',
-        // status: 'success',
-        // duration: 3000,
-        // isClosable: true,
-        // });
+
         return res;
     },
     onError: (error: any) => {

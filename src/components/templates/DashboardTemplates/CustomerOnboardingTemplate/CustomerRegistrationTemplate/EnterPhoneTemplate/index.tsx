@@ -18,6 +18,9 @@ import BaseButton from '../../../../../molecules/buttons/BaseButton';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 import { useSendPhoneOTP } from 'api-services/business-registration-services';
 import FailedModal from 'components/molecules/modals/FailedModal';
+import {useDispatch} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../../../../../redux/store";
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface EnterPhoneTemplateProps {
     onNext: () => void;
@@ -26,11 +29,19 @@ interface EnterPhoneTemplateProps {
 
 const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [phoneNumber, setPhoneNumber] = useState('');
+
+
     const isMobile = useBreakpointValue({ base: true, md: false });
+
     const toast = useToast();
 
+    const dispatch = useAppDispatch()
+    const { customerDetails } = useAppSelector(state => state.customer)
+
     const { mutateAsync: sendPhoneOTP, isPending: isSendingOTP } = useSendPhoneOTP();
+
+    const [phoneNumber, setPhoneNumber] = useState('');
+
 
     const handleContinue = async() => {
         if (phoneNumber.length !== 11) {
@@ -44,10 +55,13 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
             return;
         }
         try {
-            await sendPhoneOTP({ phone: phoneNumber });
+            const resp = await sendPhoneOTP({ phone: phoneNumber });
 
-            localStorage.setItem('userPhoneNumber', phoneNumber);
-    
+            dispatch(setCustomer({ ...customerDetails,
+                phone: phoneNumber,
+                id: resp?.data?.userId,
+            }))
+
             onNext();
           } catch (error) {
             console.error('Error sending OTP:', error);
@@ -73,7 +87,10 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
                     <Heading
                         as="h1"
                         fontSize={isMobile ? '20px' : '24px'}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                         mb={2}
                     >
                         Enter Phone Number of User
@@ -83,7 +100,10 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
                         fontSize="14px"
                         color="#475569"
                         mb={6}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         We will send an OTP to this number
                     </Text>

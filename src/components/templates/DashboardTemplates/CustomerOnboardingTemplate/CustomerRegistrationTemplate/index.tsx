@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, useDisclosure} from '@chakra-ui/react';
 import EnterPhoneTemplate from './EnterPhoneTemplate';
 import EnterPinTemplate from "./EnterPinTemplate";
@@ -19,6 +19,9 @@ import { ProfileCreated } from './ProfileCreated';
 import UserNationality from './UserNationality';
 import BusinesAddress from './BusinessAddress';
 import BusinessDetails from './BusinessDetails';
+import DojahVerificationTemplate from "./DojahVerificationTemplate";
+import {useDispatch} from "react-redux";
+import {setCustomer} from "../../../../../redux/slices/customer";
 // import RegisterUserStepTwo from './RegisterUserStepTwo';
  enum RegisterSteps {
     EnterPhone = 'ENTER_PHONE',
@@ -36,19 +39,26 @@ import BusinessDetails from './BusinessDetails';
     UserNationality = 'USER_NATIONALITY',
     BusinessAddress = 'BUSINESS_ADDRESS',
     BusinessDetails = 'BUSINESS_DETAILS',
+    DojahVerification = 'DOJAH_VERIFICATION',
 }
 
 const RegisterUserForm = () => {
 
+     const dispatch = useDispatch()
     const {isOpen: isDocumentsVerificationModalOpen, onOpen: onDocumentsVerificationModalOpen, onClose: onDocumentsVerificationModalClose} =  useDisclosure()
     const [documentsVerificationStatus, setDocumentsVerificationStatus] = useState<VerificationStatus>('PENDING');
 
 
-    const [step, setStep] = useState<RegisterSteps>(RegisterSteps.UserBvnDetails);
+    const [step, setStep] = useState<RegisterSteps>(RegisterSteps.EnterPhone);
+
+    useEffect(() => {
+        return () => {
+            dispatch(setCustomer(null))
+        }
+    }, []);
 
     // Navigate to a specific step
     const goToStep = (nextStep: RegisterSteps) => {
-        console.log(nextStep)
         setStep(nextStep);
     };
 
@@ -144,10 +154,10 @@ const RegisterUserForm = () => {
             )}
             {step === RegisterSteps.BvnOrNin && (
                 <BvnOrNinTemplate
-                    onVerify={handleNext}
+                    onVerify={() => {goToStep(RegisterSteps.DojahVerification)}}
                     onBack={handleBack}
-                    onAttachmentSelect={() => goToStep(RegisterSteps.PhotoUpload)}
-                    onCameraSelect={() => goToStep(RegisterSteps.CaptureCustomerImage)}
+                    onAttachmentSelect={() => goToStep(RegisterSteps.DojahVerification)}
+                    onCameraSelect={() => goToStep(RegisterSteps.DojahVerification)}
                 />
             )}
             {step === RegisterSteps.PhotoUpload && (
@@ -222,6 +232,29 @@ const RegisterUserForm = () => {
             }
             {step === RegisterSteps.BusinessDetails && 
                 <BusinessDetails onNext={handleNext} onBack={handleBack} />
+            }
+
+            {
+                step === RegisterSteps.DojahVerification && (
+                    <DojahVerificationTemplate
+                        onVerificationComplete={
+                            () => {
+                                onDocumentsVerificationModalOpen();
+                                setDocumentsVerificationStatus('PENDING')
+
+                                setTimeout(() => {
+                                    setDocumentsVerificationStatus('SUCCESS')
+                                }, 3000)
+                            }
+                        }
+                        onBack={
+                            () => {
+                                goToStep(RegisterSteps.BvnOrNin);
+                            }
+                        }
+
+                    />
+                )
             }
 
 

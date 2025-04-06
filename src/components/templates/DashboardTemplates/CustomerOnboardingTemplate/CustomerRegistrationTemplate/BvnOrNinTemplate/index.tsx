@@ -1,27 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
+    Checkbox,
     Flex,
-    IconButton,
+    Heading,
+    HStack,
+    Input,
+    Link,
     Text,
     useBreakpointValue,
-    Heading,
-    Input,
-    HStack,
-    Checkbox,
-    Button,
-    Link, useDisclosure
+    useDisclosure
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from "../../../../../molecules/buttons/BaseButton";
-import ErrorModal from "../../../../../molecules/modals/ErrorModal";
 import FailedModal from "../../../../../molecules/modals/FailedModal";
 import ChooseVerificationModal from "../../../../../molecules/modals/ChooseVerificationModal";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
-import { useVerifyBVN, useVerifyNIN } from 'api-services/business-registration-services';
-import { useAppSelector } from '../../../../../../redux/store'; 
+import {useVerifyBVN, useVerifyNIN} from 'api-services/business-registration-services';
+import {useAppSelector} from '../../../../../../redux/store';
+import {DocumentType} from "../../../../../../redux/slices/customer/interface";
+import {useDispatch} from "react-redux";
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface BvnOrNinTemplateProps {
     onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
@@ -31,15 +31,16 @@ interface BvnOrNinTemplateProps {
 }
 
 const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, onCameraSelect, onAttachmentSelect }) => {
-    const { userDetails } = useAppSelector(state => state.user)
+
+    const dispatch = useDispatch()
+    const { customerDetails } = useAppSelector(state => state.customer)
+
     const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
 
     const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure()
     const { isOpen: isOpenTwo, onOpen: onOpenTwo, onClose: onCloseTwo } = useDisclosure()
 
     const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
-    const [selectedOption, setSelectedOption] = useState<'BVN' | 'NIN'>('BVN');
-    const [errorMessage, setErrorMessage] = useState('')
 
     const [inputValue, setInputValue] = useState('');
     const [hasAgreed, setHasAgreed] = useState(false);
@@ -49,11 +50,8 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
     const { mutateAsync: verifyBVN, isPending: isverifyingBVN } = useVerifyBVN();
     const { mutateAsync: verifyNIN, isPending: isverifyingNIN } = useVerifyNIN();
 
-
-    const invalidBVN = '1111111111'
-
     // If "BVN" is selected => max length = 10, else 11 for "NIN"
-    const isBvn = selectedOption === 'BVN';
+    const isBvn = customerDetails?.selectedDocumentType === DocumentType.BVN;
     const maxLength = isBvn ? 10 : 11;
 
     // The button label changes depending on the selection
@@ -62,18 +60,27 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
     // Button is enabled only if length matches and checkbox is checked
     const isButtonDisabled = inputValue.length !== maxLength || !hasAgreed;
 
+
+    useEffect(() => {
+        dispatch(setCustomer({
+            ...customerDetails,
+            selectedDocumentType: customerDetails?.selectedDocumentType || DocumentType.BVN,
+        }))
+    }, []);
+
     const handleVerify = async() => {
         if(isButtonDisabled) return
         if (isBvn) {
             const payload = {
                 type: 'bvn',
                 bvn: inputValue,
-                userId: userDetails?.id,
+                userId: customerDetails?.id,
             };
             try {
                 await verifyBVN(payload);
                 onVerificationMethodOpen();
-                //onVerify(); // Proceed to the next step
+                dispatch(setCustomer({ ...customerDetails, bvn: inputValue }))
+
             } catch (error) {
                 console.error('Error verifying BVN:', error);
                 onOpenOne()
@@ -84,13 +91,14 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
         const payload = {
             //type: 'nin',
             bvn: inputValue,
-            userId: userDetails?.id,
+            userId: customerDetails?.id,
         };
 
         try {
             await verifyNIN(payload);
             onVerificationMethodOpen();
             //onNext(); // Proceed to the next step
+            dispatch(setCustomer({ ...customerDetails, nin: inputValue }))
         } catch (error) {
             console.error('Error verifying NIN:', error);
             onOpenTwo()
@@ -114,7 +122,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                     <Heading
                         fontSize="18px"
                         fontWeight="700"
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                         mb={2}
                         color="#222B38"
                     >
@@ -126,7 +137,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                         fontWeight="400"
                         color="#344256"
                         mb={8}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         Please provide either the User’s BVN or NIN Number
                     </Text>
@@ -137,7 +151,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                         fontWeight="500"
                         mt={6}
                         mb={2}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         Select Either BVN or NIN
                     </Text>
@@ -160,12 +177,16 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                             textAlign="center"
                             py={2}
                             borderRadius="8px"
-                            bg={selectedOption === 'BVN' ? 'white' : 'transparent'}
-                            color={selectedOption === 'BVN' ? '#0F454F' : '#344256'}
+                            bg={customerDetails?.selectedDocumentType === DocumentType.BVN ? 'white' : 'transparent'}
+                            color={customerDetails?.selectedDocumentType === DocumentType.BVN  ? '#0F454F' : '#344256'}
                             fontWeight="600"
                             onClick={() => {
-                                setSelectedOption('BVN');
                                 setInputValue(''); // reset input
+                                dispatch(setCustomer({
+                                    ...customerDetails,
+                                    selectedDocumentType: DocumentType.BVN
+                                }))
+
                             }}
                         >
                             BVN
@@ -178,12 +199,17 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                             textAlign="center"
                             py={2}
                             borderRadius="8px"
-                            bg={selectedOption === 'NIN' ? 'white' : 'transparent'}
-                            color={selectedOption === 'NIN' ? '#0F454F' : '#344256'}
+                            bg={customerDetails?.selectedDocumentType === DocumentType.NIN  ? 'white' : 'transparent'}
+                            color={customerDetails?.selectedDocumentType === DocumentType.NIN ? '#0F454F' : '#344256'}
                             fontWeight="600"
                             onClick={() => {
-                                setSelectedOption('NIN');
                                 setInputValue(''); // reset input
+                                dispatch(setCustomer({
+                                    ...customerDetails,
+                                    selectedDocumentType: DocumentType.NIN
+                                }))
+
+                                dispatch
                             }}
                         >
                             NIN

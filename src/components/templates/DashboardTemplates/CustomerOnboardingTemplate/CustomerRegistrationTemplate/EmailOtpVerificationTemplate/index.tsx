@@ -31,7 +31,7 @@ const EmailOtpVerificationTemplate = ({
         onBack,
         userEmail,
     }: EmailOtpVerificationTemplateProps) => {
-    const { userDetails } = useAppSelector(state => state.user)
+    const { customerDetails } = useAppSelector(state => state.customer)
     const { isOpen: isOpenOne, onClose: onCloseOne, onToggle: onToggleOne } = useDisclosure();
     const { isOpen: isOpenTwo, onClose: onCloseTwo, onToggle: onToggleTwo } = useDisclosure();
 
@@ -39,7 +39,6 @@ const EmailOtpVerificationTemplate = ({
     const [timer, setTimer] = useState(60); // 60-second countdown
 
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const storedEmail = localStorage.getItem('userEmail');
 
     const { mutateAsync: verifyEmail, isPending: isVerifyingEmail } = useEmailVerification();
 
@@ -54,9 +53,9 @@ const EmailOtpVerificationTemplate = ({
 
     const handleVerify = async() => {
         const payload = {
-            email: storedEmail,
+            email: customerDetails?.email,
             otp,
-            userId: userDetails?.id,
+            userId: customerDetails?.id,
         };
         try {
             await verifyEmail(payload);
@@ -96,7 +95,10 @@ const EmailOtpVerificationTemplate = ({
                     as="h1"
                     fontSize="18px"
                     fontWeight="700"
-                    textAlign={isMobile ? 'left' : 'center'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
                     mb={2}
                 >
                     Email OTP Verification
@@ -106,7 +108,10 @@ const EmailOtpVerificationTemplate = ({
                     fontSize="14px"
                     color="#475569"
                     mb={6}
-                    textAlign={isMobile ? 'left' : 'center'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
                 >
                     Enter the verification code we just sent to the user’s email address{' '}
                     <strong>{userEmail}</strong>. You might need to ask the user to check

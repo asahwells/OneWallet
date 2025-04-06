@@ -16,8 +16,9 @@ import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseInput from 'components/molecules/inputs/BaseInput';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 import { useAddAddress, useAddEmail } from 'api-services/business-registration-services';
-import { useAppSelector } from '../../../../../../redux/store'; 
+import {useAppDispatch, useAppSelector} from '../../../../../../redux/store';
 import FailedModal from 'components/molecules/modals/FailedModal';
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface EnterEmailTemplateProps {
     onNext: (email: string) => void;
@@ -30,7 +31,9 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
         onSkip,
         onBack,
     }) => {
-    const { userDetails } = useAppSelector(state => state.user)
+
+    const dispatch = useAppDispatch()
+    const { customerDetails } = useAppSelector(state => state.customer)
     const [email, setEmail] = useState('');
 
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -46,12 +49,12 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
     const handleContinue = async() => {
         const payload ={
             email,
-            userId: userDetails?.id,
+            userId: customerDetails?.id,
         };
         try {
             await addEmail(payload);
 
-            localStorage.setItem('userEmail', email);
+            dispatch(setCustomer({ ...customerDetails, email }))
 
             //onNext();
             } catch (error) {
@@ -81,7 +84,10 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     as="h1"
                     fontSize="18px"
                     fontWeight="700"
-                    textAlign={isMobile ? 'left' : 'center'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
                     mb={2}
                 >
                     Enter User’s Email
@@ -91,7 +97,10 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     fontSize="14px"
                     color="#475569"
                     mb={6}
-                    textAlign={isMobile ? 'left' : 'center'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
                 >
                     Provide user’s email address
                 </Text>

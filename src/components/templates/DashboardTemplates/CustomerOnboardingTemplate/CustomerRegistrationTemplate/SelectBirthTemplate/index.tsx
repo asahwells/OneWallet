@@ -17,7 +17,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CustomDateInput from "../../../../../molecules/inputs/CustomDateInput";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 import { useAddDateOfBirth } from 'api-services/business-registration-services';
-import { useAppSelector } from '../../../../../../redux/store'; 
+import { useAppSelector } from '../../../../../../redux/store';
+import {useDispatch} from "react-redux";
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface SelectBirthtemplateProps {
     onNext: () => void;
@@ -25,7 +27,9 @@ interface SelectBirthtemplateProps {
 }
 
 const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
-    const { userDetails } = useAppSelector(state => state.user)
+    const dispatch = useDispatch()
+    const { customerDetails } = useAppSelector(state => state.customer)
+
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -37,11 +41,15 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
 
         const payload = {
             dob: formattedDate,
-            userId: userDetails?.id,
+            userId: customerDetails?.id,
         };
 
         try {
             await addDOB(payload);
+            dispatch(setCustomer({
+                ...customerDetails,
+                dob: formattedDate,
+            }))
             onNext(); // Proceed to the next step
         } catch (error) {
             console.error('Error adding date of birth:', error);
@@ -65,7 +73,10 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                     <Heading
                         as="h1"
                         fontSize={isMobile ? '20px' : '24px'}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                         mb={2}
                     >
                         Enter Date of Birth
@@ -74,7 +85,10 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         fontSize="14px"
                         color="#475569"
                         mb={6}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         Please select your date of birth
                     </Text>

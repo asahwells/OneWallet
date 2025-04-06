@@ -23,6 +23,7 @@ import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton"
 import { usePhoneNumberVerification, useResendOTP } from 'api-services/business-registration-services';
 import { useAppSelector } from '../../../../../../redux/store'; 
 import FailedModal from 'components/molecules/modals/FailedModal';
+import BasePinInput from "../../../../../molecules/inputs/BasePinInput";
 
 interface EnterPinTemplateProps {
     onVerify: () => void; // Called when the user successfully enters the OTP
@@ -33,15 +34,15 @@ const EnterPinTemplate = ({
         onVerify,
         onBack,
     }: EnterPinTemplateProps) => {
-    const { userDetails } = useAppSelector(state => state.user)
+    const { customerDetails } = useAppSelector(state => state.customer)
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
+
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [otp, setOtp] = useState('');
     const [timer, setTimer] = useState(60);
-    const storedPhoneNumber = localStorage.getItem('userPhoneNumber');
 
-    const isMobile = useBreakpointValue({ base: true, md: false });
-    const toast = useToast();
 
     const { mutateAsync: resendOTP, isPending: isResendingOTP } = useResendOTP();
     const { mutateAsync: verifyPhone, isPending: isVerifyingPhoneNumber } = usePhoneNumberVerification();
@@ -58,9 +59,9 @@ const EnterPinTemplate = ({
 
     const handleVerify = async() => {
         const payload = {
-            phone: storedPhoneNumber,
+            phone: customerDetails?.phone,
             otp,
-            userId: userDetails?.id,
+             userId: customerDetails?.id,
         };
         try {
             await verifyPhone(payload);
@@ -73,18 +74,20 @@ const EnterPinTemplate = ({
     };
 
     const handleResend = async () => {
-        if (!storedPhoneNumber) {
-          console.error('No phone number found in localStorage.');
-          return;
-        }
-      
         try {
-          await resendOTP({ phone: storedPhoneNumber }); 
-          setTimer(60);
-          setOtp('');
-        } catch (error) {
-          // Errors are already handled in onError of useResendOTP
+            if (!customerDetails?.phone) {
+                throw('Enter a valid user phone number.');
+            }
+            await resendOTP({ phone: customerDetails?.phone });
+            setTimer(60);
+            setOtp('');
+        }catch (e) {
+            console.error('Error resending OTP:', e);
+            // Show the error modal
+            onOpen();
+
         }
+
       };
       
 
@@ -134,38 +137,11 @@ const EnterPinTemplate = ({
 
                     {/* OTP Fields */}
                     <HStack justifyContent="center" mb={6}>
-                        <PinInput
-                            otp
-                            type="number"
-                            value={otp}
-                            onChange={(value) => setOtp(value)}
-                            size={isMobile ? 'md' : 'lg'}
-                        >
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                        </PinInput>
+                        <BasePinInput count={4} onChange={setOtp}>
+                            {/* If BasePinInput expects children, you can place them here.
+              If not needed, just remove this empty fragment. */}
+                            <></>
+                        </BasePinInput>
                     </HStack>
 
                     {/* Verify Button */}
