@@ -37,7 +37,7 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     handleClick: () => void;
   }
 
-export interface ErrorModalProps {
+export interface ErrorModalProps extends ModalContentProps {
   isOpen: boolean;
   onClose: () => void;
   errorMessage?: string;

@@ -11,6 +11,7 @@ import { useLogin } from "../../../../api-services/auth-services";
 import { useRouter } from "next/navigation";
 import GenericPopUpModal from 'components/molecules/modals/GenericPopUpModal';
 import { useFetchLoggedInUser } from 'api-services/dashboard-services';
+import ErrorModal from 'components/molecules/modals/ErrorModal';
 
 const LoginForm = () => {
     const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
@@ -20,9 +21,11 @@ const LoginForm = () => {
 
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const { isOpen: isLocationModalOpen, onClose: onLocationModalClose, onOpen: onLocationModalOpen } = useDisclosure();
     const { isOpen: isNotificationModalOpen, onClose: onNotificationModalClose, onOpen: onNotificationModalOpen } = useDisclosure();
+    const { isOpen: isLoginModalOpen, onClose: onLoginModalClose, onOpen: onLoginModalOpen } = useDisclosure();
 
     const { isOpen, onClose, onToggle } = useDisclosure();
 
@@ -49,7 +52,9 @@ const LoginForm = () => {
 
             router.replace('/admin/dashboard');
             
-        } catch (e) {
+        } catch (e: any) {
+            onLoginModalOpen();
+            setErrorMessage(e.message)
             console.warn({ e });
         }
     };
@@ -116,6 +121,21 @@ const LoginForm = () => {
 
     return (
         <>
+            {/* Show login error modal */}
+            {
+                isLoginModalOpen && <ErrorModal 
+                maxWidth={{ base: '100%', md: '674px' }}
+                alignSelf={'center'}
+                marginX={{ base: '26px', md: 0 }}
+                minHeight={{ base: 'auto', md: '277.44px' }}
+                borderRadius="26.81px"
+                paddingX={{ base: '2px', md: '41px' }}
+                pt={{ base: '20px', md: '18.76px' }}
+                pb={'33.89px'}
+                onClose={onLoginModalClose} 
+                errorMessage={errorMessage}
+                isOpen={isLoginModalOpen} />
+            }
             {/* Location Permission Modal */}
             {isLocationModalOpen && <GenericPopUpModal
                 cancelText="No"
@@ -167,9 +187,9 @@ const LoginForm = () => {
             />}
 
             {/* Login Form */}
-            <Box padding={{ base: '24px', lg: '40px' }} bg="#F1F5F9" width={{ base: '100%', lg: '80%' }} alignSelf="center" display="flex" flexDirection="column" borderRadius="8px" justifyContent="center" alignItems="center">
-                <VStack spacing={4} align="stretch" width={{ base: '100%', lg: "100%" }} height="240px" gap={4} borderRadius="8px" mb={'-10.5px'} bg="transparent">
-                    <BaseFormControl label={'Phone Number'}>
+            <Box h={{base: 'auto', md: "323px"}} padding={{ base: '21px', md: '28px' }} bg="#F1F5F9" width={{ base: '100%', md: '665px' }} alignSelf="center" display="flex" flexDirection="column" borderRadius="8px" justifyContent="center" alignItems="center">
+                <VStack w="full" align="stretch" borderRadius="8px" bg="transparent">
+                    <BaseFormControl mb={{base: '20px', md: '24px'}} label={'Phone Number'}>
                         <BaseInput placeholder="" value={phone} onChange={(e: any) => setPhone(e.target.value)} />
                     </BaseFormControl>
 
@@ -177,7 +197,7 @@ const LoginForm = () => {
                         <PasswordInput placeholder="" value={password} onChange={(e: any) => setPassword(e.target.value)} />
                     </BaseFormControl>
 
-                    <Box color="#344256" fontSize={'14px'} fontWeight={500} lineHeight={'22px'} letterSpacing={'-1%'} alignSelf="flex-end" onClick={onToggle} cursor="pointer">
+                    <Box mt={'14px'} color="#344256" fontSize={'14px'} fontWeight={500} lineHeight={'22px'} letterSpacing={'-1%'} alignSelf="flex-end" onClick={onToggle} cursor="pointer">
                         Forgot Password?
                     </Box>
                 </VStack>
@@ -188,13 +208,13 @@ const LoginForm = () => {
                     disabled={!phone || !password}
                     isLoading={isLoggingIn || isFetchingUser}
                     color={!password || !phone ? '#6F8F95' : "white"}
-                    width={{ base: '100%', lg: "100%" }}
+                    w="full"
                     height="56px"
-                    border={'1px'}
+                    mt={'36px'}
+                    border={'1.2px solid'}
                     borderColor={!phone || !password ? '#6F8F95' : '#0F454F'}
                     borderRadius="8px"
                     padding="12px 24px"
-                    gap="8px"
                     bg={!phone || !password ? "#CFDADC" : "#0F454F"}
                 />
             </Box>
