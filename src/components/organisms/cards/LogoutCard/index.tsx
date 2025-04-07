@@ -36,10 +36,10 @@ const LogoutCard = () => {
                 mr={2}
             />
             <Box flex="1">
-                <Text variant={'logout'}>
+                <Text fontSize={'12.65px'} fontWeight={500} color={'#FFFFFF'} variant={'logout'}>
                    {userDetails?.firstName ?? "N/A"} 
                 </Text>
-                <Text variant={'logoutBase'}>
+                <Text fontSize={'10.54px'} fontWeight={400} color={'#FFFFFF'} variant={'logoutBase'}>
                     Admin
                 </Text>
             </Box>

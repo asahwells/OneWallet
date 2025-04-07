@@ -1,14 +1,16 @@
 "use client"
 
-import {Box, HStack, Show, Stack, Text, VStack} from "@chakra-ui/react";
+import {Box, HStack, Show, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
 import RegisterCustomerIcon from "../../../atoms/icons/RegisterCustomerIcon";
 import BaseButton from "../../../molecules/buttons/BaseButton";
 import DeviceInventoryIcon from "../../../atoms/icons/DeviceInventoryIcon";
 import {useRouter} from "next/navigation";
+import DashboardDownloadIcon from "components/atoms/icons/DashboardDownloadIcon";
 
 const QuickActionCard = () => {
 
     const router = useRouter()
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const navigateToRegisterCustomer = () => {
         router.push('/admin/dashboard/business/customer-onboarding/registration')
     }
@@ -21,7 +23,7 @@ const QuickActionCard = () => {
             <Stack w={'full'} spacing={5} bg={'white'}>
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                    <Show above={'md'}>
+                    <Show above={'base'}>
 
                     <RegisterCustomerIcon/>
                     </Show>
@@ -43,7 +45,7 @@ const QuickActionCard = () => {
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
 
-                   <Show above={'md'}>
+                   <Show above={'base'}>
                        <DeviceInventoryIcon/>
                    </Show>
 
@@ -64,8 +66,8 @@ const QuickActionCard = () => {
 
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                    <Show above={'md'}>
-                    <DeviceInventoryIcon/>
+                    <Show above={'base'}>
+                    <DashboardDownloadIcon/>
                     </Show>
 
                     <VStack w={'full'} spacing={3}>

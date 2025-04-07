@@ -18,7 +18,7 @@ function SidebarContent(props: SidebarContentProps) {
 	return (
 		<VStack h={'91%'} justify={'space-between'} align={'start'}>
 			<Flex w={'full'} direction='column' height='100%' borderRadius='30px'>
-				<Stack direction='column' mt='8px' mb='auto'>
+				<Stack direction='column' mt='47px' mb='auto'>
 					<Box w={'full'}>
 						<Links routes={routes} onClose={onClose} />
 					</Box>
