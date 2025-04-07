@@ -105,7 +105,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Box w={'100vw'} h={'58px'} display={'flex'} alignItems={'center'} px={16} height={'80px'}  backgroundColor={'#FFFFFF'}  pos={'relative'} top={0} zIndex={10} >
+        <Box w={'100vw'} display={'flex'} alignItems={'center'} pr='20px' pl={'20px'} h={'80px'}  backgroundColor={'#FFFFFF'}  pos={'relative'} top={0} zIndex={10} >
           <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
             <IconButton
               icon={<Armburger />}
