@@ -17,13 +17,13 @@ const LoginTemplate: React.FC = () => {
             bgRepeat={'no-repeat'}
         >
             <Box
-                width={{base: '80%', lg: '60%'}}
+                mx={{base: '20px', md: 'auto'}}
+                w={"full"}
                 h="100%"
                 display={'flex'}
                 alignItems={'center'}
                 justifyContent={'center'}
                 flexDirection={'column'}
-                mx={'auto'}
             >
                 <Image
                     src={Logo.src}
@@ -32,7 +32,7 @@ const LoginTemplate: React.FC = () => {
                     width="243.95px"
                     height="37.72px"
                     mx="auto"
-                    mb="5%"
+                    mb={{base: '23.46px', md: '36.28px'}}
                 />
                 <LoginForm />
             </Box>

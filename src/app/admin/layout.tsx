@@ -105,7 +105,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Box w={'100vw'} display={'flex'} alignItems={'center'} pr='20px' pl={'20px'} h={'80px'}  backgroundColor={'#FFFFFF'}  pos={'relative'} top={0} zIndex={10} >
+        <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'}  pos={'relative'} top={0} zIndex={10} >
           <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
             <IconButton
               icon={<Armburger />}
@@ -126,8 +126,8 @@ export default function AdminLayout(props: DashboardLayoutProps) {
 
         {isOpen && <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
             <DrawerOverlay />
-            <DrawerContent>
-                <DrawerCloseButton />
+            <DrawerContent bgColor={'#0F454F'}>
+                <DrawerCloseButton color={'white'} />
                 <DrawerBody>
                     <SidebarContent routes={routes} onClose={onClose}  />
                 </DrawerBody>

@@ -1,14 +1,16 @@
 "use client"
 
-import {Box, HStack, Show, Stack, Text, VStack} from "@chakra-ui/react";
+import {Box, Hide, HStack, Show, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
 import RegisterCustomerIcon from "../../../atoms/icons/RegisterCustomerIcon";
 import BaseButton from "../../../molecules/buttons/BaseButton";
 import DeviceInventoryIcon from "../../../atoms/icons/DeviceInventoryIcon";
 import {useRouter} from "next/navigation";
+import DashboardDownloadIcon from "components/atoms/icons/DashboardDownloadIcon";
 
 const QuickActionCard = () => {
 
     const router = useRouter()
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const navigateToRegisterCustomer = () => {
         router.push('/admin/dashboard/business/customer-onboarding/registration')
     }
@@ -21,10 +23,10 @@ const QuickActionCard = () => {
             <Stack w={'full'} spacing={5} bg={'white'}>
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                    <Show above={'md'}>
+                    <Hide below={'md'}>
 
                     <RegisterCustomerIcon/>
-                    </Show>
+                    </Hide>
 
                     <VStack w={'full'} spacing={3}>
                         <Stack w={'full'} spacing={2} color={'#344256'}>
@@ -43,9 +45,9 @@ const QuickActionCard = () => {
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
 
-                   <Show above={'md'}>
+                   <Hide below={'md'}>
                        <DeviceInventoryIcon/>
-                   </Show>
+                   </Hide>
 
                     <VStack w={'full'} spacing={3}>
                         <Stack w={'full'} spacing={2} color={'#344256'}>
@@ -64,9 +66,9 @@ const QuickActionCard = () => {
 
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                    <Show above={'md'}>
-                    <DeviceInventoryIcon/>
-                    </Show>
+                    <Hide  below={'md'}>
+                    <DashboardDownloadIcon/>
+                    </Hide>
 
                     <VStack w={'full'} spacing={3}>
                         <Stack w={'full'} spacing={2} color={'#344256'}>
