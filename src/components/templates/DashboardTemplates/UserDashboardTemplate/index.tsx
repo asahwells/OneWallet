@@ -116,7 +116,8 @@ const UserDashboardTemplate = () =>  {
                 <Box w={{
                     base: 'full',
                     md: '65%'
-                }} borderRadius={'4px'}>
+                }} borderRadius={'4px'}
+                >
                     <ExpectedPaymentChart/>
 
                 </Box>

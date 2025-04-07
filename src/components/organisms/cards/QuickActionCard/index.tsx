@@ -1,6 +1,6 @@
 "use client"
 
-import {Box, HStack, Show, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
+import {Box, Hide, HStack, Show, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
 import RegisterCustomerIcon from "../../../atoms/icons/RegisterCustomerIcon";
 import BaseButton from "../../../molecules/buttons/BaseButton";
 import DeviceInventoryIcon from "../../../atoms/icons/DeviceInventoryIcon";
@@ -23,10 +23,10 @@ const QuickActionCard = () => {
             <Stack w={'full'} spacing={5} bg={'white'}>
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                    <Show above={'base'}>
+                    <Hide below={'md'}>
 
                     <RegisterCustomerIcon/>
-                    </Show>
+                    </Hide>
 
                     <VStack w={'full'} spacing={3}>
                         <Stack w={'full'} spacing={2} color={'#344256'}>
@@ -45,9 +45,9 @@ const QuickActionCard = () => {
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
 
-                   <Show above={'base'}>
+                   <Hide below={'md'}>
                        <DeviceInventoryIcon/>
-                   </Show>
+                   </Hide>
 
                     <VStack w={'full'} spacing={3}>
                         <Stack w={'full'} spacing={2} color={'#344256'}>
@@ -66,9 +66,9 @@ const QuickActionCard = () => {
 
 
                 <HStack w={'full'} alignItems={'center'} justifyContent={'center'} spacing={4}>
-                    <Show above={'base'}>
+                    <Hide  below={'md'}>
                     <DashboardDownloadIcon/>
-                    </Show>
+                    </Hide>
 
                     <VStack w={'full'} spacing={3}>
                         <Stack w={'full'} spacing={2} color={'#344256'}>

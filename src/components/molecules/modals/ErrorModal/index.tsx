@@ -30,7 +30,7 @@ const ErrorModal = ({
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size={modalSize}>
             <ModalOverlay />
-            <ModalContent {...props} borderRadius="8px">
+            <ModalContent borderRadius="8px" {...props}>
                 {/* Header */}
                 {/* <ModalHeader
                     fontSize="18px"

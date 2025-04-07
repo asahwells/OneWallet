@@ -21,6 +21,7 @@ const ExpectedPaymentChart = ( ) => {
             alignItems="center"
             flexDirection="column"
             w="100%"
+            h={'full'}
             border='0.88px solid #E4E4E7'
             overflowY="auto"
         >
