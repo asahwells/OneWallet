@@ -56,9 +56,7 @@ const SuccessModal = ({
                 gap="8px"
                 border={"1px solid #0F454F"}
                 bg={"#0F454F"}
-                onClick={() => {
-                  router.replace('/admin/dashboard');
-                }}
+                onClick={onClose}
             />
           </VStack>
         </ModalBody>

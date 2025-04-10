@@ -21,7 +21,7 @@ import FailedModal from 'components/molecules/modals/FailedModal';
 import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface EnterEmailTemplateProps {
-    onNext: (email: string) => void;
+    onNext: () => void;
     onSkip: () => void;
     onBack?: () => void;
 }
@@ -56,7 +56,7 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
 
             dispatch(setCustomer({ ...customerDetails, email }))
 
-            //onNext();
+            onNext();
             } catch (error) {
             console.error('Error sending OTP:', error);
             // Show the error modal

@@ -41,8 +41,6 @@ const HouseDetailsTemplate = ({
     const { mutateAsync: addAddress, isPending } = useAddAddress();
 
     const handleContinue = async() => {
-        console.log('House Number:', houseNumber);
-
         const payload ={
             state: stateValue,
             lga: lgaValue,
@@ -50,11 +48,12 @@ const HouseDetailsTemplate = ({
             streetName,
             landmark,
             userId: userDetails?.id,
+            town: 'Test'
         };
 
         try {
             await addAddress(payload);
-            //onNext(); // Proceed to the next step
+            onNext(); // Proceed to the next step
         } catch (error) {
             console.error('Error adding address:', error);
         }

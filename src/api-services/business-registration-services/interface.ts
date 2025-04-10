@@ -79,3 +79,22 @@ export interface IBusinessPayload {
     coordinate?: string,
     timestamp?: string,
 }
+
+export interface IAddEmailPayload {
+    email: string,
+    userId: string,
+}
+
+export interface  ICustomerBankInfoResponse {
+
+    message: string,
+    data: {
+        accountNumber: string,
+        accountName: string,
+        bankName: string,
+    }
+    state: string,
+    status: number
+
+
+}

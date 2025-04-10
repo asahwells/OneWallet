@@ -13,30 +13,57 @@ import {
 import OnboardingErrorBox from 'components/molecules/box/OnboardingErrorBox';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import { IOnboardingErrorMessageBoxProps, RegisterSteps, VerificationStatus } from 'components/molecules/buttons/interfaces';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useGetCustomerInformation} from "../../../../../../api-services/business-registration-services";
+import {useAppSelector} from "../../../../../../redux/store";
 
 interface VerificationInProgressTemplateProps {
-  BvnVerificationStatus?: VerificationStatus;
-  PhotoVerificationStatus?: VerificationStatus; 
-  DobVerificationStatus?: VerificationStatus;
-  verificationStatus?: VerificationStatus; // for handling overall verification status
+  onNext: () => void;
   onBack: (step: RegisterSteps) => void;
 }
 
 const VerificationProgressTemplate = ({
-  BvnVerificationStatus = VerificationStatus.Failed,
-  PhotoVerificationStatus = VerificationStatus.Pending,
-  DobVerificationStatus = VerificationStatus.Pending,
-  verificationStatus,
+                                        onNext,
   onBack
 }: VerificationInProgressTemplateProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const [isDataValid, setIsDataValid] = useState(false)
+
+  const {customerDetails} = useAppSelector(state => state.customer)
+  const {data: customerInfo, mutateAsync: fetchCustomerInfo, isPending} = useGetCustomerInformation(customerDetails?.id)
+
+  const getVerificationStatus = () => {
+    if (isPending) return VerificationStatus.Pending;
+
+    if (customerInfo?.data?.accountNumber) {
+      return VerificationStatus.Complete;
+    }
+
+    return VerificationStatus.Failed;
+
+  }
 
   const verificationSteps = [
-    { label: "Verifying User's BVN", status: BvnVerificationStatus, step: RegisterSteps.BvnOrNin },
-    { label: "Verifying User's Photo", status: PhotoVerificationStatus, step: RegisterSteps.PhotoUpload },
-    { label: "Verifying User's Date of Birth", status: DobVerificationStatus, step: RegisterSteps.SelectBirth },
-  ];
+    {label: "Verifying User's BVN", status: getVerificationStatus(), step: RegisterSteps.BvnOrNin},
+    {label: "Verifying User's Photo", status: getVerificationStatus(), step: RegisterSteps.PhotoUpload},
+    {label: "Verifying User's Date of Birth", status: getVerificationStatus(), step: RegisterSteps.SelectBirth},
+  ]
+
+
+  useEffect(() => {
+    fetchCustomerInfo()
+  }, []);
+
+  useEffect(() => {
+
+    if (customerInfo?.data?.accountNumber) {
+      setTimeout(() => {
+        onNext();
+      }, 2000);
+    }
+
+  }, [customerInfo?.data]);
+
 
   const getStatusIcon = (status: VerificationStatus) => {
     switch (status) {

@@ -1,6 +1,13 @@
 import { useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { IResponse, IRegistrationPayload, IIdentityResponse, ICategoriesResponse, IBusinessPayload } from "./interface";
+import {
+    IResponse,
+    IRegistrationPayload,
+    IIdentityResponse,
+    ICategoriesResponse,
+    IBusinessPayload,
+    IAddEmailPayload, ICustomerBankInfoResponse
+} from "./interface";
 import { BASE_AXIOS, HttpClient } from "api-services/http";
 import { IAuthRes } from "api-services/auth-services/interface";
 import { useDispatch } from "react-redux";
@@ -208,7 +215,7 @@ export const useAddEmail = () => {
     const customToast = useToast();
 
     return useMutation({
-        mutationFn: (data: IRegistrationPayload): Promise<IResponse> =>
+        mutationFn: (data: IAddEmailPayload): Promise<IResponse> =>
             HttpClient.post(BASE_AXIOS, { url: "sales-agent/onboarding/issue-email", data }),
         onSuccess: (res: IResponse) => {
             // customToast({
@@ -302,6 +309,21 @@ export const useGetIdentity = () => {
     }
   });
 };
+
+
+export const useGetCustomerInformation = (userId: string) => {
+    return useMutation({
+        mutationFn: (): Promise<ICustomerBankInfoResponse> => {
+            return HttpClient.get(BASE_AXIOS, {url: `sales-agent/onboarding/customer-account?userId=${userId}`});
+        },
+        onSuccess: (res: ICustomerBankInfoResponse) => {
+            return res;
+        },
+        onError: (error: any) => {
+            throw new Error(error?.response?.data?.message || "Failed to fetch customer information.");
+        }
+    });
+}
 
 export const useFetchIndustries = () => {
   const dispatch = useDispatch();
