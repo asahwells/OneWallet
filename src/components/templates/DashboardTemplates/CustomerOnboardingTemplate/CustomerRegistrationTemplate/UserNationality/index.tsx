@@ -3,6 +3,8 @@ import { Box, Flex, Heading, Text, useBreakpointValue } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControlButton from 'components/molecules/buttons/FormControlButton'; // Import your BaseFormControlButton
+import { setBusiness } from '../../../../../../redux/slices/business';
+import {useAppDispatch, useAppSelector} from "../../../../../../redux/store";
 
 interface ListProps {
   value?: string;
@@ -19,13 +21,21 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [nationality, setNationality] = useState('');
 
+  const dispatch = useAppDispatch()
+  const { businessDetails } = useAppSelector(state => state.business)
+  const { customerDetails } = useAppSelector(state => state.customer)
+
   const handleNationalityChange = (item: ListProps) => {
-    setNationality(item.value);
-  };
+    dispatch(setBusiness({ 
+      ...businessDetails,
+      nationality: item.value,
+      userId: customerDetails?.id,
+    }));
+  }
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton onBack={onBack} />
+      <HeaderBackButton onBack={onBack} header='Business Setup'/>
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
@@ -73,6 +83,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
             variant={'ghost'}
             text={'Continue'}
             onClick={onNext}
+            color={'#FCFCFC'}
             border={'1.2px solid #6F8F95'}
             borderRadius={'8px'}
             w={'full'}

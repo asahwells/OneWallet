@@ -9,8 +9,15 @@ import VerificationUsersTemplate from './VerifyUsersIdentify';
 import PhoneVerificationTemplate from './PhoneVerificationTeplate';
 import SuccessTemplate from './CongratulationsTemplate';
 import QrCodeTemplate from './QRCodeTemplate';
+import UserNationality from '../CustomerRegistrationTemplate/UserNationality';
+import BusinessAddress from '../CustomerRegistrationTemplate/BusinessAddress';
+import BusinessDetails from '../CustomerRegistrationTemplate/BusinessDetails';
 
  enum BusinessSteps {
+    UserNationality = 'USER_NATIONALITY',
+    BusinessAddress = 'BUSINESS_ADDRESS',
+    BusinessDetails = 'BUSINESS_DETAILS',
+    DojahVerification = 'DOJAH_VERIFICATION',
     SourceOfIncome = 'SOURCE_OF_INCOME',
     PoliticalExposure = 'POLITICAL_EXPOSURE',
     Atestation = 'ATESTATION',
@@ -21,7 +28,7 @@ import QrCodeTemplate from './QRCodeTemplate';
 }
 
 const BusinessSetupTemplate = () => {
-    const [step, setStep] = useState<BusinessSteps>(BusinessSteps.SourceOfIncome);
+    const [step, setStep] = useState<BusinessSteps>(BusinessSteps.Atestation);
 
     // Navigate to a specific step
     const goToStep = (nextStep: BusinessSteps) => {
@@ -31,10 +38,19 @@ const BusinessSetupTemplate = () => {
     // Example of "Next" navigation based on current step
     const handleNext = () => {
         switch (step) {
+            case BusinessSteps.UserNationality:
+                setStep(BusinessSteps.BusinessAddress);
+                break;
+            case BusinessSteps.BusinessAddress:
+                setStep(BusinessSteps.BusinessDetails);
+                break;
+            case BusinessSteps.BusinessDetails:
+                setStep(BusinessSteps.SourceOfIncome);
+                break;
             case BusinessSteps.SourceOfIncome:
                 setStep(BusinessSteps.PoliticalExposure);
                 break;
-            case BusinessSteps.PoliticalExposure:
+            case BusinessSteps.PoliticalExposure: 
                 setStep(BusinessSteps.Atestation);
                 break;
             case BusinessSteps.Atestation:
@@ -57,6 +73,15 @@ const BusinessSetupTemplate = () => {
     // Example "Back" navigation based on current step
     const handleBack = () => {
         switch (step) {
+            case BusinessSteps.BusinessAddress:
+                setStep(BusinessSteps.UserNationality);
+                break;
+            case BusinessSteps.BusinessDetails:
+                setStep(BusinessSteps.BusinessAddress);
+                break;
+            case BusinessSteps.SourceOfIncome:
+                setStep(BusinessSteps.BusinessDetails);
+                break;
             case BusinessSteps.PoliticalExposure:
                 setStep(BusinessSteps.SourceOfIncome);
                 break;
@@ -82,6 +107,15 @@ const BusinessSetupTemplate = () => {
 
     return (
         <Box w="full">
+            {step === BusinessSteps.UserNationality && 
+                <UserNationality onNext={handleNext} onBack={handleBack} />
+            }
+            {step === BusinessSteps.BusinessAddress && 
+                <BusinessAddress onNext={handleNext} onBack={handleBack} />
+            }
+            {step === BusinessSteps.BusinessDetails && 
+                <BusinessDetails onNext={handleNext} onBack={handleBack} />
+            }
             {step === BusinessSteps.SourceOfIncome && (
                 <SourceOfIncomeTemplate onNext={handleNext} onBack={handleBack} />
             )}

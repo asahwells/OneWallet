@@ -66,7 +66,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
             onNext();
           } catch (error) {
             // Show the error modal
-            setErrorMessage(error?.message)
+            setErrorMessage((error as Error)?.message)
             onOpen();
           }
     };

@@ -1,52 +1,4 @@
-export interface IRegistrationPayload {
-    phone?: string;
-    userId?: string;
-    otp?: string;
-    dob?: string;
-    type?: string;
-    bvn?: string;
-    nin?: string;
-    state?: string;
-    lga?: string;
-    town?: string;
-    address?: string;
-    landmark?: string;
-    registrationBusiness?: string;
-}
-
-export interface IIdentityResponse {
-    message: string,
-    data: {
-        firstName: string,
-        lastName: string,
-        dob: string,
-        gender: string
-    },
-    state: string,
-    status: number
-}
-
-export interface IResponse {
-    message: string,
-    data: any,
-    state: string,
-    status: number
-}
-
-export interface ICategoryResponse {
-    id: string,
-    name: string,
-    value?: string,
-}
-
-export interface ICategoriesResponse {
-    message: string,
-    data: ICategoryResponse[],
-    state: string,
-    status: number
-}
-
-export interface IBusinessPayload {
+export interface IBusiness {
     hasCac?: boolean,
     businessType?: string,
     photoUrl: string,
@@ -78,4 +30,17 @@ export interface IBusinessPayload {
     userId: string,
     coordinate?: string,
     timestamp?: string,
+}
+
+
+export interface IBusinessSliceInitialState {
+    businessDetails: IBusiness | null;
+    isLoading: boolean;
+    error: string | null;
+}
+
+export enum DocumentType {
+    BVN = "bvn",
+    NIN = "nin",
+
 }

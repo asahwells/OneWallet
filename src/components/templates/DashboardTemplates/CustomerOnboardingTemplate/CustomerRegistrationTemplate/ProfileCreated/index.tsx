@@ -2,6 +2,7 @@ import { Box, Flex, Text, useBreakpointValue, VStack } from "@chakra-ui/react"
 import ProfileCreatedIcon from "components/atoms/icons/ProfilceCreatedIcon";
 import BaseButton from "components/molecules/buttons/BaseButton";
 import HeaderBackButton from "components/molecules/buttons/HeaderBackButton"
+import { useRouter } from "next/navigation";
 
 interface ProfileCreatedProps {
     onBack: () => void;
@@ -13,6 +14,7 @@ export const ProfileCreated = ({
     onNext
 }: ProfileCreatedProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const router = useRouter()
     return (
         <Flex direction="column" bg="#F8FAFC" w="full">
             <HeaderBackButton onBack={onBack} />
@@ -43,7 +45,7 @@ export const ProfileCreated = ({
                             bgColor={'#0F454F'}
                             color={'#FCFCFC'}
                         text={'Setup Business'}
-                        onClick={onNext}
+                        onClick={() => {router.push('/admin/dashboard/business/customer-onboarding/business-setup')}}
                         borderRadius={'8px'}
                         w={'full'}
                         mt={24}

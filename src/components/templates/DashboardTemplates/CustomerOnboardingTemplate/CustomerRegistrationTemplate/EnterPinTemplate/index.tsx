@@ -46,7 +46,10 @@ const EnterPinTemplate = ({
 
     const { mutateAsync: resendOTP, isPending: isResendingOTP } = useResendOTP();
     const { mutateAsync: verifyPhone, isPending: isVerifyingPhoneNumber } = usePhoneNumberVerification();
-
+        
+    useEffect(() => {
+        console.log('deets', customerDetails?.id)
+    }, []);
     // Decrement timer every second
     useEffect(() => {
         if (timer <= 0) return;

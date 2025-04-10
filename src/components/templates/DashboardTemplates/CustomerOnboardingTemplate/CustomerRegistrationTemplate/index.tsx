@@ -51,11 +51,11 @@ const RegisterUserForm = () => {
 
     const [step, setStep] = useState<RegisterSteps>(RegisterSteps.EnterPhone);
 
-    useEffect(() => {
-        return () => {
-            dispatch(setCustomer(null))
-        }
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         dispatch(setCustomer(null))
+    //     }
+    // }, []);
 
     // Navigate to a specific step
     const goToStep = (nextStep: RegisterSteps) => {
@@ -224,15 +224,7 @@ const RegisterUserForm = () => {
             {step === RegisterSteps.ProfileCreated && 
                 <ProfileCreated onNext={handleNext} onBack={handleBack} />
             }
-            {step === RegisterSteps.UserNationality && 
-                <UserNationality onNext={handleNext} onBack={handleBack} />
-            }
-            {step === RegisterSteps.BusinessAddress && 
-                <BusinesAddress onNext={handleNext} onBack={handleBack} />
-            }
-            {step === RegisterSteps.BusinessDetails && 
-                <BusinessDetails onNext={handleNext} onBack={handleBack} />
-            }
+
 
             {
                 step === RegisterSteps.DojahVerification && (

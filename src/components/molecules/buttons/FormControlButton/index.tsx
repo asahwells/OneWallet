@@ -49,9 +49,9 @@ const FormControlButton = ({ label, labelPt, items, onChange, ...props }: IFormC
         height="100%"
         cursor="pointer"
       >
-        <Text flex="1" color={selectedItem ? "black" : "#A0AEC0"}>
-          {selectedItem && selectedItem.name} {/* Only render when selectedItem exists */}
-          {!selectedItem && null} {/* render nothing when selectedItem does not exist */}
+        <Text flex="1" fontSize={'16px'} fontWeight={400} color={selectedItem ? "#344256" : "#A0AEC0"}>
+          {selectedItem && selectedItem.name} 
+          {!selectedItem && null} 
         </Text>
         <ChevronRightIcon />
       </Box>
