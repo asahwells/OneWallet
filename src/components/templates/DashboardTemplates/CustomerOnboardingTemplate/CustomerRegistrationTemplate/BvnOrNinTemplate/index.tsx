@@ -35,14 +35,12 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
     const dispatch = useDispatch()
     const { customerDetails } = useAppSelector(state => state.customer)
 
-    const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
-
     const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure()
     const { isOpen: isOpenTwo, onOpen: onOpenTwo, onClose: onCloseTwo } = useDisclosure()
 
     const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
 
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(customerDetails?.selectedDocumentType === DocumentType.BVN ? customerDetails?.bvn : customerDetails?.nin || '');
     const [hasAgreed, setHasAgreed] = useState(false);
 
     const isMobile = useBreakpointValue({ base: true, md: false });

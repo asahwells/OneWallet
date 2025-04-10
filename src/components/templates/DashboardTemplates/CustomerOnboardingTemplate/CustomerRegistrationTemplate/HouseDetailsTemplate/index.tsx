@@ -17,7 +17,8 @@ import BaseButton from "../../../../../molecules/buttons/BaseButton";
 import {ArrowBackIcon} from "@chakra-ui/icons";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 import { useAddAddress } from 'api-services/business-registration-services';
-import { useAppSelector } from '../../../../../../redux/store'; 
+import {useAppDispatch, useAppSelector} from '../../../../../../redux/store';
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 // or your normal input component
 
@@ -30,7 +31,9 @@ const HouseDetailsTemplate = ({
         onNext,
         onBack
     }: IHouseDetailsTemplateProps) => {
-    const { userDetails } = useAppSelector(state => state.user)
+    const dispatch = useAppDispatch()
+
+    const { customerDetails } = useAppSelector(state => state.customer)
     const isMobile = useBreakpointValue({base: true, md: false});
     const [stateValue, setStateValue] = useState('');
     const [lgaValue, setLgaValue] = useState('');
@@ -47,12 +50,17 @@ const HouseDetailsTemplate = ({
             address: houseNumber,
             streetName,
             landmark,
-            userId: userDetails?.id,
+            userId: customerDetails?.id,
             town: 'Test'
         };
 
         try {
             await addAddress(payload);
+
+            dispatch(setCustomer({
+                ...customerDetails,
+                ...payload
+            } ))
             onNext(); // Proceed to the next step
         } catch (error) {
             console.error('Error adding address:', error);
