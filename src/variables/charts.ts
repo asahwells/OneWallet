@@ -1,6 +1,4 @@
 import { ApexOptions } from "apexcharts";
-import colors from 'tailwindcss/colors';
-
 type ApexGeneric = ApexOptions & any;
 
 export const barChartDataDailyTraffic = [
