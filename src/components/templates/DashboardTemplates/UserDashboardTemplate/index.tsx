@@ -44,7 +44,7 @@ const UserDashboardTemplate = () =>  {
     }, []);
 
         return (
-        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} gap={5} pr={5} >
+        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} pb={'15px'} gap={5} pr={5} >
 
             <Stack>
                 <Text variant={'base'}>
@@ -77,6 +77,7 @@ const UserDashboardTemplate = () =>  {
                             isLoading={isFetchingDashboard}
                             icon={<TotalDevicesSoldIcon />}
                         />
+    
                     </SimpleGrid>
                     <QuickActionCard />
                 </Stack>
@@ -115,7 +116,8 @@ const UserDashboardTemplate = () =>  {
                 <Box w={{
                     base: 'full',
                     md: '65%'
-                }} borderRadius={'4px'}>
+                }} borderRadius={'4px'}
+                >
                     <ExpectedPaymentChart/>
 
                 </Box>

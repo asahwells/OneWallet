@@ -140,7 +140,7 @@ const UserBvnDetails = ({
             px={{base: '1.5px', md: '24px'}}
             isOpen={isOpen}
             minHeight={'auto'}
-            minWidth={{base:"100%", md: "40%", lg: "940px"}}
+            minWidth={{base:"95%", md: "40%", lg: "940px"}}
             titleText={
                 <VStack 
                 w={'full'}

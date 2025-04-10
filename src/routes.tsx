@@ -37,7 +37,7 @@ const routes: IRoute[] = [
   {
     name: 'Device Manager',
     layout: '/admin',
-    icon: <Icon as={DeviceManagerIcon} width="20px" height="20px" color="#3F6A72"/>,
+    icon: <Icon as={DeviceManagerIcon} width="20px" height="20px"/>,
     path: '/dashboard/device-manager',
   }
 ];

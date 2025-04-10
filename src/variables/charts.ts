@@ -1,11 +1,14 @@
 import { ApexOptions } from "apexcharts";
-
 type ApexGeneric = ApexOptions & any;
 
 export const barChartDataDailyTraffic = [
   {
-    name: "Daily Traffic",
-    data: [20, 30, 40, 20, 45, 50, 30],
+    name: "Expected Repayment",
+    data: [65, 90, 70, 35, 75, 65, 60, 90, 70, 35, 75, 65],
+  },
+  {
+    name: "Actual Repayment",
+    data: [40, 60, 35, 65, 45, 55, 40, 60, 35, 65, 45, 55],
   },
 ];
 
@@ -29,14 +32,17 @@ export const barChartOptionsDailyTraffic: ApexGeneric = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["00", "04", "08", "12", "14", "16", "18"],
-    show: false,
+    categories: [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ],
+    show: true,
     labels: {
       show: true,
       style: {
-        colors: "#A3AED0",
+        colors: "#546C8D",
         fontSize: "14px",
-        fontWeight: "500",
+        fontWeight: "400",
       },
     },
     axisBorder: {
@@ -58,8 +64,8 @@ export const barChartOptionsDailyTraffic: ApexGeneric = {
     },
   },
   grid: {
-    show: false,
-    strokeDashArray: 5,
+    show: true,
+    // strokeDashArray: 5,
     yaxis: {
       lines: {
         show: true,
@@ -72,7 +78,7 @@ export const barChartOptionsDailyTraffic: ApexGeneric = {
     },
   },
   fill: {
-    type: "gradient",
+    type: "solid",
     gradient: {
       type: "vertical",
       shadeIntensity: 1,
@@ -94,13 +100,15 @@ export const barChartOptionsDailyTraffic: ApexGeneric = {
       ],
     },
   },
+  colors: ["#2A9D90", "#E76E50"],
   dataLabels: {
     enabled: false,
   },
+  legend: { show: false },
   plotOptions: {
     bar: {
-      borderRadius: 10,
-      columnWidth: "40px",
+      borderRadius: 4,
+      columnWidth: "18.27px",
     },
   },
 };
@@ -140,7 +148,7 @@ export const barChartOptionsUserActivity = {
     categories: ["S", "M", "T", "W", "T", "F"],
     show: false,
     labels: {
-      show: true,
+      show: false,
       style: {
         colors: "#A3AED0",
         fontSize: "14px",
@@ -192,7 +200,7 @@ export const barChartOptionsUserActivity = {
   legend: {
     show: false,
   },
-  colors: ["#5E37FF", "#6AD2FF"],
+  colors: ["#2A9D90", "#E76E50"],
   dataLabels: {
     enabled: false,
   },

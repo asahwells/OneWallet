@@ -39,11 +39,13 @@ const UnsaveChangesModal = ({
 
             <VStack spacing={4} width="full">
                 <BaseButton
-                    variant={'brand'}
+                    variant={'outline'}
                   text={cancelText}
                   onClick={onNoClick}
                   borderRadius={'8px'}
+                  color="#FFF"
                   w={'full'}
+                  backgroundColor="#0F454F"
                   _focus={{ outline: 'none' }}
                   h={'56px'}
   

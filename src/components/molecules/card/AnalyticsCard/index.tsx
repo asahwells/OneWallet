@@ -18,7 +18,7 @@ const AnalyticsCard = ({title, value, isLoading, icon, ...props}: IAnalyticsCard
                 md: 4,
             }}
             w={'auto'}
-            h={'79.63px'}
+            h={'full'}
             borderRadius={'8px'}
             spacing={4}
             alignItems={'center'}
