@@ -20,11 +20,11 @@ import InfoIcon from "../../../atoms/icons/InfoIcon";
 
 
 const ChooseVerificationModal = ({
-                                                                             isOpen,
-                                                                             onClose,
-                                                                             onChooseCamera,
-                                                                             onChooseUpload,
-                                                                         }: ChooseVerificationModalProps) => {
+        isOpen,
+        onClose,
+        onChooseCamera,
+        onChooseUpload,
+    }: ChooseVerificationModalProps) => {
     // Adjust size on mobile vs. desktop
     const modalSize = useBreakpointValue({ base: 'xs', md: 'md' });
 
@@ -42,7 +42,7 @@ const ChooseVerificationModal = ({
                    <Stack w={'full'} alignItems={'center'}>
                        <InfoIcon />
 
-                       <Text variant={'md'} textAlign={'center'}>
+                       <Text variant={'md'} textAlign={'center'} lineHeight={'20px'}>
                            Select how to continue Photo Verification
                        </Text>
                    </Stack>

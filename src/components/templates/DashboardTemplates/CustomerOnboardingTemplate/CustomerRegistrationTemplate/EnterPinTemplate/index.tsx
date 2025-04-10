@@ -11,6 +11,7 @@ import {
     Heading,
     Button,
     HStack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
@@ -19,20 +20,32 @@ import {
 } from '@chakra-ui/react';
 import BaseButton from '../../../../../molecules/buttons/BaseButton';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { usePhoneNumberVerification, useResendOTP } from 'api-services/business-registration-services';
+import { useAppSelector } from '../../../../../../redux/store'; 
+import FailedModal from 'components/molecules/modals/FailedModal';
+import BasePinInput from "../../../../../molecules/inputs/BasePinInput";
 
 interface EnterPinTemplateProps {
-    onVerify: (code: string) => void; // Called when the user successfully enters the OTP
+    onVerify: () => void; // Called when the user successfully enters the OTP
     onBack: () => void;
 }
 
 const EnterPinTemplate = ({
-                                                                                 onVerify,
-                                                                                 onBack,
-                                                                             }: EnterPinTemplateProps) => {
+        onVerify,
+        onBack,
+    }: EnterPinTemplateProps) => {
+    const { customerDetails } = useAppSelector(state => state.customer)
+    const isMobile = useBreakpointValue({ base: true, md: false });
+
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const [otp, setOtp] = useState('');
     const [timer, setTimer] = useState(60);
-    const isMobile = useBreakpointValue({ base: true, md: false });
-    const toast = useToast();
+
+
+    const { mutateAsync: resendOTP, isPending: isResendingOTP } = useResendOTP();
+    const { mutateAsync: verifyPhone, isPending: isVerifyingPhoneNumber } = usePhoneNumberVerification();
 
     // Decrement timer every second
     useEffect(() => {
@@ -44,26 +57,39 @@ const EnterPinTemplate = ({
     // Format the countdown as mm:ss (assuming under 1 minute: "0:34", etc.)
     const formattedTime = `0:${String(timer).padStart(2, '0')}`;
 
-    const handleVerify = () => {
-        if (otp.length !== 4) {
-            toast({
-                title: 'Invalid code',
-                description: 'Please enter a 4-digit code',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
-            return;
-        }
-        onVerify(otp);
+    const handleVerify = async() => {
+        const payload = {
+            phone: customerDetails?.phone,
+            otp,
+             userId: customerDetails?.id,
+        };
+        try {
+            await verifyPhone(payload);
+            onVerify();
+          } catch (error) {
+            console.error('Error verifying phone number:', error);
+            // Show the error modal
+            onOpen();
+          }
     };
 
-    const handleResend = () => {
-        // Reset timer to 60 seconds and clear OTP
-        setTimer(60);
-        setOtp('');
-        // You can also call an API to resend the code here
-    };
+    const handleResend = async () => {
+        try {
+            if (!customerDetails?.phone) {
+                throw('Enter a valid user phone number.');
+            }
+            await resendOTP({ phone: customerDetails?.phone });
+            setTimer(60);
+            setOtp('');
+        }catch (e) {
+            console.error('Error resending OTP:', e);
+            // Show the error modal
+            onOpen();
+
+        }
+
+      };
+      
 
     return (
         <Flex direction="column" minH="100vh" bg="#F8FAFC">
@@ -111,38 +137,11 @@ const EnterPinTemplate = ({
 
                     {/* OTP Fields */}
                     <HStack justifyContent="center" mb={6}>
-                        <PinInput
-                            otp
-                            type="number"
-                            value={otp}
-                            onChange={(value) => setOtp(value)}
-                            size={isMobile ? 'md' : 'lg'}
-                        >
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                            <PinInputField
-                                borderColor="#E2E8F0"
-                                _focus={{ borderColor: '#CBD5E1' }}
-                                borderRadius="8px"
-                                maxLength={1}
-                            />
-                        </PinInput>
+                        <BasePinInput count={4} onChange={setOtp}>
+                            {/* If BasePinInput expects children, you can place them here.
+              If not needed, just remove this empty fragment. */}
+                            <></>
+                        </BasePinInput>
                     </HStack>
 
                     {/* Verify Button */}
@@ -152,6 +151,7 @@ const EnterPinTemplate = ({
                         bg={otp.length === 4 ? '#0F454F' : '#E2E8F0'}
                         color={otp.length === 4 ? 'white' : '#94A3B8'}
                         fontWeight="600"
+                        isLoading={isVerifyingPhoneNumber}
                         onClick={handleVerify}
                         isDisabled={otp.length !== 4}
                         text="Verify"
@@ -175,6 +175,7 @@ const EnterPinTemplate = ({
                                 color="#0F454F"
                                 fontSize="14px"
                                 fontWeight="600"
+                                bg={'transparent'}
                                 onClick={handleResend}
                                 isDisabled={timer > 0} // disable resend until timer hits 0
                             >
@@ -184,6 +185,20 @@ const EnterPinTemplate = ({
                     </Flex>
                 </Box>
             </Box>
+
+            {/* Failed Modal */}
+            {isOpen && <FailedModal
+                isOpen={isOpen}
+                onClose={onClose}
+                title="Error Message:"
+                title2="You entered a wrong OTP. The User’s Account will be locked for 3 hours after 4 more attempts."
+                //width={{ xs: "95%", lg: "843px" }}
+                height="auto"
+                borderRadius="8px"
+                padding="24px"
+                borderTopRadius={'26.81px'}
+                borderBottomRadius={'26.81px'}
+            />}
         </Flex>
     );
 };

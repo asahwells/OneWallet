@@ -10,10 +10,15 @@ import {
     Button,
     useBreakpointValue,
     VStack,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseInput from 'components/molecules/inputs/BaseInput';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import { useAddAddress, useAddEmail } from 'api-services/business-registration-services';
+import {useAppDispatch, useAppSelector} from '../../../../../../redux/store';
+import FailedModal from 'components/molecules/modals/FailedModal';
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface EnterEmailTemplateProps {
     onNext: (email: string) => void;
@@ -22,22 +27,41 @@ interface EnterEmailTemplateProps {
 }
 
 const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
-                                                                   onNext,
-                                                                   onSkip,
-                                                                   onBack,
-                                                               }) => {
+        onNext,
+        onSkip,
+        onBack,
+    }) => {
+
+    const dispatch = useAppDispatch()
+    const { customerDetails } = useAppSelector(state => state.customer)
     const [email, setEmail] = useState('');
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+    const { mutateAsync: addEmail, isPending: isAddingEmail } = useAddEmail();
 
     // Simple email validation (optional)
     const isValidEmail = email.match(
         /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     );
 
-    const handleContinue = () => {
-        if (isValidEmail) {
-            onNext(email);
-        }
+    const handleContinue = async() => {
+        const payload ={
+            email,
+            userId: customerDetails?.id,
+        };
+        try {
+            await addEmail(payload);
+
+            dispatch(setCustomer({ ...customerDetails, email }))
+
+            //onNext();
+            } catch (error) {
+            console.error('Error sending OTP:', error);
+            // Show the error modal
+            onOpen();
+            }
     };
 
     return (
@@ -60,7 +84,10 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     as="h1"
                     fontSize="18px"
                     fontWeight="700"
-                    textAlign={isMobile ? 'left' : 'center'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
                     mb={2}
                 >
                     Enter User’s Email
@@ -70,7 +97,10 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     fontSize="14px"
                     color="#475569"
                     mb={6}
-                    textAlign={isMobile ? 'left' : 'center'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
                 >
                     Provide user’s email address
                 </Text>
@@ -94,6 +124,7 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     bg={isValidEmail ? '#0F454F' : '#E2E8F0'}
                     color={isValidEmail ? 'white' : '#94A3B8'}
                     fontWeight="600"
+                    isLoading={isAddingEmail}
                     onClick={handleContinue}
                     isDisabled={!isValidEmail}
                 >
@@ -113,6 +144,20 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                 >
                     Skip
                 </Button>
+
+                {/* Failed Modal */}
+                {isOpen && <FailedModal
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    title="Error Message:"
+                    title2="Email is not correct"
+                    //width={{ xs: "95%", lg: "843px" }}
+                    height="auto"
+                    borderRadius="8px"
+                    padding="24px"
+                    borderTopRadius={'26.81px'}
+                    borderBottomRadius={'26.81px'}
+                />}
             </Flex>
         </>
     );

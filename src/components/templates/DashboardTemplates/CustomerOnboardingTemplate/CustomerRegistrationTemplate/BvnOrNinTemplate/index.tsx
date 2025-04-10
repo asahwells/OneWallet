@@ -1,25 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
+    Checkbox,
     Flex,
-    IconButton,
+    Heading,
+    HStack,
+    Input,
+    Link,
     Text,
     useBreakpointValue,
-    Heading,
-    Input,
-    HStack,
-    Checkbox,
-    Button,
-    Link, useDisclosure
+    useDisclosure
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
 import BaseButton from "../../../../../molecules/buttons/BaseButton";
-import ErrorModal from "../../../../../molecules/modals/ErrorModal";
 import FailedModal from "../../../../../molecules/modals/FailedModal";
 import ChooseVerificationModal from "../../../../../molecules/modals/ChooseVerificationModal";
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
+import {useVerifyBVN, useVerifyNIN} from 'api-services/business-registration-services';
+import {useAppSelector} from '../../../../../../redux/store';
+import {DocumentType} from "../../../../../../redux/slices/customer/interface";
+import {useDispatch} from "react-redux";
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface BvnOrNinTemplateProps {
     onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
@@ -30,23 +32,27 @@ interface BvnOrNinTemplateProps {
 
 const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, onCameraSelect, onAttachmentSelect }) => {
 
-     const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
+    const dispatch = useDispatch()
+    const { customerDetails } = useAppSelector(state => state.customer)
 
-     const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
-    const [selectedOption, setSelectedOption] = useState<'BVN' | 'NIN'>('BVN');
-    const [errorMessage, setErrorMessage] = useState('')
+    const {onOpen: onErrorOpen, isOpen: isErrorOpen, onClose: onErrorClose}= useDisclosure()
+
+    const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure()
+    const { isOpen: isOpenTwo, onOpen: onOpenTwo, onClose: onCloseTwo } = useDisclosure()
+
+    const {onOpen: onVerificationMethodOpen, isOpen: isVerificationMethodOpen, onClose: onVerificationMethodClose}= useDisclosure()
 
     const [inputValue, setInputValue] = useState('');
     const [hasAgreed, setHasAgreed] = useState(false);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
-
-    const invalidBVN = '1111111111'
+    const { mutateAsync: verifyBVN, isPending: isverifyingBVN } = useVerifyBVN();
+    const { mutateAsync: verifyNIN, isPending: isverifyingNIN } = useVerifyNIN();
 
     // If "BVN" is selected => max length = 10, else 11 for "NIN"
-    const isBvn = selectedOption === 'BVN';
-    const maxLength = isBvn ? 10 : 11;
+    const isBvn = customerDetails?.selectedDocumentType === DocumentType.BVN;
+    const maxLength = isBvn ? 11 : 11;
 
     // The button label changes depending on the selection
     const buttonLabel = isBvn ? 'Verify BVN' : 'Verify NIN';
@@ -54,16 +60,49 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
     // Button is enabled only if length matches and checkbox is checked
     const isButtonDisabled = inputValue.length !== maxLength || !hasAgreed;
 
-    const handleVerify = () => {
 
+    useEffect(() => {
+        dispatch(setCustomer({
+            ...customerDetails,
+            selectedDocumentType: customerDetails?.selectedDocumentType || DocumentType.BVN,
+        }))
+    }, []);
+
+    const handleVerify = async() => {
         if(isButtonDisabled) return
-        if(inputValue == invalidBVN){
-            setErrorMessage('BVN is already linked to an existing account. Please enter User\'s correct BVN or proceed to Login.')
-            onErrorOpen()
-            return
-        }
+        if (isBvn) {
+            const payload = {
+                type: 'bvn',
+                bvn: inputValue,
+                userId: customerDetails?.id,
+            };
+            try {
+                await verifyBVN(payload);
+                onVerificationMethodOpen();
+                dispatch(setCustomer({ ...customerDetails, bvn: inputValue }))
 
-       onVerificationMethodOpen()
+            } catch (error) {
+                console.error('Error verifying BVN:', error);
+                onOpenOne()
+            }
+            return;
+        };
+
+        const payload = {
+            //type: 'nin',
+            bvn: inputValue,
+            userId: customerDetails?.id,
+        };
+
+        try {
+            await verifyNIN(payload);
+            onVerificationMethodOpen();
+            //onNext(); // Proceed to the next step
+            dispatch(setCustomer({ ...customerDetails, nin: inputValue }))
+        } catch (error) {
+            console.error('Error verifying NIN:', error);
+            onOpenTwo()
+        }
     };
 
     return (
@@ -83,7 +122,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                     <Heading
                         fontSize="18px"
                         fontWeight="700"
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                         mb={2}
                         color="#222B38"
                     >
@@ -95,7 +137,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                         fontWeight="400"
                         color="#344256"
                         mb={8}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         Please provide either the User’s BVN or NIN Number
                     </Text>
@@ -106,7 +151,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                         fontWeight="500"
                         mt={6}
                         mb={2}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         Select Either BVN or NIN
                     </Text>
@@ -129,12 +177,16 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                             textAlign="center"
                             py={2}
                             borderRadius="8px"
-                            bg={selectedOption === 'BVN' ? 'white' : 'transparent'}
-                            color={selectedOption === 'BVN' ? '#0F454F' : '#344256'}
+                            bg={customerDetails?.selectedDocumentType === DocumentType.BVN ? 'white' : 'transparent'}
+                            color={customerDetails?.selectedDocumentType === DocumentType.BVN  ? '#0F454F' : '#344256'}
                             fontWeight="600"
                             onClick={() => {
-                                setSelectedOption('BVN');
                                 setInputValue(''); // reset input
+                                dispatch(setCustomer({
+                                    ...customerDetails,
+                                    selectedDocumentType: DocumentType.BVN
+                                }))
+
                             }}
                         >
                             BVN
@@ -147,12 +199,17 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                             textAlign="center"
                             py={2}
                             borderRadius="8px"
-                            bg={selectedOption === 'NIN' ? 'white' : 'transparent'}
-                            color={selectedOption === 'NIN' ? '#0F454F' : '#344256'}
+                            bg={customerDetails?.selectedDocumentType === DocumentType.NIN  ? 'white' : 'transparent'}
+                            color={customerDetails?.selectedDocumentType === DocumentType.NIN ? '#0F454F' : '#344256'}
                             fontWeight="600"
                             onClick={() => {
-                                setSelectedOption('NIN');
                                 setInputValue(''); // reset input
+                                dispatch(setCustomer({
+                                    ...customerDetails,
+                                    selectedDocumentType: DocumentType.NIN
+                                }))
+
+                                dispatch
                             }}
                         >
                             NIN
@@ -216,6 +273,7 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
                             bg={!isButtonDisabled ? '#0F454F' : '#E2E8F0'}
                             color={!isButtonDisabled ? 'white' : '#94A3B8'}
                             fontWeight="600"
+                            isLoading={isverifyingBVN || isverifyingNIN}
                             onClick={handleVerify}
                             isDisabled={isButtonDisabled}
                             text=   {buttonLabel}
@@ -248,18 +306,32 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({ onVerify, onBack, o
             </Flex>
 
 
-        <FailedModal
-            isOpen={isErrorOpen}
-            onClose={() => onErrorClose()}
-            title={'Error Message:'}
-            title2={errorMessage}
-            width={{xs: "95%", lg: "843px"}}
+        {/* Failed Modal */}
+        {isOpenOne && <FailedModal
+            isOpen={isOpenOne}
+            onClose={onCloseOne}
+            title="Error Message:"
+            title2="BVN is already linked to an existing account, Please Enter User's BVN or proceed to Login"
+            //width={{ xs: "95%", lg: "843px" }}
             height="auto"
             borderRadius="8px"
             padding="24px"
             borderTopRadius={'26.81px'}
             borderBottomRadius={'26.81px'}
-    />
+        />}
+
+        {isOpenTwo && <FailedModal
+            isOpen={isOpenTwo}
+            onClose={onCloseTwo}
+            title="Error Message:"
+            title2="NIN is already linked to an existing account, Please Enter User's NIN or proceed to Login"
+            //width={{ xs: "95%", lg: "843px" }}
+            height="auto"
+            borderRadius="8px"
+            padding="24px"
+            borderTopRadius={'26.81px'}
+            borderBottomRadius={'26.81px'}
+        />}
 
             <ChooseVerificationModal isOpen={isVerificationMethodOpen} onClose={onVerificationMethodClose} onChooseCamera={onCameraSelect} onChooseUpload={onAttachmentSelect} />
 

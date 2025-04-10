@@ -1,4 +1,5 @@
 import { Box, Flex, Heading, Text, useBreakpointValue, useDisclosure, VStack } from "@chakra-ui/react";
+import { useGetIdentity } from "api-services/business-registration-services";
 import NoticeBox from "components/molecules/box/NoticeBox";
 import BaseButton from "components/molecules/buttons/BaseButton";
 import HeaderBackButton from "components/molecules/buttons/HeaderBackButton";
@@ -19,6 +20,12 @@ const UserBvnDetails = ({
 }: UserBvnDetailsProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const { isOpen, onClose, onOpen } = useDisclosure();
+
+    const { mutateAsync: fetchIdentity, data, isPending: isFetchingIdentity } = useGetIdentity();
+
+    useEffect(() => {
+        fetchIdentity()
+    }, [])
 
     useEffect(() => {
         const handleBackButton = (event: PopStateEvent) => {
@@ -85,16 +92,16 @@ const UserBvnDetails = ({
                         />
 
                         <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'First Name'}>
-                            <BaseInput  color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={'Emmanuek'} />
+                            <BaseInput  color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.firstName} />
                         </BaseFormControl>
                         <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'Last Name'}>
-                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={'Emmanuek'} />
+                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.lastName} />
                         </BaseFormControl>
                         <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'Date of Birth'}>
-                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={'01051994'} />
+                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.dob} />
                         </BaseFormControl>
                         <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'Gender'}>
-                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={'Male'} />
+                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.gender} />
                         </BaseFormControl>
 
                         <VStack w={'full'} gap={'34px'} mt={'8.5px'}>

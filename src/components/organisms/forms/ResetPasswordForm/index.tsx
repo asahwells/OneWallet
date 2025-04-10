@@ -10,8 +10,8 @@ import SuccessModal from 'components/molecules/modals/SuccessModal';
 const ResetPasswordForm = () => {
     const customToast = useToast();
 
-    const { isOpen: isOpenOne, onClose: oneCloseOne, onToggle: onToggleOne } = useDisclosure();
-    const { isOpen: isOpenTwo, onClose: oneCloseTwo, onToggle: onToggleTwo } = useDisclosure();
+    const { isOpen: isOpenOne, onClose: onCloseOne, onToggle: onToggleOne } = useDisclosure();
+    const { isOpen: isOpenTwo, onClose: onCloseTwo, onToggle: onToggleTwo } = useDisclosure();
 
     const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState('');
@@ -136,7 +136,7 @@ const ResetPasswordForm = () => {
             {/* Success Modal */}
             {isOpenTwo && <SuccessModal
                 isOpen={isOpenTwo}
-                onClose={oneCloseTwo}
+                onClose={onCloseTwo}
                 title="Congratulations!"
                 title2="You have successfully changed your password"
                 //width={{ xs: "95%", lg: "843px" }}
@@ -150,7 +150,7 @@ const ResetPasswordForm = () => {
             {/* Failed Modal */}
             {isOpenOne && <FailedModal
                 isOpen={isOpenOne}
-                onClose={oneCloseOne}
+                onClose={onCloseOne}
                 title="Error Message:"
                 title2="Password is not correct"
                 //width={{ xs: "95%", lg: "843px" }}
