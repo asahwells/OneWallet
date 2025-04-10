@@ -1,6 +1,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
+// @ts-ignore
 import Dojah from 'react-dojah'
 import {Box, CloseButton, useToast} from '@chakra-ui/react';
 import {useAppSelector} from "../../../../../../redux/store";
@@ -23,6 +24,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
     // Workaround: Override document.head.removeChild to suppress errors
     useEffect(() => {
         const originalRemoveChild = document.head.removeChild;
+        // @ts-ignore
         document.head.removeChild = function (child: Node) {
             try {
                 return originalRemoveChild.call(document.head, child);
@@ -66,6 +68,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
 
     const metadata = {
         user_id: customerDetails?.id,
+        userId: customerDetails?.id,
     };
 
 
