@@ -96,8 +96,7 @@ const ConfirmationModal: React.FC<any> = ({
 
             {/* Secondary Button */}
             <BaseButton
-              text={secondaryButtonText}
-              autoFocus
+              text={secondaryButtonText} 
               h="56px"
               w="full"
               bg="white"
@@ -105,7 +104,7 @@ const ConfirmationModal: React.FC<any> = ({
               borderRadius="8px"
               fontSize="16px"
               fontWeight="600"
-              border={border ?? "1px solid #E2E8F0"}
+              border={border ?? "1px solid #EF4444"}
               _hover={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
               _focus={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
               onClick={onSecondaryAction}
