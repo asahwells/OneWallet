@@ -40,10 +40,10 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
   const [categoryItems, setCategoryItems] = useState<ListProps[]>([]);
   const [subCategoryItems, setSubCategoryItems] = useState<ListProps[]>([]);
 
-  const [storeName, setStoreName] = useState('');
-  const [industryCategory, setIndustryCategory] = useState('');  
-  const [industryCategoryId, setIndustryCategoryId] = useState('');     // ID   
-  const [industrySubCategory, setIndustrySubCategory] = useState(''); 
+  const [storeName, setStoreName] = useState(businessDetails?.storeName || '');
+  const [industryCategory, setIndustryCategory] = useState(businessDetails?.industryCategory || '');
+  const [industryCategoryId, setIndustryCategoryId] = useState(businessDetails?.industryCategoryId || '');
+  const [industrySubCategory, setIndustrySubCategory] = useState(businessDetails?.industrySubCategory || '');
 
   useEffect(() => {
     async function getIndustries() {
@@ -152,12 +152,14 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
 
             <BaseFormControlButton
               label="Industry Category"
-              items={categoryItems}        
+              items={categoryItems}
+              value={industryCategory}
               onChange={(selected) => handleChange(selected, 'category')}
             />
 
             <BaseFormControlButton
               label="Industry SubCategory"
+              value={industrySubCategory}
               items={subCategoryItems}     
               onChange={(selected) => handleChange(selected, 'subcategory')}
             />

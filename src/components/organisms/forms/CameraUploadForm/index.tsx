@@ -13,6 +13,7 @@ import AddIcon from 'components/atoms/icons/AddIcon';
 import Webcam from 'react-webcam';
 import EditIcon, { EditCameraIcon } from 'components/atoms/icons/EditIcon';
 import { uploadBase64ToFirebase } from 'api-services/firebase-services';
+import {useAppSelector} from "../../../../redux/store";
 
 interface CameraUploadProps {
   // Instead of returning base64, we return the final Firebase URL
@@ -20,7 +21,8 @@ interface CameraUploadProps {
 }
 
 const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
-  const [localImage, setLocalImage] = useState<string | null>(null);
+  const {businessDetails} = useAppSelector(state => state.business)
+  const [localImage, setLocalImage] = useState<string | null>(businessDetails?.photoUrl || null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const webcamRef = useRef<Webcam>(null);
   const toast = useToast();

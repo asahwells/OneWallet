@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Box,
     Flex,
@@ -14,7 +14,7 @@ import {
     HStack,
     Avatar,
     Icon,
-    IconButton
+    IconButton, Spinner
 } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import CopyIcon from 'components/atoms/icons/CopyIcon';
@@ -22,6 +22,8 @@ import TierIcon from 'components/atoms/icons/TierIcon';
 import { useRouter } from 'next/navigation';
 import CongratulationsIcon from 'components/atoms/icons/CongratulationsIcon';
 import { SuccessTemplateProps } from '../interfaces';
+import {useAppSelector} from "../../../../../../redux/store";
+import {useGetCustomerInformation} from "../../../../../../api-services/business-registration-services";
 
 const SuccessTemplate = ({ 
     onDone, 
@@ -36,16 +38,21 @@ const SuccessTemplate = ({
         maxBalance: "₦300,000.00"
     }
 }: SuccessTemplateProps) => {
+
+
+    useEffect(() => {
+        fetchCustomerInfo()
+    }, []);
+
+    const {customerDetails} = useAppSelector(state => state.customer)
+    const {data: customerInfo, mutateAsync: fetchCustomerInfo, isPending} = useGetCustomerInformation(customerDetails?.id)
+
+
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const router = useRouter()
 
     const handleCopy = () => {
         navigator.clipboard.writeText(userData.accountNumber);
     };
-
-    const handleDone = () => {
-        router.replace('/admin/dashboard/business/customer-onboarding')
-    }
 
     return (
         <Flex 
@@ -165,9 +172,13 @@ const SuccessTemplate = ({
                                 <Text variant={'sm2'} mb={2.5}>
                                     Account Name
                                 </Text>
-                                <Text variant={'sma'}>
-                                    {userData.name}
+
+                                {isPending ? < Spinner /> :   <Text variant={'sma'}>
+                                    {customerInfo?.data?.accountName || 'not generated'}
                                 </Text>
+
+                                }
+
                             </Box>
                             <Box display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'end'}>
                                 <Box>
@@ -175,9 +186,13 @@ const SuccessTemplate = ({
                                         Account Name
                                     </Text>
                                     <Flex align="center">
-                                        <Text variant={'sma'} mr={2}>
-                                            {userData.accountNumber}
-                                        </Text>
+
+                                            {isPending ? < Spinner /> :   <Text variant={'sma'}>
+                                                {customerInfo?.data?.accountNumber || 'not generated'}
+                                            </Text>
+
+                                            }
+
                                         <Box 
                                             as="button" 
                                             onClick={handleCopy} 
@@ -245,7 +260,7 @@ const SuccessTemplate = ({
                     fontSize="16px"
                     fontWeight="600"
                     _hover={{ bg: "#0D3A42" }}
-                    onClick={handleDone}
+                    onClick={onDone}
                     mb={4}
                 />
                 

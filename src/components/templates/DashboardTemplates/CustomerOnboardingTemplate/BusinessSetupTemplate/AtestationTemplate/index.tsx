@@ -36,7 +36,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
 
     const { businessDetails } = useAppSelector((state) => state.business);
     const { mutateAsync: setUpBusiness, isPending } = useSetupBusiness();
-
+    console.log({isAttested})
     const handleContinue = async() => {
         if (isAttested) {
             const payload ={
@@ -49,7 +49,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                 businessName: businessDetails?.businessName,
                 industryCategoryId: businessDetails?.industryCategoryId,
                 industrySubCategory: businessDetails?.industrySubCategory,
-                locatedInMarket: businessDetails?.locatedInMarket === 'yes' ? true : false,
+                locatedInMarket: businessDetails?.locatedInMarket === 'yes',
                 businessState: businessDetails?.businessState,
                 businessLga: businessDetails?.businessLga,
                 marketName: businessDetails?.marketName,
@@ -63,6 +63,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
             };
     
             try {
+                console.log("hit!!!")
                 await setUpBusiness(payload);
                 onNext();
             } catch (error) {
@@ -71,18 +72,6 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
         }
     };
 
-    useEffect(() => {
-       
-            console.log(`natinality: ${businessDetails?.nationality}`) 
-            console.log(`category: ${businessDetails?.industryCategory}`)
-            console.log(`businessName: ${businessDetails?.businessName}`)
-            console.log(`fullShopAddress: ${businessDetails?.fullShopAddress}`) 
-            console.log(`politicalExposed: ${businessDetails?.politicalExposed}`)
-            console.log(`otherSourceOfIncome: ${businessDetails?.otherSourceOfIncome}`)
-            console.log(`userId: ${businessDetails?.userId}`)
-            console.log(`locatedInMarket: ${businessDetails?.locatedInMarket}`)
-            console.log(`photoUrl: ${businessDetails?.photoUrl}`)
-    }, []);
 
     const businessData = {
         geoLocation: {

@@ -12,32 +12,31 @@ import QrCodeTemplate from './QRCodeTemplate';
 import UserNationality from '../CustomerRegistrationTemplate/UserNationality';
 import BusinessAddress from '../CustomerRegistrationTemplate/BusinessAddress';
 import BusinessDetails from '../CustomerRegistrationTemplate/BusinessDetails';
+import {useAppDispatch, useAppSelector} from "../../../../../redux/store";
+import {clearBusinessDetails, setCurrentBusinessStep} from "../../../../../redux/slices/business";
+import {BusinessSteps} from "../../../../../redux/slices/business/interfaces";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
+import {clearCustomerDetails} from "../../../../../redux/slices/customer";
 
- enum BusinessSteps {
-    UserNationality = 'USER_NATIONALITY',
-    BusinessAddress = 'BUSINESS_ADDRESS',
-    BusinessDetails = 'BUSINESS_DETAILS',
-    DojahVerification = 'DOJAH_VERIFICATION',
-    SourceOfIncome = 'SOURCE_OF_INCOME',
-    PoliticalExposure = 'POLITICAL_EXPOSURE',
-    Atestation = 'ATESTATION',
-    VerifyUsersIdentity = 'VERIFY_USERS_IDENTITY',
-    PhoneVerification = 'PHONE_VERIFICATION',
-    Success = 'SUCCESS',
-    QRCode = 'QR_CODE'
-}
 
 const BusinessSetupTemplate = () => {
-    const [step, setStep] = useState<BusinessSteps>(BusinessSteps.Atestation);
-
+    const router = useRouter()
+    const dispatch = useAppDispatch()
+    const {currentStep} = useAppSelector(state => state.business)
     // Navigate to a specific step
     const goToStep = (nextStep: BusinessSteps) => {
         setStep(nextStep);
     };
 
+    const setStep = (step: BusinessSteps) => {
+        dispatch(setCurrentBusinessStep(step));
+
+    }
+
     // Example of "Next" navigation based on current step
     const handleNext = () => {
-        switch (step) {
+        switch (currentStep) {
             case BusinessSteps.UserNationality:
                 setStep(BusinessSteps.BusinessAddress);
                 break;
@@ -66,13 +65,14 @@ const BusinessSetupTemplate = () => {
                 setStep(BusinessSteps.QRCode);
                 break;
             default:
+                setStep(BusinessSteps.UserNationality);
                 break;
         }
     };
 
     // Example "Back" navigation based on current step
     const handleBack = () => {
-        switch (step) {
+        switch (currentStep) {
             case BusinessSteps.BusinessAddress:
                 setStep(BusinessSteps.UserNationality);
                 break;
@@ -101,42 +101,53 @@ const BusinessSetupTemplate = () => {
                 setStep(BusinessSteps.Success);
                 break;
             default:
+                setStep(BusinessSteps.UserNationality);
                 break;
         }
     };
 
     return (
         <Box w="full">
-            {step === BusinessSteps.UserNationality && 
+            {currentStep === BusinessSteps.UserNationality &&
                 <UserNationality onNext={handleNext} onBack={handleBack} />
             }
-            {step === BusinessSteps.BusinessAddress && 
+            {currentStep === BusinessSteps.BusinessAddress &&
                 <BusinessAddress onNext={handleNext} onBack={handleBack} />
             }
-            {step === BusinessSteps.BusinessDetails && 
+            {currentStep === BusinessSteps.BusinessDetails &&
                 <BusinessDetails onNext={handleNext} onBack={handleBack} />
             }
-            {step === BusinessSteps.SourceOfIncome && (
+            {currentStep === BusinessSteps.SourceOfIncome && (
                 <SourceOfIncomeTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === BusinessSteps.PoliticalExposure && (
+            {currentStep === BusinessSteps.PoliticalExposure && (
                 <PepVerificationTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === BusinessSteps.Atestation && (
+            {currentStep === BusinessSteps.Atestation && (
                 <AttestationTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === BusinessSteps.VerifyUsersIdentity && (
+            {currentStep === BusinessSteps.VerifyUsersIdentity && (
                 <VerificationUsersTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === BusinessSteps.PhoneVerification && (
+            {currentStep === BusinessSteps.PhoneVerification && (
                 <PhoneVerificationTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === BusinessSteps.Success && (
-                <SuccessTemplate onViewQR={handleNext} onDone={handleBack} />
+            {currentStep === BusinessSteps.Success && (
+                <SuccessTemplate onViewQR={handleNext} onDone={() => {
+                    dispatch(clearBusinessDetails())
+                    dispatch(clearCustomerDetails())
+                    router.push('/admin/dashboard/business/customer-onboarding')
+                }} />
             )}
-            {step === BusinessSteps.QRCode && (
+            {currentStep === BusinessSteps.QRCode && (
                 <QrCodeTemplate onOkay={handleNext} onBack={handleBack} />
             )}
+
+            {
+                !currentStep && (
+                    <UserNationality onNext={handleNext} onBack={handleBack} />
+                )
+            }
         </Box>
     );
 };

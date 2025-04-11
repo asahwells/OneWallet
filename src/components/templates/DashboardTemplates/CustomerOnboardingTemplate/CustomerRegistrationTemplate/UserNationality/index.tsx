@@ -3,7 +3,7 @@ import { Box, Flex, Heading, Text, useBreakpointValue } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControlButton from 'components/molecules/buttons/FormControlButton'; // Import your BaseFormControlButton
-import { setBusiness } from '../../../../../../redux/slices/business';
+import business, { setBusiness } from '../../../../../../redux/slices/business';
 import {useAppDispatch, useAppSelector} from "../../../../../../redux/store";
 
 interface ListProps {
@@ -19,8 +19,6 @@ interface UserNationalityProps {
 
 const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [nationality, setNationality] = useState('');
-
   const dispatch = useAppDispatch()
   const { businessDetails } = useAppSelector(state => state.business)
   const { customerDetails } = useAppSelector(state => state.customer)
@@ -71,6 +69,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
 
           <BaseFormControlButton
             label="Nationality"
+            defaultValue={businessDetails?.nationality}
             items={[
               { name: 'Nigeria', value: 'nigeria', id: 'NG' },
               { name: 'Ghana', value: 'ghana', id: 'GH' },

@@ -21,10 +21,17 @@ const customerSlice = createSlice({
 
         setCurrentStep: (state, action: PayloadAction<RegisterSteps>) => {
             state.currentStep = action.payload;
+        },
+
+        clearCustomerDetails: (state) => {
+            state.customerDetails = null;
+            state.currentStep = RegisterSteps.EnterPhone;
+            state.isLoading = false;
+            state.error = null;
         }
     },
 });
 
-export const { setCustomer, setCurrentStep } = customerSlice.actions;
+export const { setCustomer, setCurrentStep, clearCustomerDetails } = customerSlice.actions;
 
 export default customerSlice.reducer;

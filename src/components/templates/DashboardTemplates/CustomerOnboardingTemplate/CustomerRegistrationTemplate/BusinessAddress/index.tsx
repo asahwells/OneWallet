@@ -29,13 +29,13 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
 
   // Local form data
   const [formData, setFormData] = useState({
-    businessState: '',
-    businessLga: '',
-    locatedInMarket: '',
-    marketName: '',
-    storeNumber: '',
-    fullShopAddress: '',
-    photoUrl: null as string | null,
+    businessState: businessDetails?.businessState || '',
+    businessLga: businessDetails?.businessLga || '',
+    locatedInMarket: businessDetails?.locatedInMarket || '',
+    marketName: businessDetails?.marketName || '',
+    storeNumber: businessDetails?.storeNumber || '',
+    fullShopAddress: businessDetails?.fullShopAddress || '',
+    photoUrl: businessDetails?.photoUrl || '',
   });
 
   const [isAttested, setIsAttested] = useState(false);

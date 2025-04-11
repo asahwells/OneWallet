@@ -25,14 +25,15 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
   const isMobile = useBreakpointValue({ base: true, md: false });
   const toast = useToast();
 
-  // Local State for user’s selections
-  const [annualRevenue, setAnnualRevenue] = useState('');        
-  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>('No');
-  const [otherSourceType, setOtherSourceType] = useState('');     
-  const [otherSourceRevenue, setOtherSourceRevenue] = useState(''); 
-  // For dispatching to Redux
   const dispatch = useAppDispatch();
   const { businessDetails } = useAppSelector((state) => state.business);
+
+  // Local State for user’s selections
+  const [annualRevenue, setAnnualRevenue] = useState(businessDetails?.annualIncome || '');
+  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(businessDetails?.hasOtherSources || 'No');
+  const [otherSourceType, setOtherSourceType] = useState(businessDetails?.otherSourceOfIncome || '');
+  const [otherSourceRevenue, setOtherSourceRevenue] = useState(businessDetails?.otherSourceAnnualIncome || '');
+  // For dispatching to Redux
 
       
   
@@ -138,6 +139,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             <FormControlButton
               label="Expected Annual Income"
               items={annualRevenueItems}
+              value={annualRevenue}
               onChange={(selected) => setAnnualRevenue(selected.value)}
             />
           </Box>
@@ -173,6 +175,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
                   Other source of revenue
                 </Text>
                 <FormControlButton
+                  value={otherSourceType}
                   label="Select customer's other source of revenue"
                   items={otherSourceTypeItems}
                   onChange={(selected) => setOtherSourceType(selected.value)}
@@ -184,6 +187,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
                   Expected annual revenue from other sources
                 </Text>
                 <FormControlButton
+                  value={otherSourceRevenue}
                   label="Select customer's other source of revenue"
                   items={otherSourceRevenueItems}
                   onChange={(selected) => setOtherSourceRevenue(selected.value)}
