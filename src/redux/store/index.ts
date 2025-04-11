@@ -21,7 +21,6 @@ const persistConfig = {
     key: "onewallet-store",
     storage,
     version: 1.0,
-    whitelist: ["user"],
 };
 
 export const baseStore = configureStore({

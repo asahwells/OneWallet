@@ -39,9 +39,9 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
     }, []);
 
     // Replace these with your actual Dojah credentials from the dashboard
-    const appID = process.env.DOJAH_APP_ID
-    const publicKey = process.env.DOJAH_PUBLIC_KEY
-    const widgetID = process.env.DOJAH_WIDGET_ID
+    const appID = process.env.NEXT_PUBLIC_DOJAH_APP_ID
+    const publicKey = process.env.NEXT_PUBLIC_DOJAH_PUBLIC_KEY
+    const widgetID = process.env.NEXT_PUBLIC_DOJAH_WIDGET_ID
 
     const type = "custom"; // Could also be "verification", "identification", etc.
     const config = {

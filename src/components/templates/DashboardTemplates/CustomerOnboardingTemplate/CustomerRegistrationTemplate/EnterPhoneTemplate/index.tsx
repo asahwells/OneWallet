@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Flex,
@@ -40,7 +40,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
     const { customerDetails } = useAppSelector(state => state.customer)
 
     const { mutateAsync: sendPhoneOTP, isPending: isSendingOTP } = useSendPhoneOTP();
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState(customerDetails?.phone || '');
 
 
     const handleContinue = async() => {
@@ -66,7 +66,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
             onNext();
           } catch (error: any) {
             // Show the error modal
-            setErrorMessage(error?.message)
+            setErrorMessage((error as Error)?.message)
             onOpen();
           }
     };

@@ -7,58 +7,77 @@ import {
   Image,
   Text,
   IconButton,
+  useToast,
 } from '@chakra-ui/react';
-import AddIcon from 'components/atoms/icons/AddIcon'; // Import your EditIcon component
+import AddIcon from 'components/atoms/icons/AddIcon';
 import Webcam from 'react-webcam';
 import EditIcon, { EditCameraIcon } from 'components/atoms/icons/EditIcon';
+import { uploadBase64ToFirebase } from 'api-services/firebase-services';
+import {useAppSelector} from "../../../../redux/store";
 
 interface CameraUploadProps {
+  // Instead of returning base64, we return the final Firebase URL
   setImage: (image: string | null) => void;
 }
 
 const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
-  const [localImage, setLocalImage] = useState<string | null>(null);
-  const webcamRef = useRef<Webcam>(null);
+  const {businessDetails} = useAppSelector(state => state.business)
+  const [localImage, setLocalImage] = useState<string | null>(businessDetails?.photoUrl || null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const webcamRef = useRef<Webcam>(null);
+  const toast = useToast();
 
   const handleOpenCamera = () => {
     setIsCameraOpen(true);
   };
 
-  const handleCapturePhoto = useCallback(() => {
-    if (webcamRef.current) {
-      const screenshot = webcamRef.current.getScreenshot();
-      if (screenshot) {
-        setLocalImage(screenshot);
-        setImage(screenshot);
-        handleCloseCamera();
-      }
-    }
-  }, [webcamRef, setImage]);
-
   const handleCloseCamera = () => {
     setIsCameraOpen(false);
   };
+
+  const handleCapturePhoto = useCallback(async () => {
+    if (webcamRef.current) {
+      const screenshot = webcamRef.current.getScreenshot();
+      if (screenshot) {
+        try {
+          const downloadURL = await uploadBase64ToFirebase(screenshot);
+          console.log('Firebase URL:', downloadURL);
+        setLocalImage(downloadURL);
+          setImage(downloadURL);
+        } catch (error) {
+          toast({
+            title: 'Upload failed',
+            description: 'Unable to upload image to Firebase.',
+            status: 'error',
+            duration: 4000,
+            isClosable: true,
+          });
+        } finally {
+          handleCloseCamera();
+        }
+      }
+    }
+  }, [webcamRef, setImage, toast]);
 
   return (
     <Box w="full" {...props}>
       <Text
         fontSize="16px"
         fontWeight="400"
-        lineHeight={'24px'}
-        letterSpacing={'-1.2%'}
+        lineHeight="24px"
+        letterSpacing="-1.2%"
         color="#344256"
-        mb={'8px'}
+        mb="8px"
         textAlign={{ base: 'left', md: 'center' }}
       >
         Upload a live picture of the front view of the shop
       </Text>
 
       <Box w="full" textAlign="center">
-        <Box position="relative"> {/* Added position relative for icon positioning */}
+        <Box position="relative">
           <Button
             borderRadius="8px"
-            p={{base: 0, md: 6}}
+            p={{ base: 0, md: 6 }}
             onClick={handleOpenCamera}
             leftIcon={!localImage && <AddIcon />}
             variant="camera"
@@ -90,7 +109,7 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
                 overflowWrap="break-word"
                 maxW="100%"
               >
-                JPEG & PNG not more than 2MB
+                JPEG &amp; PNG not more than 2MB
               </Text>
             )}
           </Button>
@@ -103,7 +122,7 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
               position="absolute"
               top="0"
               right="0"
-              onClick={handleOpenCamera} // Open camera on edit icon click
+              onClick={handleOpenCamera} // open camera again on click
             />
           )}
         </Box>

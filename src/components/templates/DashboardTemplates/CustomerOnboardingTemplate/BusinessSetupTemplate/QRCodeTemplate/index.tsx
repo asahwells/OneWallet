@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Box,
     Flex,
@@ -14,7 +14,7 @@ import {
     Tbody,
     Tr,
     Td,
-    VStack
+    VStack, Spinner
 } from '@chakra-ui/react';
 import { ArrowBackIcon, ChevronLeftIcon, DownloadIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
@@ -22,6 +22,8 @@ import CardTypeIcons from 'components/atoms/icons/CardTypeIcons';
 import LogoIcon from 'components/atoms/icons/LogoIcon';
 import { QrCodeTemplateProps } from '../interfaces';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
+import {useAppSelector} from "../../../../../../redux/store";
+import {useGetCustomerInformation} from "../../../../../../api-services/business-registration-services";
 
 const QrCodeTemplate = ({ 
     onBack, 
@@ -33,7 +35,19 @@ const QrCodeTemplate = ({
         bankName: "OneWallet MFB"
     }
 }: QrCodeTemplateProps) => {
-    const isMobile = useBreakpointValue({ base: true, md: false });
+
+    useEffect(() => {
+        fetchCustomerInfo()
+    }, []);
+
+    const {customerDetails} = useAppSelector(state => state.customer)
+    const {
+        data: customerInfo,
+        mutateAsync: fetchCustomerInfo,
+        isPending
+    } = useGetCustomerInformation(customerDetails?.id)
+
+
 
     return (
         <Flex direction="column" bg="#F8FAFC" w={'full'} minH="100vh">
@@ -83,8 +97,8 @@ const QrCodeTemplate = ({
                         mx="auto" 
                         mb={6}
                     >
-                        <Image 
-                            src="https://api.qrserver.com/v1/create-qr-code/?data=YOUR_DATA&size=200x200" 
+                        <Image
+                            src={`https://api.qrserver.com/v1/create-qr-code/?data=${customerInfo?.data?.accountNumber}&size=200x200`}
                             alt="QR Code" 
                             w="full" 
                             h="auto"
@@ -137,15 +151,26 @@ const QrCodeTemplate = ({
                             <Tbody>
                                 <Tr>
                                     <Td fontWeight="600" pl={6} py={2} textAlign="left">Account Name:</Td>
-                                    <Td py={2} textAlign="left">{userData.accountName}</Td>
+                                    {isPending ? < Spinner/> :
+
+                                        <Td py={2}
+                                            textAlign="left">{customerInfo?.data?.accountName || 'not generated'}</Td>
+                                    }
                                 </Tr>
                                 <Tr>
                                     <Td fontWeight="600" pl={6} py={2} textAlign="left">Account Number:</Td>
-                                    <Td py={2} textAlign="left">{userData.accountNumber}</Td>
+                                    {isPending ? < Spinner/> :
+                                        <Td py={2}
+                                            textAlign="left">{customerInfo?.data?.accountNumber || 'not generated'}</Td>
+
+                                    }
                                 </Tr>
                                 <Tr>
                                     <Td fontWeight="600" pl={6} py={2} textAlign="left">Bank Name:</Td>
-                                    <Td py={2} textAlign="left">{userData.bankName}</Td>
+                                    {isPending ? < Spinner/> :
+                                        <Td py={2}
+                                            textAlign="left">{customerInfo?.data?.bankName || 'not generated'}</Td>
+                                    }
                                 </Tr>
                             </Tbody>
                         </Table>

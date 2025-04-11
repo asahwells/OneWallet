@@ -10,30 +10,31 @@ import {
     Button,
     useBreakpointValue,
     HStack,
-    useDisclosure,
+    useDisclosure, Spinner,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { PinInput, PinInputField } from '@chakra-ui/react';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
-import { useEmailVerification } from 'api-services/business-registration-services';
+import {useAddEmail, useEmailVerification} from 'api-services/business-registration-services';
 import { useAppSelector } from '../../../../../../redux/store'; 
 import FailedModal from 'components/molecules/modals/FailedModal';
 import SuccessModal from 'components/molecules/modals/SuccessModal';
+import BasePinInput from "../../../../../molecules/inputs/BasePinInput";
 
 interface EmailOtpVerificationTemplateProps {
-    onVerify: (otp: string) => void;
+    onNext: () => void;
     onBack?: () => void;
     userEmail?: string; // e.g. "johndoe@gmail.com"
 }
 
 const EmailOtpVerificationTemplate = ({
-        onVerify,
+        onNext,
         onBack,
         userEmail,
     }: EmailOtpVerificationTemplateProps) => {
     const { customerDetails } = useAppSelector(state => state.customer)
     const { isOpen: isOpenOne, onClose: onCloseOne, onToggle: onToggleOne } = useDisclosure();
-    const { isOpen: isOpenTwo, onClose: onCloseTwo, onToggle: onToggleTwo } = useDisclosure();
+    const { isOpen: isSuccessModalOpen, onClose: onSuccessModalClose, onOpen: onSuccessModalOpen } = useDisclosure();
 
     const [otp, setOtp] = useState('');
     const [timer, setTimer] = useState(60); // 60-second countdown
@@ -41,6 +42,7 @@ const EmailOtpVerificationTemplate = ({
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const { mutateAsync: verifyEmail, isPending: isVerifyingEmail } = useEmailVerification();
+    const { mutateAsync: addEmail, isPending: isAddingEmail } = useAddEmail();
 
     // Decrement timer
     useEffect(() => {
@@ -59,7 +61,7 @@ const EmailOtpVerificationTemplate = ({
         };
         try {
             await verifyEmail(payload);
-            onToggleTwo();
+            onSuccessModalOpen()
             //onVerify();
           } catch (error) {
             console.error('Error verifying email:', error);
@@ -68,8 +70,10 @@ const EmailOtpVerificationTemplate = ({
           }
     };
 
-    const handleResend = () => {
+    const handleResend = async () => {
         // Reset timer, clear OTP
+        await  addEmail({ email: customerDetails?.email, userId: customerDetails?.id });
+
         setTimer(60);
         setOtp('');
         // Trigger your resend logic if needed
@@ -120,38 +124,9 @@ const EmailOtpVerificationTemplate = ({
 
                 {/* OTP Fields */}
                 <HStack justifyContent="center" mb={6}>
-                    <PinInput
-                        otp
-                        type="number"
-                        value={otp}
-                        onChange={(value) => setOtp(value)}
-                        size={isMobile ? 'md' : 'lg'}
-                    >
-                        <PinInputField
-                            borderColor="#E2E8F0"
-                            _focus={{ borderColor: '#CBD5E1' }}
-                            borderRadius="8px"
-                            maxLength={1}
-                        />
-                        <PinInputField
-                            borderColor="#E2E8F0"
-                            _focus={{ borderColor: '#CBD5E1' }}
-                            borderRadius="8px"
-                            maxLength={1}
-                        />
-                        <PinInputField
-                            borderColor="#E2E8F0"
-                            _focus={{ borderColor: '#CBD5E1' }}
-                            borderRadius="8px"
-                            maxLength={1}
-                        />
-                        <PinInputField
-                            borderColor="#E2E8F0"
-                            _focus={{ borderColor: '#CBD5E1' }}
-                            borderRadius="8px"
-                            maxLength={1}
-                        />
-                    </PinInput>
+                    <BasePinInput count={4} onChange={setOtp} >
+                        <></>
+                    </BasePinInput>
                 </HStack>
 
                 {/* Verify Button */}
@@ -171,9 +146,11 @@ const EmailOtpVerificationTemplate = ({
 
                 {/* Countdown & Resend */}
                 <Flex alignItems="center" direction="column" mt={4}>
-                    <Text fontSize="16px" color="#C5B27D" mb={2}>
-                        {formattedTime}
-                    </Text>
+                    {
+                        isAddingEmail  ? <Spinner /> :  <Text fontSize="16px" color="#C5B27D" mb={2}>
+                            {formattedTime}
+                        </Text>
+                    }
                     <HStack>
                         <Text fontSize="14px" color="#475569">
                             Didn’t Receive the code?
@@ -191,9 +168,12 @@ const EmailOtpVerificationTemplate = ({
                     </HStack>
                 </Flex>
 
-                {isOpenTwo && <SuccessModal
-                    isOpen={isOpenTwo}
-                    onClose={onCloseTwo}
+                {isSuccessModalOpen && <SuccessModal
+                    isOpen={isSuccessModalOpen}
+                    onClose={() => {
+                        onSuccessModalClose()
+                        onNext()
+                    }}
                     title="Congratulations!"
                     title2="Successful Email Verification"
                     //width={{ xs: "95%", lg: "843px" }}

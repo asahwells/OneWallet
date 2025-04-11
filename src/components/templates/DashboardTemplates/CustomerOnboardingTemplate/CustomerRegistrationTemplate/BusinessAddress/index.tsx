@@ -1,13 +1,19 @@
-import { Flex, Box, Heading, useBreakpointValue, Text, VStack, Image } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Flex, Box, Heading, useBreakpointValue, Text, VStack } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControl from 'components/molecules/forms/BaseFormControl';
 import AttestationCheckbox from 'components/molecules/inputs/AttestationCheckBox';
 import BaseInput from 'components/molecules/inputs/BaseInput';
 import FloatingLabelSelect from 'components/molecules/inputs/FloatingLabelSelect';
-import RadioInputtButton from 'components/molecules/inputs/RadioInputButton';
+import RadioInputButton from 'components/molecules/inputs/RadioInputButton';
 import CameraUpload from 'components/organisms/forms/CameraUploadForm';
-import React, { useState } from 'react';
+
+// 1) Import your Redux hooks and action
+import { useAppDispatch, useAppSelector } from '../../../../../../redux/store';
+import { setBusiness } from '../../../../../../redux/slices/business';
+import ConditionalLabelSelect from 'components/molecules/inputs/FloatingLabelSelect';
+import FormControlButton from 'components/molecules/buttons/FormControlButton';
 
 interface BusinessAddressProps {
   onBack: () => void;
@@ -16,32 +22,51 @@ interface BusinessAddressProps {
 
 const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+
+  // 2) Access relevant slices from Redux (optional – adjust to your slice names)
+  const dispatch = useAppDispatch();
+  const { businessDetails } = useAppSelector((state) => state.business);
+
+  // Local form data
   const [formData, setFormData] = useState({
-    state: '',
-    lga: '',
-    isInMarket: '',
-    marketName: '',
-    storeLine: '',
-    addressDescription: '',
-    capturedImage: null as string | null, // Initialize capturedImage to null
+    businessState: businessDetails?.businessState || '',
+    businessLga: businessDetails?.businessLga || '',
+    locatedInMarket: businessDetails?.locatedInMarket || '',
+    marketName: businessDetails?.marketName || '',
+    storeNumber: businessDetails?.storeNumber || '',
+    fullShopAddress: businessDetails?.fullShopAddress || '',
+    photoUrl: businessDetails?.photoUrl || '',
   });
+
   const [isAttested, setIsAttested] = useState(false);
 
   const handleChange = (name: string, value: any) => {
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };  
 
   const handleAttestationChange = (checked: boolean) => {
     setIsAttested(checked);
   };
 
+  const handleContinue = () => {
+    dispatch(
+      setBusiness({
+        ...businessDetails,
+        ...formData,
+      })
+    );
+
+    onNext();
+  };
+
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton onBack={onBack} />
+      <HeaderBackButton onBack={onBack} header="Business Setup" />
+
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
-          width={{base : '100%', lg : '941px'}}
+          width={{ base: '100%', lg: '941px' }}
           mx="auto"
           h={isMobile ? 'auto' : '1058px'}
           borderRadius="8px"
@@ -71,80 +96,88 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
             Enter the address of the business/store
           </Text>
 
-          <VStack mt={'35px'} gap={'24px'}>
-            <RadioInputtButton
-              value={formData.isInMarket}
+          <VStack mt="35px" gap="24px">
+            {/* Market location Radio */}
+            <RadioInputButton
+              value={formData.locatedInMarket}
               label="Is the Customer Business Address located in a market?"
-              onChange={(value) => handleChange('isInMarket', value)}
+              onChange={(value) => handleChange('locatedInMarket', value)}
             />
 
-            <FloatingLabelSelect
+            {/* State Select */}
+            <FormControlButton
               label="State"
-              placeholder="Select State"
-              options={[
-                { label: 'Nigeria', value: 'nigeria' },
-                { label: 'Ghana', value: 'ghana' },
-                { label: 'Niger', value: 'wuse' },
+              items={[
+                { name: 'Abuja', value: 'Abuja' },
+                { name: 'Lagos', value: 'Lagos' },
+                { name: 'Plateau', value: 'Plateau' },
               ]}
-              onChange={(value) => handleChange('state', value)}
+              onChange={(item) => handleChange('businessState', item.value)}
             />
 
-            <FloatingLabelSelect
+            {/* LGA Select */}
+            <FormControlButton
               label="LGA"
-              placeholder="Select LGA"
-              options={[
-                { label: 'Nigeria', value: 'nigeria' },
-                { label: 'Ghana', value: 'ghana' },
-                { label: 'Niger', value: 'wuse' },
+              items={[
+                { name: 'Bwari', value: 'Bwari' },
+                { name: 'Wuse', value: 'Wuse' },
+                { name: 'Karu', value: 'Karu' },
               ]}
-              onChange={(value) => handleChange('lga', value)}
+              onChange={(item) => handleChange('businessLga', item.value)}
             />
 
-            <BaseFormControl border={'0px'} label={'Market Name'}>
+            {/* Market Name */}
+            <BaseFormControl border="0px" label="Market Name">
               <BaseInput
                 placeholder=""
                 value={formData.marketName}
                 onChange={(e: any) => handleChange('marketName', e.target.value)}
               />
             </BaseFormControl>
-            <BaseFormControl label={'Store Line/Number'}>
+
+            {/* Store Line */}
+            <BaseFormControl label="Store Line/Number">
               <BaseInput
                 placeholder=""
-                value={formData.storeLine}
-                onChange={(e: any) => handleChange('storeLine', e.target.value)}
-              />
-            </BaseFormControl>
-            <BaseFormControl label={'Shop Address Description'}>
-              <BaseInput
-                placeholder=""
-                value={formData.addressDescription}
-                onChange={(e: any) => handleChange('addressDescription', e.target.value)}
+                value={formData.storeNumber}
+                onChange={(e: any) => handleChange('storeNumber', e.target.value)}
               />
             </BaseFormControl>
 
-              
-            <CameraUpload setImage={(image) => handleChange('capturedImage', image)} />
-          
+            {/* Address Description */}
+            <BaseFormControl label="Shop Address Description">
+              <BaseInput
+                placeholder=""
+                value={formData.fullShopAddress}
+                onChange={(e: any) => handleChange('fullShopAddress', e.target.value)}
+              />
+            </BaseFormControl>
 
+            {/* Camera for capturing store photo */}
+            <CameraUpload setImage={(imageUrl) => handleChange('photoUrl', imageUrl)} />
+
+            {/* Attestation Checkbox */}
             <AttestationCheckbox
-             w={'full'}
-             isChecked={isAttested}
-             onChange={handleAttestationChange}
-             label="I attest that all the information provided is correct"
+              w="full"
+              isChecked={isAttested}
+              onChange={handleAttestationChange}
+              label="I attest that all the information provided is correct"
             />
 
+            {/* Continue Button */}
             <BaseButton
-                    variant={'ghost'}
-                text={'Continue'}
-                onClick={onNext}
-                border={'1.2px solid #6F8F95'}
-                borderRadius={'8px'}
-                w={'full'}
-                mt={'36px'}
-                _focus={{ outline: 'none' }}
-                h={'56px'}
-
-                />
+              variant="ghost"
+              text="Continue"
+              color={'#FCFCFC'}
+              onClick={handleContinue} 
+              border="1.2px solid #6F8F95"
+              borderRadius="8px"
+              isDisabled={!isAttested} 
+              w="full"
+              mt="36px"
+              _focus={{ outline: 'none' }}
+              h="56px"
+            />
           </VStack>
         </Box>
       </Box>

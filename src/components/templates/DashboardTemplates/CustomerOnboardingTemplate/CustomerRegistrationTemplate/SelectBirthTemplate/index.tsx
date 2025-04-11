@@ -30,7 +30,7 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
     const dispatch = useDispatch()
     const { customerDetails } = useAppSelector(state => state.customer)
 
-    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date | null>(customerDetails?.dob ? new Date(customerDetails.dob) : null);
     const isMobile = useBreakpointValue({ base: true, md: false });
 
     const { mutateAsync: addDOB, isPending } = useAddDateOfBirth();

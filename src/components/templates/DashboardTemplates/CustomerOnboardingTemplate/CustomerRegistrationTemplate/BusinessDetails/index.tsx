@@ -1,15 +1,27 @@
-import { Box, Flex, Heading, Text, useBreakpointValue, VStack } from '@chakra-ui/react';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  useBreakpointValue
+} from '@chakra-ui/react';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControl from 'components/molecules/forms/BaseFormControl';
 import BaseInput from 'components/molecules/inputs/BaseInput';
-import React, { useMemo, useState } from 'react';
 import BaseFormControlButton from 'components/molecules/buttons/FormControlButton';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 
-interface ListProps {
-  value?: string;
-  name?: string;
-  id?: string | number;
+import { useAppDispatch, useAppSelector } from '../../../../../../redux/store';
+import { setBusiness } from '../../../../../../redux/slices/business';
+
+import { useFetchIndustries } from 'api-services/business-registration-services';
+import { ListProps } from 'components/molecules/buttons/interfaces';
+
+interface IIndustry {
+  id: string;
+  name: string;
 }
 
 interface BusinessDetailsProps {
@@ -19,16 +31,72 @@ interface BusinessDetailsProps {
 
 const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [storeName, setStoreName] = useState('');
-  const [industryCategory, setIndustryCategory] = useState<ListProps | null>(null);
-  const [industrySubCategory, setIndustrySubCategory] = useState<ListProps | null>(null);
+
+  const dispatch = useAppDispatch();
+  const { businessDetails } = useAppSelector((state) => state.business);
+
+  const { mutateAsync: fetchIndustries, isPending: isFetchingIndustry } = useFetchIndustries();
+
+  const [categoryItems, setCategoryItems] = useState<ListProps[]>([]);
+  const [subCategoryItems, setSubCategoryItems] = useState<ListProps[]>([]);
+
+  const [storeName, setStoreName] = useState(businessDetails?.storeName || '');
+  const [industryCategory, setIndustryCategory] = useState(businessDetails?.industryCategory || '');
+  const [industryCategoryId, setIndustryCategoryId] = useState(businessDetails?.industryCategoryId || '');
+  const [industrySubCategory, setIndustrySubCategory] = useState(businessDetails?.industrySubCategory || '');
+
+  useEffect(() => {
+    async function getIndustries() {
+      try {
+        const resp = await fetchIndustries();
+        const data: IIndustry[] = resp?.data || [];
+
+        const mappedForCategory = data.map((ind) => ({
+          name: ind.name, 
+          value: ind.name,  
+          id: ind.id
+        }));
+
+        const mappedForSubCategory = data.map((ind) => ({
+          name: ind.name,
+          value: ind.name, 
+          id: ind.id
+        }));
+
+        setCategoryItems(mappedForCategory);
+        setSubCategoryItems(mappedForSubCategory);
+      } catch (error) {
+        console.error('Error fetching industries:', error);
+      }
+    }
+
+    getIndustries();
+  }, [fetchIndustries]);
 
   const handleChange = (item: ListProps, field: string) => {
     if (field === 'category') {
-      setIndustryCategory(item);
-    } else if (field === 'subcategory') {
-      setIndustrySubCategory(item);
+      setIndustryCategory(item.value as string);
+      setIndustryCategoryId(item.id as string);
+      return;
     }
+  
+    if (field === 'subcategory') {
+      setIndustrySubCategory(item.value);
+    }
+  };
+
+  const onContinue = () => {
+    dispatch(
+      setBusiness({
+        ...businessDetails,
+        businessName: storeName,
+        industryCategoryId,
+        industryCategory,      
+        industrySubCategory,   
+      })
+    );
+
+    onNext();
   };
 
   const isButtonDisabled = useMemo(() => {
@@ -37,11 +105,12 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton onBack={onBack} />
+      <HeaderBackButton onBack={onBack} header="Business Setup" />
+
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
-          width={{base : '100%', lg : '941px'}}
+          width={{ base: '100%', lg: '941px' }}
           mx="auto"
           h={isMobile ? 'auto' : '482px'}
           borderRadius="8px"
@@ -58,7 +127,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
             textAlign={isMobile ? 'left' : 'center'}
             mb={2}
           >
-            Enter Business Address
+            Enter Business Details
           </Heading>
 
           <Text
@@ -68,11 +137,12 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
             mb={6}
             textAlign={isMobile ? 'left' : 'center'}
           >
-            Enter the address of the business/store
+            Enter the name of the store and its industry classification
           </Text>
 
-          <VStack gap={'24px'}>
-            <BaseFormControl border={'0px'} label={'Market Name'}>
+          <VStack gap="24px">
+            {/* Store Name */}
+            <BaseFormControl border="0px" label="Store Name">
               <BaseInput
                 placeholder=""
                 value={storeName}
@@ -82,36 +152,31 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
 
             <BaseFormControlButton
               label="Industry Category"
-              items={[
-                { name: 'Nigeria', value: 'nigeria', id: 'NG' },
-                { name: 'Ghana', value: 'ghana', id: 'GH' },
-                { name: 'Libya', value: 'libya', id: 'LIB' },
-              ]}
-              onChange={(item) => handleChange(item, 'category')}
+              items={categoryItems}
+              value={industryCategory}
+              onChange={(selected) => handleChange(selected, 'category')}
             />
 
             <BaseFormControlButton
               label="Industry SubCategory"
-              items={[
-                { name: 'Electronics', value: 'electronics', id: 'ELEC' },
-                { name: 'Clothing', value: 'clothing', id: 'CLOTH' },
-                { name: 'Groceries', value: 'groceries', id: 'GROC' },
-              ]}
-              onChange={(item) => handleChange(item, 'subcategory')}
+              value={industrySubCategory}
+              items={subCategoryItems}     
+              onChange={(selected) => handleChange(selected, 'subcategory')}
             />
-            <BaseButton
-            variant={'ghost'}
-            text={'Continue'}
-            onClick={onNext}
-            borderRadius={'8px'}
-            border={'1.2px solid #6F8F95'}
-            w={'full'}
-            disabled={isButtonDisabled}
-            mt={'36px'}
-            _focus={{ outline: 'none' }}
-            h={'56px'}
 
-          />
+            <BaseButton
+              variant="ghost"
+              text="Continue"
+              color="#FCFCFC"
+              onClick={onContinue}
+              borderRadius="8px"
+              border="1.2px solid #6F8F95"
+              w="full"
+              disabled={isButtonDisabled || isFetchingIndustry}
+              mt="36px"
+              _focus={{ outline: 'none' }}
+              h="56px"
+            />
           </VStack>
         </Box>
       </Box>

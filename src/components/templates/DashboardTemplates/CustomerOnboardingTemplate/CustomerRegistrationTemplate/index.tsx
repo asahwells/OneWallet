@@ -21,41 +21,26 @@ import BusinesAddress from './BusinessAddress';
 import BusinessDetails from './BusinessDetails';
 import DojahVerificationTemplate from "./DojahVerificationTemplate";
 import {useDispatch} from "react-redux";
-import {setCustomer} from "../../../../../redux/slices/customer";
+import {setCurrentStep, setCustomer} from "../../../../../redux/slices/customer";
+import {useAppSelector} from "../../../../../redux/store";
+import {RegisterSteps} from "../../../../../redux/slices/customer/interface";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 // import RegisterUserStepTwo from './RegisterUserStepTwo';
- enum RegisterSteps {
-    EnterPhone = 'ENTER_PHONE',
-    EnterPin = 'ENTER_PIN',
-    SelectBirth = 'SELECT_BIRTH',
-    BvnOrNin = 'BVN_OR_NIN',
-    PhotoUpload = 'PHOTO_UPLOAD',
-    Complete = 'COMPLETE',
-    CaptureCustomerImage = 'CAPTURE_CUSTOMER_IMAGE',
-    HouseDetails = 'HOUSE_DETAILS',
-    EnterEmail = 'ENTER_EMAIL',
-    VerifyEmail = 'VERIFY_EMAIL',
-    UserBvnDetails = 'USER_BVN_DETAILS',
-    ProfileCreated = 'PROFILE_CREATED',
-    UserNationality = 'USER_NATIONALITY',
-    BusinessAddress = 'BUSINESS_ADDRESS',
-    BusinessDetails = 'BUSINESS_DETAILS',
-    DojahVerification = 'DOJAH_VERIFICATION',
-}
 
 const RegisterUserForm = () => {
 
+    const router = useRouter()
      const dispatch = useDispatch()
     const {isOpen: isDocumentsVerificationModalOpen, onOpen: onDocumentsVerificationModalOpen, onClose: onDocumentsVerificationModalClose} =  useDisclosure()
     const [documentsVerificationStatus, setDocumentsVerificationStatus] = useState<VerificationStatus>('PENDING');
 
+     const {currentStep} = useAppSelector(state => state.customer)
 
-    const [step, setStep] = useState<RegisterSteps>(RegisterSteps.EnterPhone);
-
-    useEffect(() => {
-        return () => {
-            dispatch(setCustomer(null))
-        }
-    }, []);
+   const setStep = (step: RegisterSteps) => {
+         // @ts-ignore
+        dispatch(setCurrentStep(step))
+   }
 
     // Navigate to a specific step
     const goToStep = (nextStep: RegisterSteps) => {
@@ -64,7 +49,7 @@ const RegisterUserForm = () => {
 
     // Example of "Next" navigation based on current step
     const handleNext = () => {
-        switch (step) {
+        switch (currentStep) {
             case RegisterSteps.EnterPhone:
                 setStep(RegisterSteps.EnterPin);
                 break;
@@ -103,7 +88,7 @@ const RegisterUserForm = () => {
 
     // Example "Back" navigation based on current step
     const handleBack = () => {
-        switch (step) {
+        switch (currentStep) {
             case RegisterSteps.EnterPin:
                 setStep(RegisterSteps.EnterPhone);
                 break;
@@ -143,16 +128,18 @@ const RegisterUserForm = () => {
 
     return (
         <Box w="full">
-            {step === RegisterSteps.EnterPhone && (
-                <EnterPhoneTemplate onNext={handleNext} onBack={handleBack} />
+            {currentStep === RegisterSteps.EnterPhone && (
+                <EnterPhoneTemplate onNext={handleNext} onBack={() => {
+                    router.back()
+                }} />
             )}
-            {step === RegisterSteps.EnterPin && (
+            {currentStep === RegisterSteps.EnterPin && (
                 <EnterPinTemplate onVerify={handleNext} onBack={handleBack} />
             )}
-            {step === RegisterSteps.SelectBirth && (
+            {currentStep === RegisterSteps.SelectBirth && (
                 <SelectBirthTemplate onNext={handleNext} onBack={handleBack} />
             )}
-            {step === RegisterSteps.BvnOrNin && (
+            {currentStep === RegisterSteps.BvnOrNin && (
                 <BvnOrNinTemplate
                     onVerify={() => {goToStep(RegisterSteps.DojahVerification)}}
                     onBack={handleBack}
@@ -160,7 +147,7 @@ const RegisterUserForm = () => {
                     onCameraSelect={() => goToStep(RegisterSteps.DojahVerification)}
                 />
             )}
-            {step === RegisterSteps.PhotoUpload && (
+            {currentStep === RegisterSteps.PhotoUpload && (
                 <UploadCustomerImageTemplate onContinue={() => {
                     onDocumentsVerificationModalOpen();
                     setDocumentsVerificationStatus('PENDING')
@@ -173,13 +160,13 @@ const RegisterUserForm = () => {
                     goToStep(RegisterSteps.BvnOrNin);
                 }} />
             )}
-            {step === RegisterSteps.CaptureCustomerImage && <CaptureCustomerImageTemplate
+            {currentStep === RegisterSteps.CaptureCustomerImage && <CaptureCustomerImageTemplate
                 onBack={() => {
                     goToStep(RegisterSteps.BvnOrNin);
                 }}
                 onContinue={(capturedPhoto) => {
                     console.log('Photo captured:', capturedPhoto);
-                    // proceed to next step
+                    // proceed to next currentStep
 
                     onDocumentsVerificationModalOpen();
                     setDocumentsVerificationStatus('PENDING')
@@ -193,13 +180,15 @@ const RegisterUserForm = () => {
                 }}
             />}
 
-            {step === RegisterSteps.HouseDetails && <HouseDetailsTemplate
-                onNext={handleNext}
+            {currentStep === RegisterSteps.HouseDetails && <HouseDetailsTemplate
+                onNext={() => {
+                    goToStep(RegisterSteps.EnterEmail);
+                }}
                 onBack={handleBack}
 
             />}
 
-            {step === RegisterSteps.EnterEmail && <EnterEmailTemplate onNext={() => {
+            {currentStep === RegisterSteps.EnterEmail && <EnterEmailTemplate onNext={() => {
                 goToStep(RegisterSteps.VerifyEmail);
             }} onSkip={() => {
                 console.log("")
@@ -208,34 +197,28 @@ const RegisterUserForm = () => {
             }} />}
 
 
-            {step === RegisterSteps.VerifyEmail && <EmailOtpVerificationTemplate  onVerify={()=>{
-                // show generic success modal
+            {currentStep === RegisterSteps.VerifyEmail && <EmailOtpVerificationTemplate  onNext={()=>{
+                goToStep(RegisterSteps.Complete);
             }} onBack={() => {
-                goToStep(RegisterSteps.HouseDetails);
+                goToStep(RegisterSteps.EnterEmail);
             }} />}
 
 
-            {step === RegisterSteps.Complete && 
-                <VerificationProgressTemplate onBack={goToStep} />
+            {currentStep === RegisterSteps.Complete &&
+                <VerificationProgressTemplate onBack={goToStep} onNext={() => {
+                    goToStep(RegisterSteps.UserBvnDetails);
+                }} />
             }
-            {step === RegisterSteps.UserBvnDetails && 
+            {currentStep === RegisterSteps.UserBvnDetails &&
                 <UserBvnDetails onNext={handleNext} onBack={handleBack} />
             }
-            {step === RegisterSteps.ProfileCreated && 
+            {currentStep === RegisterSteps.ProfileCreated &&
                 <ProfileCreated onNext={handleNext} onBack={handleBack} />
             }
-            {step === RegisterSteps.UserNationality && 
-                <UserNationality onNext={handleNext} onBack={handleBack} />
-            }
-            {step === RegisterSteps.BusinessAddress && 
-                <BusinesAddress onNext={handleNext} onBack={handleBack} />
-            }
-            {step === RegisterSteps.BusinessDetails && 
-                <BusinessDetails onNext={handleNext} onBack={handleBack} />
-            }
+
 
             {
-                step === RegisterSteps.DojahVerification && (
+                currentStep === RegisterSteps.DojahVerification && (
                     <DojahVerificationTemplate
                         onVerificationComplete={
                             () => {

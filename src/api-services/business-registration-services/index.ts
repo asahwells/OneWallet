@@ -1,6 +1,13 @@
 import { useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { IResponse, IRegistrationPayload, IIdentityResponse } from "./interface";
+import {
+    IResponse,
+    IRegistrationPayload,
+    IIdentityResponse,
+    ICategoriesResponse,
+    IBusinessPayload,
+    IAddEmailPayload, ICustomerBankInfoResponse
+} from "./interface";
 import { BASE_AXIOS, HttpClient } from "api-services/http";
 import { IAuthRes } from "api-services/auth-services/interface";
 import { useDispatch } from "react-redux";
@@ -208,7 +215,7 @@ export const useAddEmail = () => {
     const customToast = useToast();
 
     return useMutation({
-        mutationFn: (data: IRegistrationPayload): Promise<IResponse> =>
+        mutationFn: (data: IAddEmailPayload): Promise<IResponse> =>
             HttpClient.post(BASE_AXIOS, { url: "sales-agent/onboarding/issue-email", data }),
         onSuccess: (res: IResponse) => {
             // customToast({
@@ -292,7 +299,7 @@ export const useSendEmialOTP = () => {
 export const useGetIdentity = () => {
   return useMutation({
     mutationFn: (): Promise<IIdentityResponse> => {
-      return HttpClient.get(BASE_AXIOS, { url: "sales-agent/upgrade-account/identity?bvn=11111111111"});
+      return HttpClient.get(BASE_AXIOS, { url: "sales-agent/upgrade-account/identity?bvn=22222222222"});
     },
     onSuccess: (res: IIdentityResponse) => {
       return res;
@@ -301,4 +308,61 @@ export const useGetIdentity = () => {
       throw new Error(error?.response?.data?.message || "Failed to fetch identity.");
     }
   });
+};
+
+
+export const useGetCustomerInformation = (userId: string) => {
+    return useMutation({
+        mutationFn: (): Promise<ICustomerBankInfoResponse> => {
+            return HttpClient.get(BASE_AXIOS, {url: `sales-agent/onboarding/customer-account?userId=${userId}`});
+        },
+        onSuccess: (res: ICustomerBankInfoResponse) => {
+            return res;
+        },
+        onError: (error: any) => {
+            throw new Error(error?.response?.data?.message || "Failed to fetch customer information.");
+        }
+    });
+}
+
+export const useFetchIndustries = () => {
+  const dispatch = useDispatch();
+
+  return useMutation({
+      mutationFn: (): Promise<ICategoriesResponse> => {
+          return HttpClient.get(BASE_AXIOS, { url: "sales-agent/onboarding/industry-categories" })
+      },
+      onSuccess: (res: ICategoriesResponse) => {
+
+      },
+  });
+}
+
+export const useSetupBusiness = () => {
+    const customToast = useToast();
+
+    return useMutation({
+        mutationFn: (data: IBusinessPayload): Promise<IResponse> =>
+            HttpClient.post(BASE_AXIOS, { url: "sales-agent/onboarding/request-merchant", data }),
+        onSuccess: (res: IResponse) => {
+            customToast({
+            title: 'Success',
+            description: 'Successfully setup Business.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+            });
+            return res;
+        },
+        onError: (error: any) => {
+            customToast({
+               status: "error",
+                description: error?.response?.data?.message || "Something went wrong.",
+                title: "Error",
+
+            });
+
+            throw new Error(error?.response?.data?.message || "Something went wrong.");
+        },
+    });
 };
