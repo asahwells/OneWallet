@@ -38,6 +38,7 @@ const RegisterUserForm = () => {
      const {currentStep} = useAppSelector(state => state.customer)
 
    const setStep = (step: RegisterSteps) => {
+         // @ts-ignore
         dispatch(setCurrentStep(step))
    }
 
