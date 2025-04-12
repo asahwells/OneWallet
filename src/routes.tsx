@@ -11,8 +11,8 @@ import { IoIosPeople } from "react-icons/io";
 
 import { IRoute } from 'types/navigation';
 import TransactionsIcon from 'components/atoms/icons/TransactionsIcon';
-import BusinessIcon from "./components/atoms/icons/BusinessIcon";
-import DeviceManagerIcon from "./components/atoms/icons/DeviceManagerIcon";
+import {BusinessIcon} from "./components/atoms/icons/BusinessIcon";
+import { DeviceManagerIcon } from 'components/atoms/icons/DeviceManagerIcon'
 
 const routes: IRoute[] = [
   {
