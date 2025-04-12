@@ -119,18 +119,27 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
 
             {/* Main Content */}
             <Box px={4} pt={4} pb={8} maxW={isMobile ? "100%" : "800px"} mx="auto">
-                <Box mb={6} display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'center'}>
-                    <Heading
-                        as="h1"
-                        variant={'head'}
-                        mb={2}
-                    >
-                        Attestation
-                    </Heading>
-                    <Text variant={'sm'}>
-                        Please review the information below and confirm.
-                    </Text>
-                </Box>
+                <Text
+                    letterSpacing={'-1.2%'}
+                    variant={'head'}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
+                    mb={2}
+                >
+                    Attestation
+                </Text>
+                <Text
+                    variant={'sm'}
+                    mb={6}
+                    textAlign={{
+                        base: 'left',
+                        md: 'center',
+                    }}
+                >
+                    Please review the information below and confirm.
+                </Text>
 
                 {/* Geo-Location Section */}
                 <Box 
@@ -192,7 +201,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                     <Flex align="center" justify="space-between" mb={4}>
                         <Box></Box>
                         <Flex align="center">
-                            <Box mr={2}>
+                            <Box mr={2} color="#10B981">
                                 <StarIcon color="#10B981" />
                             </Box>
                             <Text variant={'sm'} my={2}>Business Details</Text>

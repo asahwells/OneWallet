@@ -67,10 +67,7 @@ export function SidebarLinks(props: SidebarLinksProps) {
                     lg: activeRoute((route.layout + route.path).toLowerCase()) ? '#0F454F' : 'transparent',
                   }} px={5}>
                     <Box
-                      color={
-                        isMobile ? 'white':
-                        activeRoute((route.layout + route.path).toLowerCase()) ? 'white' : '#3F6A72'
-                       }
+                      color={{base: 'white', lg: activeRoute((route.layout + route.path).toLowerCase()) ? 'white' : '#3F6A72'}}
                       me="18px"
                       mt={1}
                     >
@@ -80,10 +77,8 @@ export function SidebarLinks(props: SidebarLinksProps) {
                       me="auto"
                       variant={'sideBar'}
                       color={{
-                        base: activeRoute((route.layout + route.path).toLowerCase())
-                        ? activeColor
-                        : textColor,
-                        md: activeRoute((route.layout + route.path).toLowerCase())
+                        base: 'white',
+                        lg: activeRoute((route.layout + route.path).toLowerCase())
                         ? activeColor
                         : '#0F454F'
                       }}

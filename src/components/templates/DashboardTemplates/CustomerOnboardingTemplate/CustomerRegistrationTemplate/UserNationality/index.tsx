@@ -46,23 +46,25 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
           px={isMobile ? '0px' : 124}
           border={isMobile ? 'none' : '0.5px solid #E2E8F0'}
         >
-          <Heading
-            as="h1"
-            fontSize="18px"
-            fontWeight={700}
-            color="#222B38"
-            textAlign={isMobile ? 'left' : 'center'}
+          <Text
+            letterSpacing={'-1.2%'}
+            variant={'head'}
+            textAlign={{
+                base: 'left',
+                md: 'center',
+            }}
             mb={2}
           >
             What is User&apos;s Nationality?
-          </Heading>
+          </Text>
 
           <Text
-            fontSize="14px"
-            color="#344256"
-            fontWeight={400}
+            variant={'sm'}
             mb={6}
-            textAlign={isMobile ? 'left' : 'center'}
+            textAlign={{
+                base: 'left',
+                md: 'center',
+            }}
           >
             Select User&apos;s Country
           </Text>

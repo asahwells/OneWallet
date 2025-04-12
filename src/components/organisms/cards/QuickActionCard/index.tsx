@@ -1,6 +1,6 @@
 "use client"
 
-import {Box, Hide, HStack, Show, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
+import {Box, Hide, HStack, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
 import RegisterCustomerIcon from "../../../atoms/icons/RegisterCustomerIcon";
 import BaseButton from "../../../molecules/buttons/BaseButton";
 import DeviceInventoryIcon from "../../../atoms/icons/DeviceInventoryIcon";
@@ -57,7 +57,7 @@ const QuickActionCard = () => {
                         </Stack>
 
                         <Box w={'full'}>
-                            <BaseButton variant={'outline'} w={'full'}  text={'View My Devices'}/>
+                            <BaseButton bg={'#FFFFFF'} variant={'outline'} w={'full'}  text={'View My Devices'}/>
                         </Box>
 
                     </VStack>
@@ -78,7 +78,7 @@ const QuickActionCard = () => {
                         </Stack>
 
                         <Box w={'full'}>
-                            <BaseButton variant={'outline'} w={'full'}  text={'Download Report'}/>
+                            <BaseButton bg={'#FFFFFF'} variant={'outline'} w={'full'}  text={'Download Report'}/>
                         </Box>
 
                     </VStack>

@@ -7,6 +7,7 @@ import {
   Stack,
   Center,
   Select,
+  useBreakpointValue
 } from '@chakra-ui/react';
 // Custom components
 import Card from '../../../../components/molecules/card/Card';
@@ -29,7 +30,7 @@ import BarChart from '../BarChart';
 import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 
 const ExpectedPaymentChart = () => {
-
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Card
       bg="white"
@@ -37,11 +38,11 @@ const ExpectedPaymentChart = () => {
       alignItems="center"
       flexDirection="column"
       w="100%"
-      h={'full'}
+      h={'100%'}
       border="0.88px solid #E4E4E7"
       overflowY="auto"
     >
-      <Box w="full" bg="white" pos={'relative'}>
+      <Box w="full" h={'100%'} bg="white" pos={'relative'}>
         <Flex
           justifyContent="space-between"
           alignItems="center"
@@ -55,11 +56,11 @@ const ExpectedPaymentChart = () => {
           <Select
             id="user_type"
             w="unset"
-            variant="transparent"
+            variant="unstyled"
             display="flex"
             alignItems="center"
             defaultValue="2025"
-            color="black"
+            color="'#344256'"
           >
             <option value="2025">2025</option>
             <option value="2024">2024</option>
@@ -74,10 +75,25 @@ const ExpectedPaymentChart = () => {
           </Text>
         </Box>
 
-        <BarChart
-          chartData={barChartDataDailyTraffic}
-          chartOptions={barChartOptionsDailyTraffic}
-        />
+        <Box h={'85%'} >
+          {(isMobile ? 
+            <Box overflowX={'auto'} w="full">
+              <Box minW={'600px'}>
+                <BarChart
+                  chartData={barChartDataDailyTraffic}
+                  chartOptions={barChartOptionsDailyTraffic}
+                />
+              </Box>
+            </Box>
+            : 
+            <BarChart
+              chartData={barChartDataDailyTraffic}
+              chartOptions={barChartOptionsDailyTraffic}
+            />
+          )}
+        </Box>
+        
+  
 
         <HStack p={[8, 0]} w={'full'} gap={[12, 4]} justifyContent={'center'}>
           <HStack spacing={4} alignItems="center">

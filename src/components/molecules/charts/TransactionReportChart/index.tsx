@@ -46,7 +46,7 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
                     <Select
                         id='user_type'
                         w='unset'
-                        variant='transparent'
+                        variant='unstyled'
                         display='flex'
                         alignItems='center'
                         defaultValue='This Week'

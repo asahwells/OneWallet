@@ -53,7 +53,7 @@ const FormControlButton = ({ label, labelPt, items, onChange, ...props }: IFormC
           {selectedItem && selectedItem.name} 
           {!selectedItem && null} 
         </Text>
-        <ChevronRightIcon />
+        <ChevronRightIcon w={6} h={6}/>
       </Box>
 
       {isModalOpen && (
