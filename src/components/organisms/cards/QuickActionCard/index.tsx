@@ -78,7 +78,7 @@ const QuickActionCard = () => {
                         </Stack>
 
                         <Box w={'full'}>
-                            <BaseButton variant={'outline'} bg={'#FFFFFF'} w={'full'}  text={'Download Report'}/>
+                            <BaseButton variant={'outline'} bg={'#FFFFFF' } w={'full'}  text={'Download Report'}/>
                         </Box>
 
                     </VStack>
