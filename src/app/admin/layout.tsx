@@ -39,6 +39,8 @@ import SidebarContent from 'components/organisms/sidebar/components/Content';
 import { useFetchLoggedInUser } from 'api-services/dashboard-services';
 import ImageIconDesktop from 'components/atoms/icons/ImageIconDesktop';
 import { Armburger } from 'components/atoms/icons/Armburger';
+import LogoIcon from 'components/atoms/icons/LogoIcon';
+import HeaderLogoIcon from 'components/atoms/icons/HeaderLogo';
 
 interface DashboardLayoutProps extends PropsWithChildren {
   [x: string]: any;
@@ -105,7 +107,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'}  pos={'relative'} top={0} zIndex={10} >
+        <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'} shadow={'sm'}  pos={'relative'} top={0} zIndex={10} >
           <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
             <IconButton
               icon={<Armburger />}
@@ -115,7 +117,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
               size="lg"
               ref={btnRef}
             />
-            <Image src={isMobile ? '/img/layout/brandImage.png' : '/img/layout/navImage.png'} w="102.42px" h="23px" alt="Nav Logo" />
+            <HeaderLogoIcon />
             <HStack gap={isMobile? '30px': '28px'} align={'center'}>
               <BellIconFill onClick={()=> router.push('/admin/notifications')} />
               {isMobile && <ImageIcon />}

@@ -7,6 +7,7 @@ import {
   Stack,
   Center,
   Select,
+  color,
 } from '@chakra-ui/react';
 // Custom components
 import Card from '../../../../components/molecules/card/Card';
@@ -26,10 +27,8 @@ import {
 import { formatToNaira } from '../../../../helpers/currencyHelper';
 import { removeHyphen } from '../../../../helpers/textHelpers';
 import BarChart from '../BarChart';
-import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 
 const ExpectedPaymentChart = () => {
-
   return (
     <Card
       bg="white"
@@ -48,14 +47,20 @@ const ExpectedPaymentChart = () => {
           w="100%"
           mb="8px"
         >
-          <Text variant="sm" fontSize={'16px'} fontWeight={'600'} mt="4px" color={'#C5B27D'}>
+          <Text
+            variant="sm"
+            fontSize={'16px'}
+            fontWeight={'600'}
+            mt="4px"
+            color={'#C5B27D'}
+          >
             Expected Repayment vs Actual
           </Text>
 
           <Select
             id="user_type"
             w="unset"
-            variant="transparent"
+            variant={'unstyled'}
             display="flex"
             alignItems="center"
             defaultValue="2025"
@@ -69,17 +74,32 @@ const ExpectedPaymentChart = () => {
         </Flex>
 
         <Box>
-          <Text variant="sm" fontSize={'14px'} fontWeight={'400'} mt="4px">
+          <Text
+            variant="sm"
+            fontSize={'14px'}
+            fontWeight={'400'}
+            mt="4px"
+          >
             January - December 2025
           </Text>
         </Box>
 
-        <BarChart
-          chartData={barChartDataDailyTraffic}
-          chartOptions={barChartOptionsDailyTraffic}
-        />
+        {/* Wrap the BarChart inside a scrollable container */}
+        <Box overflowX={{ base: "auto", md: "hidden" }} w="full">
+          <Box minW={{ base: "600px", md: "auto" }}>
+            <BarChart
+              chartData={barChartDataDailyTraffic}
+              chartOptions={barChartOptionsDailyTraffic}
+            />
+          </Box>
+        </Box>
 
-        <HStack p={[8, 0]} w={'full'} gap={[12, 4]} justifyContent={'center'}>
+        <HStack
+          p={[8, 0]}
+          w={'full'}
+          gap={[12, 4]}
+          justifyContent={'center'}
+        >
           <HStack spacing={4} alignItems="center">
             <svg
               width="8"

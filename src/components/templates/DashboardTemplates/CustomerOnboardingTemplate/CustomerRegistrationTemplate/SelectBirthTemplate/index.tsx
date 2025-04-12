@@ -70,9 +70,9 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                     boxShadow={isMobile ? 'none' : 'md'}
                     p={isMobile ? 4 : 8}
                 >
-                    <Heading
-                        as="h1"
-                        fontSize={isMobile ? '20px' : '24px'}
+                    <Text
+                        letterSpacing={'-1.2%'}
+                        variant={'head'}
                         textAlign={{
                             base: 'left',
                             md: 'center',
@@ -80,10 +80,9 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         mb={2}
                     >
                         Enter Date of Birth
-                    </Heading>
+                    </Text>
                     <Text
-                        fontSize="14px"
-                        color="#475569"
+                        variant={'sm'}
                         mb={6}
                         textAlign={{
                             base: 'left',

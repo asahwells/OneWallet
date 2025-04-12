@@ -120,20 +120,25 @@ const EnterPinTemplate = ({
                     boxShadow={isMobile ? 'none' : 'md'}
                     p={isMobile ? 4 : 8}
                 >
-                    <Heading
-                        as="h1"
-                        fontSize={isMobile ? '20px' : '24px'}
-                        textAlign={isMobile ? 'left' : 'center'}
+                    <Text
+                        letterSpacing={'-1.2%'}
+                        variant={'head'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                         mb={2}
                     >
                         Phone Number Verification
-                    </Heading>
+                    </Text>
 
                     <Text
-                        fontSize="14px"
-                        color="#475569"
+                        variant={'sm'}
                         mb={6}
-                        textAlign={isMobile ? 'left' : 'center'}
+                        textAlign={{
+                            base: 'left',
+                            md: 'center',
+                        }}
                     >
                         Enter the code we sent to the user’s phone number
                     </Text>

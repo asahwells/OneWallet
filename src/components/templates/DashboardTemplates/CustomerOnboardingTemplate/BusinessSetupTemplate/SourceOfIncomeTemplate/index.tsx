@@ -120,11 +120,26 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             justifyContent="center"
             alignItems="center"
           >
-            <Heading as="h1" fontSize="18px" fontWeight="700" mb={2} color="#222B38">
+            <Text
+              letterSpacing={'-1.2%'}
+              variant={'head'}
+              textAlign={{
+                  base: 'left',
+                  md: 'center',
+              }}
+              mb={2}
+            >
               Source of Income
-            </Heading>
+            </Text>
 
-            <Text variant="sm" mb={6}>
+            <Text
+              variant={'sm'}
+              mb={6}
+              textAlign={{
+                  base: 'left',
+                  md: 'center',
+              }}
+            >
               Please provide the details of the customer&apos;s business income
             </Text>
           </Box>
