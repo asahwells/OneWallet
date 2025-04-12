@@ -1,6 +1,6 @@
 "use client"
 
-import {Box, Hide, HStack, Show, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
+import {Box, Hide, HStack, Stack, Text, useBreakpointValue, VStack} from "@chakra-ui/react";
 import RegisterCustomerIcon from "../../../atoms/icons/RegisterCustomerIcon";
 import BaseButton from "../../../molecules/buttons/BaseButton";
 import DeviceInventoryIcon from "../../../atoms/icons/DeviceInventoryIcon";
