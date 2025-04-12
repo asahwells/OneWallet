@@ -77,8 +77,8 @@ const ExpectedPaymentChart = () => {
 
         <Box h={'80%'} >
           {(isMobile ? 
-            <Box overflowX={{ base: 'auto', md: 'unset' }} w="full">
-              <Box minW={{ base: '600px', md: '100%' }}>
+            <Box overflowX={'auto'} w="full">
+              <Box minW={'600px'}>
                 <BarChart
                   chartData={barChartDataDailyTraffic}
                   chartOptions={barChartOptionsDailyTraffic}
