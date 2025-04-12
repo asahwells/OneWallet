@@ -104,7 +104,7 @@ const UserDashboardTemplate = () =>  {
                    <Box w={{
                           base: 'full',
                           md: '35%'
-                   }} h={'full'} borderRadius={'4px'}>
+                   }} h={'95%'} borderRadius={'4px'}>
                        <TransactionReportChart totalTransactionValue={''} rawData={pieChartData} data={getPieChartData([])}
                                                labels={[
                                                    'Active Devices',

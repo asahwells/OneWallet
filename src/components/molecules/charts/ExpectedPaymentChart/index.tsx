@@ -38,7 +38,7 @@ const ExpectedPaymentChart = () => {
       alignItems="center"
       flexDirection="column"
       w="100%"
-      h={'full'}
+      h={'100%'}
       border="0.88px solid #E4E4E7"
       overflowY="auto"
     >
@@ -75,7 +75,7 @@ const ExpectedPaymentChart = () => {
           </Text>
         </Box>
 
-        <Box h={'80%'} >
+        <Box h={'85%'} >
           {(isMobile ? 
             <Box overflowX={'auto'} w="full">
               <Box minW={'600px'}>
