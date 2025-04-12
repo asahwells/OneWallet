@@ -7,7 +7,7 @@ import {
   Stack,
   Center,
   Select,
-  color,
+  useBreakpointValue
 } from '@chakra-ui/react';
 // Custom components
 import Card from '../../../../components/molecules/card/Card';
@@ -27,8 +27,10 @@ import {
 import { formatToNaira } from '../../../../helpers/currencyHelper';
 import { removeHyphen } from '../../../../helpers/textHelpers';
 import BarChart from '../BarChart';
+import { fontWeight } from 'html2canvas/dist/types/css/property-descriptors/font-weight';
 
 const ExpectedPaymentChart = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Card
       bg="white"
@@ -40,31 +42,25 @@ const ExpectedPaymentChart = () => {
       border="0.88px solid #E4E4E7"
       overflowY="auto"
     >
-      <Box w="full" bg="white" pos={'relative'}>
+      <Box w="full" h={'100%'} bg="white" pos={'relative'}>
         <Flex
           justifyContent="space-between"
           alignItems="center"
           w="100%"
           mb="8px"
         >
-          <Text
-            variant="sm"
-            fontSize={'16px'}
-            fontWeight={'600'}
-            mt="4px"
-            color={'#C5B27D'}
-          >
+          <Text variant="sm" fontSize={'16px'} fontWeight={'600'} mt="4px" color={'#C5B27D'}>
             Expected Repayment vs Actual
           </Text>
 
           <Select
             id="user_type"
             w="unset"
-            variant={'unstyled'}
+            variant="unstyled"
             display="flex"
             alignItems="center"
             defaultValue="2025"
-            color="black"
+            color="'#344256'"
           >
             <option value="2025">2025</option>
             <option value="2024">2024</option>
@@ -74,32 +70,32 @@ const ExpectedPaymentChart = () => {
         </Flex>
 
         <Box>
-          <Text
-            variant="sm"
-            fontSize={'14px'}
-            fontWeight={'400'}
-            mt="4px"
-          >
+          <Text variant="sm" fontSize={'14px'} fontWeight={'400'} mt="4px">
             January - December 2025
           </Text>
         </Box>
 
-        {/* Wrap the BarChart inside a scrollable container */}
-        <Box overflowX={{ base: "auto", md: "hidden" }} w="full">
-          <Box minW={{ base: "600px", md: "auto" }}>
+        <Box h={'80%'} >
+          {(isMobile ? 
+            <Box overflowX={{ base: 'auto', md: 'unset' }} w="full">
+              <Box minW={{ base: '600px', md: '100%' }}>
+                <BarChart
+                  chartData={barChartDataDailyTraffic}
+                  chartOptions={barChartOptionsDailyTraffic}
+                />
+              </Box>
+            </Box>
+            : 
             <BarChart
               chartData={barChartDataDailyTraffic}
               chartOptions={barChartOptionsDailyTraffic}
             />
-          </Box>
+          )}
         </Box>
+        
+  
 
-        <HStack
-          p={[8, 0]}
-          w={'full'}
-          gap={[12, 4]}
-          justifyContent={'center'}
-        >
+        <HStack p={[8, 0]} w={'full'} gap={[12, 4]} justifyContent={'center'}>
           <HStack spacing={4} alignItems="center">
             <svg
               width="8"
