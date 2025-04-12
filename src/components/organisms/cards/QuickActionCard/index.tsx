@@ -57,7 +57,7 @@ const QuickActionCard = () => {
                         </Stack>
 
                         <Box w={'full'}>
-                            <BaseButton color={'white'} variant={'outline'} w={'full'}  text={'View My Devices'}/>
+                            <BaseButton bg={'#FFFFFF'} variant={'outline'} w={'full'}  text={'View My Devices'}/>
                         </Box>
 
                     </VStack>
@@ -78,7 +78,7 @@ const QuickActionCard = () => {
                         </Stack>
 
                         <Box w={'full'}>
-                            <BaseButton color={'white'} variant={'outline'} w={'full'}  text={'Download Report'}/>
+                            <BaseButton bg={'#FFFFFF'} variant={'outline'} w={'full'}  text={'Download Report'}/>
                         </Box>
 
                     </VStack>
