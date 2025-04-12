@@ -87,7 +87,7 @@ const UserDashboardTemplate = () =>  {
                    <Show above={'md'}>
                        <CommissionCard commission={dashboard?.data?.totalCommissions} isLoading={isFetchingDashboard}/>
                    </Show>
-                    <PendingTasksCard pendingTasks={MockPendingTasks} />
+                    <PendingTasksCard   pendingTasks={MockPendingTasks} />
                 </Stack>
 
             </Stack>
