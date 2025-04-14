@@ -16,6 +16,7 @@ import CustomerTransactionTable from '../../../../../organisms/table/CustomerTra
 import { Select, Button, SimpleGrid } from '@chakra-ui/react';
 import TransactionVolumeIcon from '../../../../../atoms/icons/TransactionVolumeIcon/index';
 import TransactionValueIcon from '../../../../../atoms/icons/TransactionValueIcon/index';
+import MonthFilter from '../../../../../organisms/filter/MonthFilters/index';
 
 const TransactionTemplate = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
@@ -25,9 +26,17 @@ const TransactionTemplate = () => {
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
 
+  const handleMonthSelect = (month: string) => {
+    console.log('Month selected:', month);
+  };
+
+  // Function to handle clearing selected month
+  const handleClearMonth = () => {
+    console.log('Month selection cleared');
+  };
+
   // Update filters based on what the filter box returns
   const handleFilterChange = (newFilters: { [key: string]: string }) => {
-    // Remove keys with empty values
     const applied = Object.fromEntries(
       Object.entries(newFilters).filter(
         ([key, value]) => value && value.trim() !== '',
@@ -36,38 +45,11 @@ const TransactionTemplate = () => {
     setFilters(applied);
   };
 
-  // Remove a single filter key from the state
   const removeFilter = (key: string) => {
     const updated = { ...filters };
     delete updated[key];
     setFilters(updated);
   };
-
-  // Handle month selection
-  const handleMonthSelect = (month: string) => {
-    setSelectedMonth(month);
-  };
-
-  // Clear selected month
-  const clearSelectedMonth = () => {
-    setSelectedMonth(null);
-  };
-
-  // List of months
-  const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
 
   return (
     <Stack bg="white" spacing={5} p={{ base: 0, md: 4 }}>
@@ -99,67 +81,10 @@ const TransactionTemplate = () => {
           Transaction History
         </Text>
 
-        <HStack spacing={2}>
-          {/* Selected Month Tag */}
-          {selectedMonth && (
-            <HStack mt={2}>
-              <Tag
-                size="md"
-                borderRadius="full"
-                variant="solid"
-                colorScheme="gray"
-                bg="gray.200"
-                px={3}
-                py={1}
-                >
-                  <TagLabel>{selectedMonth}</TagLabel>
-                  <TagCloseButton onClick={clearSelectedMonth} />
-              </Tag>
-            </HStack>
-            )}
-
-          {/* Month Filter */}
-          <Menu placement="bottom-end" autoSelect={false}>
-            <MenuButton
-                as={Button}
-                rightIcon={<ChevronDownIcon />}
-                variant="unstyled"
-                bg="white"
-                px={4}
-                py={2}
-                fontWeight="normal"
-                color="#344256"
-            >
-                Filter by Month
-            </MenuButton>
-            <MenuList
-                width="390px"
-                height="446px"
-                borderColor="gray.200"
-                p={0}
-                borderRadius="md"
-                overflowY="auto"
-            >
-                {months.map((month) => (
-                <MenuItem
-                    key={month}
-                    onClick={() => handleMonthSelect(month)}
-                    py={5}
-                    px={4}
-                    _hover={{ bg: 'gray.50' }}
-                    _focus={{ bg: 'gray.50' }}
-                    borderBottom="1px solid"
-                    borderColor="gray.200"
-                    fontSize="md"
-                    fontWeight="normal"
-                    color="#344256"
-                >
-                    {month}
-                </MenuItem>
-                ))}
-            </MenuList>
-          </Menu>
-        </HStack>
+        <MonthFilter 
+            onMonthSelect={handleMonthSelect}
+            onClearMonth={handleClearMonth}
+        />
     </Flex>
 
       {/* Mobile: Display applied filters as chips */}

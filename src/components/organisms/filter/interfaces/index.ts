@@ -10,3 +10,8 @@ export interface IFilterBoxProps {
     onFilterChange?: (filters: any) => void
     options?: string[];
 }
+
+export interface MonthFilterProps {
+  onMonthSelect?: (month: string) => void;
+  onClearMonth?: () => void;
+}

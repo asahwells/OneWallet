@@ -8,32 +8,12 @@ import {
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import { useParams, useRouter } from 'next/navigation';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
-
-// Static mock data for UI demonstration
-const transactionData = {
-  id: '68644E587243',
-  status: 'Successful',
-  transactionId: '68624794TE8673G',
-  transactionType: 'Scan to Pay- Recieve',
-  paymentType: 'Credit',
-  amount: '₦600,000',
-  date: '30th/Sept/2024. 9:07am',
-  sender: {
-    bankName: 'GT Bank',
-    accountNumber: '8165748911',
-    accountName: 'Daniel Ciroma',
-  },
-  recipient: {
-    bankName: 'OneWallet MFB',
-    accountNumber: '8156763521',
-    accountName: 'Joseph Yolanda',
-  },
-  note: 'Figma ipsum component variant main layer. Group style line scale team rectangle align opacity vector link. Comment reesizing outline.',
-};
+import { TransactionData } from '../../../../../mockData';
+import Status from '../../../../../../molecules/badge/Status/status';
 
 const TransactionDetailTemplate = () => {
   const statusOptions = ['Successful', 'Pending', 'Failed'];
-  const transaction = { ...transactionData };
+  const transaction = { ...TransactionData };
 
   // Status badge styling
   const getStatusStyles = (status: string) => {
@@ -46,7 +26,7 @@ const TransactionDetailTemplate = () => {
       case 'Pending':
         return {
           color: '#C5B27D',
-          bg: '#FEF9E7',
+          bg: '#F3F0E5',
         };
       case 'Failed':
         return {
@@ -87,25 +67,7 @@ const TransactionDetailTemplate = () => {
               <Text variant={'md'} fontWeight="semibold">
                 Transaction Details
               </Text>
-              <Badge
-                px={3}
-                py={1}
-                borderRadius="full"
-                bg={statusStyles.bg}
-                color={statusStyles.color}
-                fontWeight="medium"
-                display="flex"
-                alignItems="center"
-                gap={2}
-              >
-                <Box
-                  w="8px"
-                  h="8px"
-                  borderRadius="full"
-                  bg={statusStyles.color}
-                />
-                {transaction.status}
-              </Badge>
+              <Status status={transaction.status} />
             </Flex>
           </Box>
 

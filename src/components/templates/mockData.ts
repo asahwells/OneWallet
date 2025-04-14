@@ -135,3 +135,25 @@ export const FDHistoryData = [
       viewLink: 'View >>',
     },
   ];
+
+// Static mock data for UI demonstration
+export const TransactionData = {
+  id: '68644E587243',
+  status: 'Successful',
+  transactionId: '68624794TE8673G',
+  transactionType: 'Scan to Pay- Recieve',
+  paymentType: 'Credit',
+  amount: '₦600,000',
+  date: '30th/Sept/2024. 9:07am',
+  sender: {
+    bankName: 'GT Bank',
+    accountNumber: '8165748911',
+    accountName: 'Daniel Ciroma',
+  },
+  recipient: {
+    bankName: 'OneWallet MFB',
+    accountNumber: '8156763521',
+    accountName: 'Joseph Yolanda',
+  },
+  note: 'Figma ipsum component variant main layer. Group style line scale team rectangle align opacity vector link. Comment reesizing outline.',
+};

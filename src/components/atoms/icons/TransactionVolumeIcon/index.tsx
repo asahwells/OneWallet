@@ -3,12 +3,12 @@ import { IIconProps } from '../interfaces/index';
 const TransactionVolumeIcon = ({ width = 36 , height = 36, onClick} : IIconProps) => {
     return (
     <svg
-      width="36"
-      height="36"
-      onClick={onClick}
-      viewBox="0 0 36 36"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+        width={width} 
+        height={height}
+        onClick={onClick}
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
     >
       <rect opacity="0.1" width="36" height="36" rx="8" fill="#5B93FF" />
       <path
