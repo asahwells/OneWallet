@@ -19,10 +19,12 @@ import TableHeaderCell from 'components/atoms/tableDetails/TableHeaderCell';
 import TableRow from 'components/atoms/tableDetails/TableRow';
 import PaginationComponent from '../../pagination/PaginationComponent';
 import EmptyTaskIcon from 'components/atoms/icons/EmptyTasksIcon';
+import { useRouter } from 'next/navigation';
 // import { Icon } from '@chakra-ui/icons'; // or your custom icon
 
 const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const router = useRouter()
 
     if (!data?.length) {
         return (
@@ -46,6 +48,8 @@ const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
                         pb={3}
                         // optional top padding to separate items
                         pt={3}
+                        style={{ cursor: 'pointer' }} 
+                        onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${index}`)}}
                     >
                         <HStack alignItems="flex-start" spacing={3}>
                             {/* Replace this with any icon you prefer */}
@@ -118,7 +122,7 @@ const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
                 </Thead>
                 <Tbody>
                     {data.map((row, index) => (
-                        <TableRow key={index}>
+                        <TableRow key={index} style={{ cursor: 'pointer' }} onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${index}`)}}>
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>{row?.fullName ?? 'N/A'}</TableCell>
                             <TableCell>{row?.accountNumber ?? 'N/A'}</TableCell>
