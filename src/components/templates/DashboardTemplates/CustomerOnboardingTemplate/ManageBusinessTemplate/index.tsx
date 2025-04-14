@@ -6,6 +6,7 @@ import {
     SimpleGrid, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text,
 } from '@chakra-ui/react';
 import BusinessInformationTemplate from './BusinessInformationTemplate';
+import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import TransactionTemplate from './TransactionTemplate/index';
 
 
@@ -13,9 +14,10 @@ const ManageBusinessTemplate = () =>  {
 
 
     return (
-        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }}  gap={5} bg={'white'}>
+        <Stack bg={'#F8FAFC'} px={{base:0, lg:5}}>
+            <HeaderBackButton header='Business' />
 
-            <Tabs>
+            <Tabs mx={{base:0, lg:5}} bg={'white'} py={4} px={{base:0, lg:2}} borderRadius={'8px'}>
                 <TabList  borderBottomColor={'#E5E9EB'}>
                     <Tab>
                         <Text variant={'chartLabel'}>

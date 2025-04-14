@@ -1,4 +1,4 @@
-import {BoxProps, ButtonProps, CheckboxProps, FormControlProps, RadioProps} from "@chakra-ui/react";
+import {BadgeProps, BoxProps, ButtonProps, CheckboxProps, FormControlProps, RadioProps} from "@chakra-ui/react";
 
 export enum VerificationStatus {
     Pending = 'PENDING',
@@ -35,8 +35,9 @@ export interface ICheckProps extends CheckboxProps{
     text?: string;
 }
 export interface HeaderBackButtonProps {
-    onBack: () => void;
+    onBack?: () => void;
     header?: string;
+    iconType?: string;
 }
 
 
@@ -85,3 +86,8 @@ export enum RegisterSteps {
     onChange?: (item: ListProps) => void; // Define onChange separately
   }
   
+export type StatusType = "approved" | "pending" | "failed" | "pendingV"
+
+export interface StatusBadgeProps extends Omit<BadgeProps, "bg" | "color"> {
+  status: StatusType
+}

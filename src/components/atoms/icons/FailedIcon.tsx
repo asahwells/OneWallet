@@ -1,11 +1,5 @@
 import React from 'react';
-
-interface IIconProps {
-    color?: string;
-    width?: string;
-    height?: string;
-    onClick?: () => void;
-}
+import { IIconProps } from './interfaces';
 
 const FailedIcon = ({ width = '56px' , height = '57px', onClick }: IIconProps) => {
     return (

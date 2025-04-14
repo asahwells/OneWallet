@@ -1,11 +1,11 @@
 "use client"
 
 import {Box, Flex, HStack, IconButton, Text, useBreakpointValue} from "@chakra-ui/react";
-import {ArrowBackIcon} from "@chakra-ui/icons";
+import {ArrowBackIcon, ChevronLeftIcon} from "@chakra-ui/icons";
 import React from "react";
 import {HeaderBackButtonProps} from "../interfaces";
 
-const HeaderBackButton = ({ onBack, header}: HeaderBackButtonProps) => {
+const HeaderBackButton = ({ onBack, header, iconType}: HeaderBackButtonProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     return (
         <>
@@ -25,7 +25,7 @@ const HeaderBackButton = ({ onBack, header}: HeaderBackButtonProps) => {
 
                 >
                     <Box cursor={'pointer'} onClick={onBack}>
-                        <ArrowBackIcon w={5}  h={5}/>
+                        <ChevronLeftIcon w={6}  h={6}/>
                     </Box>
                    <Box>
                        <Text variant={'md'}>
@@ -41,7 +41,7 @@ const HeaderBackButton = ({ onBack, header}: HeaderBackButtonProps) => {
             ) : (
                 // Desktop: Back button outside the card
                 <HStack as="header" p={4} cursor={'pointer'}   onClick={onBack}>
-                    <ArrowBackIcon w={5}  h={5}/>
+                    <ChevronLeftIcon w={6}  h={6}/>
                     <Text variant={'md'}>
                        Back
                     </Text>
