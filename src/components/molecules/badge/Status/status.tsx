@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Badge, Box } from '@chakra-ui/react';
-import { StatusBadgeProps } from '../../buttons/interfaces/index';
 import { StatusBadgeProps } from '../interfaces/index';
 
 // Status badge styling
