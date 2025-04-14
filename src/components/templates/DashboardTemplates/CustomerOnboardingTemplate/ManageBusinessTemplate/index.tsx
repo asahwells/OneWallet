@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import BusinessInformationTemplate from './BusinessInformationTemplate';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
+import TransactionTemplate from './TransactionTemplate/index';
 
 
 const ManageBusinessTemplate = () =>  {
@@ -47,7 +48,8 @@ const ManageBusinessTemplate = () =>  {
                     </TabPanel>
 
                     <TabPanel>
-                        <p>three!</p>
+                        <TransactionTemplate />
+                        {/* <p>three!</p> */}
                     </TabPanel>
                 </TabPanels>
             </Tabs>
