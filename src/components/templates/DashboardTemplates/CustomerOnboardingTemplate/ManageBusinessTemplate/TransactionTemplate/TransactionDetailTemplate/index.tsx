@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import { useParams, useRouter } from 'next/navigation';
+import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 
 // Static mock data for UI demonstration
 const transactionData = {
@@ -63,8 +64,9 @@ const TransactionDetailTemplate = () => {
   const statusStyles = getStatusStyles(transaction.status);
 
   return (
-    <Box bg="white" minH="100vh">
-      <Container maxW="container.md" py={4}>
+    <Box bg="#FAFAFB" minH="100vh">
+        <HeaderBackButton header='Business' />
+      <Container maxW="container.md" py={4} bg="white">
         {/* Header */}
         <Flex align="center" mb={6}>
           <Heading size="md" color="#344256">
@@ -80,9 +82,9 @@ const TransactionDetailTemplate = () => {
           boxShadow="sm"
         >
           {/* Transaction Details Header */}
-          <Box p={6} borderBottom="1px solid" borderColor="gray.200">
-            <Flex justify="space-between" align="center">
-              <Text fontSize="lg" fontWeight="semibold" color="#344256">
+          <Box py={6} px={4} borderBottom="1px solid" borderColor="gray.200">
+            <Flex justify="space-between" gap={2} align="center">
+              <Text variant={'md'} fontWeight="semibold">
                 Transaction Details
               </Text>
               <Badge

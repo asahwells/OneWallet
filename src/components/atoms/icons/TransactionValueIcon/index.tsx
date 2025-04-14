@@ -1,3 +1,5 @@
+import { IIconProps } from '../interfaces/index';
+
 const TransactionValueIcon = ({ width = 36 , height = 36, onClick} : IIconProps) => {
     return (
     <svg

@@ -7,7 +7,6 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ChevronDownIcon, CloseIcon } from '@chakra-ui/icons';
-import SearchInput from '../molecules/inputs/SearchInput';
 import FilterButton from '../../../../../molecules/buttons/FilterButton';
 import SelectFilterBox from '../../../../../organisms/filter/SelectFilterBox';
 import TotalApplicationIcon from '../../../../../atoms/icons/TotalApplicationIcon/index';
