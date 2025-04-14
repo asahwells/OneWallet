@@ -6,6 +6,7 @@ import {
     SimpleGrid, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, Text,
 } from '@chakra-ui/react';
 import BusinessInformationTemplate from './BusinessInformationTemplate';
+import TransactionTemplate from './TransactionTemplate/index';
 
 
 const ManageBusinessTemplate = () =>  {
@@ -45,7 +46,8 @@ const ManageBusinessTemplate = () =>  {
                     </TabPanel>
 
                     <TabPanel>
-                        <p>three!</p>
+                        <TransactionTemplate />
+                        {/* <p>three!</p> */}
                     </TabPanel>
                 </TabPanels>
             </Tabs>

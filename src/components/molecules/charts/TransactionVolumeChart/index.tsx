@@ -46,6 +46,7 @@ const TransactionVolumeChart = ( {data} : ITransactionVolumeChartProps) => {
             <Flex align='center' w='100%' px='15px' py='10px'>
                 <Text
                     me='auto'
+                    fontWeight={'600'}
                     variant={'chartLabel'}
                     color={'#C5B27D'}
                 >
