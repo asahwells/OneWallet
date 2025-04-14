@@ -77,7 +77,7 @@ const TransactionTemplate = () => {
         gap={{ base: 4, md: 0 }}
         w="full"
       >
-        <Text fontSize="lg" fontWeight="medium">
+        <Text variant={'md'}>
           Transaction History
         </Text>
 
@@ -86,25 +86,6 @@ const TransactionTemplate = () => {
             onClearMonth={handleClearMonth}
         />
     </Flex>
-
-      {/* Mobile: Display applied filters as chips */}
-      {isMobile && Object.keys(filters).length > 0 && (
-        <HStack spacing={2} overflowX="auto" py={2}>
-          {Object.entries(filters).map(([key, value]) => (
-            <Tag
-              key={key}
-              size="md"
-              borderRadius="full"
-              variant="solid"
-              colorScheme="gray"
-              bg="gray.200"
-            >
-              <TagLabel>{`${key}: ${value}`}</TagLabel>
-              <TagCloseButton onClick={() => removeFilter(key)} />
-            </Tag>
-          ))}
-        </HStack>
-      )}
 
       {/* Customer Registration Table / List */}
       <CustomerTransactionTable data={MockCustomerRegistration} />

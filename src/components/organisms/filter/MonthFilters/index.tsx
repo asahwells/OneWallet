@@ -29,7 +29,7 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
   ];
 
   return (
-    <HStack spacing={2} alignItems="center">
+    <HStack spacing={2} display={'flex'} flexDir={{base: 'column-reverse', lg: 'row'}} justify={'start'} alignItems="center">
       {/* Selected Month Tag */}
       {selectedMonth && (
         <HStack mt={2}>
@@ -53,12 +53,10 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
         <MenuButton
           as={Button}
           rightIcon={<ChevronDownIcon />}
-          variant="unstyled"
+          variant="md"
           bg="white"
           px={4}
           py={2}
-          fontWeight="normal"
-          color="#344256"
         >
           Filter by Month
         </MenuButton>

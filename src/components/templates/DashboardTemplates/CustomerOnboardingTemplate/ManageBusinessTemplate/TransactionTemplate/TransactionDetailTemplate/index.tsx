@@ -64,7 +64,7 @@ const TransactionDetailTemplate = () => {
           {/* Transaction Details Header */}
           <Box py={6} px={4} borderBottom="1px solid" borderColor="gray.200">
             <Flex justify="space-between" gap={2} align="center">
-              <Text variant={'md'} fontWeight="semibold">
+              <Text variant={'md'}>
                 Transaction Details
               </Text>
               <Status status={transaction.status} />

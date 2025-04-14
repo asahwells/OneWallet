@@ -14,4 +14,6 @@ export interface IFilterBoxProps {
 export interface MonthFilterProps {
   onMonthSelect?: (month: string) => void;
   onClearMonth?: () => void;
+  filters?: { [key: string]: string };  // Add filters prop
+  removeFilter?: (key: string) => void;
 }
