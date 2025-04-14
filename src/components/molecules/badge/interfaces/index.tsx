@@ -1,5 +1,6 @@
+import { TransactionStatus } from '../Status/status.enum';
 
-type StatusType = 'Successful' | 'Pending' | 'Failed' | string;
+type StatusType = { status: TransactionStatus }
 
 export interface StatusBadgeProps {
   status: StatusType;

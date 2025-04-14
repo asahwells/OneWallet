@@ -3,21 +3,22 @@
 import React from 'react';
 import { Badge, Box } from '@chakra-ui/react';
 import { StatusBadgeProps } from '../interfaces/index';
+import { TransactionStatus } from './status.enum';
 
 // Status badge styling
 const getStatusStyles = (status: string) => {
 switch (status) {
-    case 'Successful':
+    case TransactionStatus.Successful:
     return {
         color: '#22C55E',
         bg: '#DCFCE7',
     };
-    case 'Pending':
+    case TransactionStatus.Pending:
     return {
         color: '#C5B27D',
         bg: '#F3F0E5',
     };
-    case 'Failed':
+    case TransactionStatus.Failed:
     return {
         color: '#EF4444',
         bg: '#FEE2E2',
@@ -31,7 +32,7 @@ switch (status) {
 };
 
 const Status = ({ status }: StatusBadgeProps) => {
-  const statusStyles = getStatusStyles(status);
+const statusStyles = getStatusStyles(status);
 
   return (
     <Badge
