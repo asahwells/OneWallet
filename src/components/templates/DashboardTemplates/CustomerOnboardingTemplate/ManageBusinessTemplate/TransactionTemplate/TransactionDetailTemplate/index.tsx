@@ -10,6 +10,7 @@ import { useParams, useRouter } from 'next/navigation';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import { TransactionData } from '../../../../../mockData';
 import Status from '../../../../../../molecules/badge/Status/status';
+import { TransactionStatus } from 'components/molecules/badge/Status/status.enum';
 
 const TransactionDetailTemplate = () => {
   const statusOptions = ['Successful', 'Pending', 'Failed'];
@@ -67,7 +68,7 @@ const TransactionDetailTemplate = () => {
               <Text variant={'md'}>
                 Transaction Details
               </Text>
-              <Status status={transaction.status} />
+              <Status status={transaction.status as TransactionStatus} />
             </Flex>
           </Box>
 

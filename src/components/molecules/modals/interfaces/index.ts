@@ -14,6 +14,7 @@ export interface IForgotPasswordModalProps extends ModalContentProps {
     title2?: string,
     title3?: string,
     warning?: boolean,
+    btnText?: string,
     onConfirm?: () => void
   }
   
