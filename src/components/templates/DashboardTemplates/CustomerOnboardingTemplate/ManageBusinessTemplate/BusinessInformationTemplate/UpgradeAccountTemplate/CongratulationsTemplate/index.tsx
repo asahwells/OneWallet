@@ -1,29 +1,18 @@
 'use client';
 
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
     Box,
     Flex,
     Text,
     useBreakpointValue,
-    Heading,
-    Image,
     Grid,
-    GridItem,
-    Button,
-    HStack,
     Avatar,
-    Icon,
-    IconButton, Spinner
 } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import CopyIcon from 'components/atoms/icons/CopyIcon';
-import TierIcon from 'components/atoms/icons/TierIcon';
-import { useRouter } from 'next/navigation';
-import CongratulationsIcon from 'components/atoms/icons/CongratulationsIcon';
-import { SuccessTemplateProps } from '../interfaces';
-import {useAppSelector} from "../../../../../../redux/store";
-import {useGetCustomerInformation} from "../../../../../../api-services/business-registration-services";
+import { SuccessTemplateProps } from '../interface';
+import Tier2Icon from 'components/atoms/icons/Tier2Icon';
 
 const SuccessTemplate = ({ 
     onDone, 
@@ -33,20 +22,11 @@ const SuccessTemplate = ({
         name: "Charles Peters",
         accountNumber: "8165748911",
         profileImage: "/placeholder.svg",
-        tier: 1,
-        dailyLimit: "₦50,000.00",
-        maxBalance: "₦300,000.00"
+        tier: 2,
+        dailyLimit: "₦200,000.00",
+        maxBalance: "₦500,000.00"
     }
 }: SuccessTemplateProps) => {
-
-
-    useEffect(() => {
-        fetchCustomerInfo()
-    }, []);
-
-    const {customerDetails} = useAppSelector(state => state.customer)
-    const {data: customerInfo, mutateAsync: fetchCustomerInfo, isPending} = useGetCustomerInformation(customerDetails?.id)
-
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -75,7 +55,7 @@ const SuccessTemplate = ({
                     w={'full'}
                 >
                     <Text fontSize="16px" fontWeight="600">
-                        Business Setup
+                        Account Upgrade - Tier 2
                     </Text>
                 </Flex>
             )}
@@ -89,68 +69,6 @@ const SuccessTemplate = ({
                 px={4} 
                 py={8}
             >
-                {/* Success Icon */}
-                <Box 
-                    position="relative" 
-                    w="150px" 
-                    h="150px" 
-                    mb={6}
-                >
-                    <Box
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        w="full"
-                        h="full"
-                        borderRadius="full"
-                        bg="#0F454F"
-                        opacity="0.1"
-                        zIndex="1"
-                    />
-                    <Flex
-                        position="absolute"
-                        top="0"
-                        left="0"
-                        w="full"
-                        h="full"
-                        borderRadius="full"
-                        bg="#0F454F"
-                        align="center"
-                        justify="center"
-                        zIndex="2"
-                    >
-                        <Box
-                            w="70%"
-                            h="70%"
-                            borderRadius="full"
-                            bg="white"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <CongratulationsIcon />
-                        </Box>
-                    </Flex>
-                </Box>
-
-                {/* Congratulations Text */}
-                <Heading
-                    as="h1"
-                    fontSize={"18px"}
-                    fontWeight="500"
-                    color={'#222B38'}
-                    mb={2}
-                    textAlign="center"
-                >
-                    Congratulations
-                </Heading>
-                <Text 
-                    variant={'base2'} 
-                    mb={8}
-                    textAlign="center"
-                >
-                    This user now has a OneWallet Account
-                </Text>
 
                 {/* User Account Info Card */}
                 <Box 
@@ -158,7 +76,7 @@ const SuccessTemplate = ({
                     w="full" 
                     borderRadius="8px" 
                     p={6} 
-                    mb={4}
+                    my={4}
                 >
                     <Flex direction="column" align="center" mb={4}>
                         <Avatar 
@@ -173,12 +91,9 @@ const SuccessTemplate = ({
                                     Account Name
                                 </Text>
 
-                                {isPending ? < Spinner /> :   <Text variant={'sma'}>
-                                    {customerInfo?.data?.accountName || 'not generated'}
+                                <Text variant={'sma'}>
+                                    {userData.name}
                                 </Text>
-
-                                }
-
                             </Box>
                             <Box display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'end'}>
                                 <Box>
@@ -187,12 +102,9 @@ const SuccessTemplate = ({
                                     </Text>
                                     <Flex align="center">
 
-                                            {isPending ? < Spinner /> :   <Text variant={'sma'}>
-                                                {customerInfo?.data?.accountNumber || 'not generated'}
+                                            <Text variant={'sma'}>
+                                                {userData.accountNumber}
                                             </Text>
-
-                                            }
-
                                         <Box 
                                             as="button" 
                                             onClick={handleCopy} 
@@ -221,7 +133,7 @@ const SuccessTemplate = ({
                     <Flex align="center" mb={4}>
                         
                             <Box position="relative">
-                                <TierIcon />
+                                <Tier2Icon />
                             </Box>
                         <Text fontSize="16px" fontWeight="500" color={'#222B38'}>
                             Tier {userData.tier}
@@ -266,7 +178,7 @@ const SuccessTemplate = ({
                 
                 <Grid templateColumns="repeat(2, 1fr)" gap={4} w="full">
                     <BaseButton
-                        text={`View Customer's QR`}
+                        text={`Generate User's QR`}
                         h="48px"
                         bg="white"
                         color="#0F454F"
