@@ -24,6 +24,7 @@ const SuccessModal = ({
   height,
   title,
   title2,
+  btnText,
   ...props
 }: IUpdateUserModalProps) => {
   const router = useRouter();
@@ -46,7 +47,7 @@ const SuccessModal = ({
             </VStack>
 
             <BaseButton 
-                text="Continue"
+                text={btnText ?? "Continue"}
                 marginTop="28px"
                 color="#FCFCFC"
                 width="full"

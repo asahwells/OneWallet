@@ -49,7 +49,6 @@ const ManageBusinessTemplate = () =>  {
 
                     <TabPanel>
                         <TransactionTemplate />
-                        {/* <p>three!</p> */}
                     </TabPanel>
                 </TabPanels>
             </Tabs>

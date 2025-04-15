@@ -13,7 +13,7 @@ import {
   Avatar,
   useDisclosure,
 } from "@chakra-ui/react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import OutlineButton from "components/molecules/buttons/OutlineButton"
 import CheckIcon from "components/atoms/icons/CheckIcon"
 import EditIcon from "components/atoms/icons/EditIcon"
@@ -26,6 +26,7 @@ import FailedModal from "components/molecules/modals/FailedModal"
 
 const BusinessInformationTemplate = () => {
   const router = useRouter()
+  const id = useParams();
   const isMobile = useBreakpointValue({ base: true, md: false })
   const [status, setStatus] = useState<'approved' | 'pending' | 'pendingV' | 'failed'>('failed')
   const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure();
@@ -35,7 +36,7 @@ const BusinessInformationTemplate = () => {
     <>
       <VStack spacing={4} align="stretch">
         <Flex flexDir={{ base: "column", lg: "row" }} justify={{ lg: "space-between" }} gap={{ base: 5, lg: 20 }}>
-          <OutlineButton text={"Upgrade To Tier 2"} variant={"outline"} color={"#0F454F"} />
+          <OutlineButton text={"Upgrade To Tier 2"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/account-upgrade`)}} />
           <OutlineButton text={`View Customer's QR`} variant={"outline"} color={"#0F454F"} />
         </Flex>
 
