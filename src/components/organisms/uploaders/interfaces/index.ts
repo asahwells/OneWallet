@@ -4,3 +4,12 @@ export interface ImageUploaderProps {
     onRemove?: (index: number) => any;
     onView?: (src: string) => any;
 }
+
+export interface DocumentUploaderProps {
+    onFileSelect: (file: File) => void
+    onUploadClick?: () => void
+    fileTypes?: Record<string, string[]>
+    maxFileSize?: number
+    isMobile?: boolean
+    fileInputRef?: RefObject<HTMLInputElement>
+  }
