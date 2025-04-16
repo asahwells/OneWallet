@@ -12,6 +12,5 @@ export interface DocumentUploaderProps {
     onUploadClick?: () => void;
     fileTypes?: string | string[];
     maxFileSize?: number;
-    isMobile?: boolean;
     fileInputRef?: RefObject<HTMLInputElement>;
   }

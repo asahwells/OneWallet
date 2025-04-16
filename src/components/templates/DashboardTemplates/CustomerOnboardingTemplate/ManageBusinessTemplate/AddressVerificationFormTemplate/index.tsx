@@ -82,7 +82,7 @@ const AddressVerificationFormTemplate = ({ onContinue }: PhotoUploadStepProps) =
               <Text variant={'base'} mb={2} textAlign="center">
                 Upload Document
               </Text>
-              <DocumentUploader onFileSelect={handleFileSelect} onUploadClick={onOpen} isMobile={false} />
+              <DocumentUploader onFileSelect={handleFileSelect} onUploadClick={onOpen} />
             </Box>
 
             <Box mt={4}>

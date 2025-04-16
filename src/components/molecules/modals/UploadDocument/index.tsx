@@ -15,7 +15,7 @@ import {
 import { CloseIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import GalleryIcon from '../../../atoms/icons/GalleryIcon/index';
 import PhotoIcon from '../../../atoms/icons/PhotoIcon/index';
-import { Input, useToast, Button } from '@chakra-ui/react';
+import { Input, useToast, Button, Image } from '@chakra-ui/react';
 import Webcam from 'react-webcam';
 import { useDropzone } from 'react-dropzone';
 import { useCallback, useRef, useState } from 'react';
@@ -87,7 +87,7 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
         const fileUrl = URL.createObjectURL(selectedFile)
         return (
             <Box mt={4}>
-            <img
+            <Image
                 src={fileUrl}
                 alt="File preview"
                 style={{ width: "100%", height: "auto", borderRadius: "8px" }}

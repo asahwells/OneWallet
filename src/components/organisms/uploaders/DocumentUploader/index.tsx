@@ -11,7 +11,6 @@ const DocumentUploader = ({
   onUploadClick,
   fileTypes,
   maxFileSize,
-  isMobile = false,
   fileInputRef,
 }: DocumentUploaderProps) => {
   const [isDragging, setIsDragging] = useState(false)
@@ -46,13 +45,13 @@ const DocumentUploader = ({
         borderStyle="dashed"
         borderColor={isDragging ? "blue.400" : "gray.300"}
         borderRadius="md"
-        p={isMobile ? 10 : 6}
+        p={{base:10, lg: 6}}
         bg="#F8FAFC"
         cursor="pointer"
         transition="all 0.2s"
         _hover={{ borderColor: "gray.400" }}
         onClick={handleClick}
-        height={isMobile ? "180px" : "150px"}
+        height={{base:"180px", lg: "150px"}}
         display="flex"
         alignItems="center"
         justifyContent="center"
