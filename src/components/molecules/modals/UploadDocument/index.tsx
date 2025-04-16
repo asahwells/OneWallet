@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import {
   Modal,
   ModalOverlay,
@@ -16,22 +15,94 @@ import {
 import { CloseIcon, ChevronRightIcon } from "@chakra-ui/icons"
 import GalleryIcon from '../../../atoms/icons/GalleryIcon/index';
 import PhotoIcon from '../../../atoms/icons/PhotoIcon/index';
-import { Input } from '@chakra-ui/react';
+import { Input, useToast, Button } from '@chakra-ui/react';
+import Webcam from 'react-webcam';
+import { useDropzone } from 'react-dropzone';
+import { useCallback, useRef, useState } from 'react';
 
 interface UploadDocumentModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onTakePhoto: () => void
-  onSelectFromGallery: () => void
+  isOpen: boolean;
+  onClose: () => void;
+  onTakePhoto: () => void;
+  onSelectFromGallery: (file: File) => void;
 }
 
-const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({
-  isOpen,
-  onClose,
-  onTakePhoto,
-  onSelectFromGallery,
-}) => {
+const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery }: UploadDocumentModalProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false })
+//   const [localImage, setLocalImage] = useState<string | null>(null);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const webcamRef = useRef<Webcam | null>(null);
+  const toast = useToast();
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0]
+        setSelectedFile(file)
+        onSelectFromGallery(file)
+        onClose()
+      }
+    }, [onSelectFromGallery, onClose]);
+
+    const { getRootProps, getInputProps } = useDropzone({
+        onDrop,
+        // @ts-ignore
+        accept: { 'image/jpeg': ['.jpeg', '.jpg', '.png'] },
+        maxSize: 2 * 1024 * 1024, // 2MB
+    });
+
+    // Open camera view
+    const handleOpenCamera = () => {
+        setIsCameraOpen(true);
+    };
+
+    // Close camera view
+    const handleCloseCamera = () => {
+        setIsCameraOpen(false);
+    };
+
+    // Capture a photo using the webcam and pass it to the parent.
+    const handleCapture = () => {
+        if (webcamRef.current) {
+        const capture = webcamRef.current.getScreenshot()
+        if (capture) {
+            onTakePhoto()
+            onClose()
+        } else {
+            toast({
+            title: "Capture failed",
+            description: "Unable to capture photo. Please try again.",
+            status: "error",
+            duration: 3000,
+            isClosable: true,
+            })
+        }
+        }
+    }
+    // Preview render
+    const renderFilePreview = () => {
+        if (!selectedFile) return null
+
+        if (selectedFile.type.startsWith("image")) {
+        const fileUrl = URL.createObjectURL(selectedFile)
+        return (
+            <Box mt={4}>
+            <img
+                src={fileUrl}
+                alt="File preview"
+                style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+            />
+            </Box>
+        )
+        }
+
+        return (
+        <Text mt={4} color="#344256" fontSize="md">
+            {selectedFile.name}
+        </Text>
+        )
+    }
+
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size={isMobile ? "430px" : "674px"}>
@@ -61,7 +132,7 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({
             {/* Take a photo option */}
             <Flex
               as="button"
-              onClick={onTakePhoto}
+              onClick={handleOpenCamera}
               alignItems="center"
               justifyContent="space-between"
               p={4}
@@ -82,13 +153,12 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({
                 </Text>
               </Flex>
               <ChevronRightIcon color="gray.400" boxSize={6} />
-              <Input type='' />
+              
             </Flex>
 
             {/* Select from gallery option */}
             <Flex
               as="button"
-              onClick={onSelectFromGallery}
               alignItems="center"
               justifyContent="space-between"
               p={4}
@@ -98,6 +168,7 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({
               width="100%"
               height="56px"
               _hover={{ bg: "gray.50" }}
+              {...getRootProps()}
             >
                 <Box></Box>
               <Flex alignItems="center" gap={4}>
@@ -109,9 +180,40 @@ const UploadDocumentModal: React.FC<UploadDocumentModalProps> = ({
                 </Text>
               </Flex>
               <ChevronRightIcon color="gray.400" boxSize={6} />
-              <Input display='none' type='file'/>
+              <input {...getInputProps()} />
             </Flex>
+            {renderFilePreview()}
           </Flex>
+          {isCameraOpen && (
+            <Box
+                position="fixed"
+                top="0"
+                left="0"
+                width="100vw"
+                height="100vh"
+                backgroundColor="rgba(0, 0, 0, 0.9)"
+                zIndex="1000"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+            >
+                <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                style={{ width: '90%', minHeight: '80vh', borderRadius: '8px' }}
+                />
+                <Box mt={4}>
+                <Button colorScheme="green" mr={2}>
+                    Capture Photo
+                </Button>
+                <Button onClick={handleCloseCamera} colorScheme="red">
+                    Close Camera
+                </Button>
+                </Box>
+            </Box>
+            )}
         </ModalBody>
       </ModalContent>
     </Modal>

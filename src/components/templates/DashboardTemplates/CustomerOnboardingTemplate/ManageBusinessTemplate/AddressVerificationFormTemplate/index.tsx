@@ -7,7 +7,11 @@ import HeaderBackButton from '../../../../../molecules/buttons/HeaderBackButton/
 import DocumentUploader from '../../../../../organisms/uploaders/DocumentUploader/index';
 import UploadDocumentModal from '../../../../../molecules/modals/UploadDocument/index';
 
-const AddressVerificationFormTemplate = () => {
+interface PhotoUploadStepProps {
+  onContinue: (documentType: string, file?: File) => void;
+}
+
+const AddressVerificationFormTemplate = ({ onContinue }: PhotoUploadStepProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false })
   const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>("")
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -30,8 +34,6 @@ const AddressVerificationFormTemplate = () => {
 
   const handleTakePhoto = () => {
     onClose()
-    // Here you would typically open the camera
-    // For now, we'll just simulate it by opening the file input
     if (fileInputRef.current) {
       fileInputRef.current.click()
     }
@@ -46,7 +48,7 @@ const AddressVerificationFormTemplate = () => {
 
   return (
     <Box bg="#F8FAFC" minH="100vh">
-      <HeaderBackButton header="Account Upgrade - Tier 3" onBack={onBack} />
+      <HeaderBackButton header="Account Upgrade - Tier 3" />
       <Container maxW="container.md" py={4}>
         <Box borderWidth="1px" borderColor="gray.200" borderRadius="lg" p={6} bg="white" boxShadow="sm">
           <VStack spacing={6} align="stretch">
@@ -63,7 +65,7 @@ const AddressVerificationFormTemplate = () => {
             <Box>
               <SelectField
                 type="select"
-                onSelect={handleDocumentTypeSelect}
+                label="Document Type"
                 value={selectedDocumentType}
                 placeholder="Select Document Type"
                 options={[
@@ -86,7 +88,7 @@ const AddressVerificationFormTemplate = () => {
             <Box mt={4}>
               <Button
                 onClick={handleContinue}
-                isDisabled={!selectedDocumentType}
+                // isDisabled={!selectedDocumentType}
                 bg="#0F454F"
                 color="white"
                 size="lg"

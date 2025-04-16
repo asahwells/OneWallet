@@ -1,3 +1,5 @@
+import { RefObject } from 'react';
+
 export interface ImageUploaderProps {
     images: (File | string)[];
     onUpload: (file: any) => void;
@@ -6,10 +8,10 @@ export interface ImageUploaderProps {
 }
 
 export interface DocumentUploaderProps {
-    onFileSelect: (file: File) => void
-    onUploadClick?: () => void
-    fileTypes?: Record<string, string[]>
-    maxFileSize?: number
-    isMobile?: boolean
-    fileInputRef?: RefObject<HTMLInputElement>
+    onFileSelect: (file: File) => void;
+    onUploadClick?: () => void;
+    fileTypes?: string | string[];
+    maxFileSize?: number;
+    isMobile?: boolean;
+    fileInputRef?: RefObject<HTMLInputElement>;
   }

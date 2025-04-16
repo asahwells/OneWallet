@@ -18,16 +18,17 @@ const DocumentUploader = ({
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (acceptedFiles && acceptedFiles.length > 0) {
+      if (acceptedFiles.length > 0) {
         onFileSelect(acceptedFiles[0])
       }
     },
     [onFileSelect],
   )
 
+  const defaultAccept = "image/jpeg, image/jpg, image/png"
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: fileTypes || { "image/jpeg": [".jpeg", ".jpg"], "image/png": [".png"] },
+    accept: fileTypes || defaultAccept,
     maxSize: maxFileSize || 2 * 1024 * 1024, // Default 2MB
   })
 
@@ -58,7 +59,7 @@ const DocumentUploader = ({
       >
         <Center>
           <VStack spacing={3}>
-              <AddIcon w={5} h={5} color="#344256" />
+              <AddIcon color="#344256"/>
             <Text fontSize="sm" color="gray.500" textAlign="center">
               JPEG & PNG not more than 2MB
             </Text>
