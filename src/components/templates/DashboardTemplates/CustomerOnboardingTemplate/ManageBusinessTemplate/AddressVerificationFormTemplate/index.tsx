@@ -11,7 +11,7 @@ interface PhotoUploadStepProps {
   onContinue: (documentType: string, file?: File) => void;
 }
 
-const AddressVerificationFormTemplate = ({ onContinue }: PhotoUploadStepProps) => {
+const AddressVerificationFormTemplate = () => {
   const isMobile = useBreakpointValue({ base: true, md: false })
   const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>("")
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -25,6 +25,10 @@ const AddressVerificationFormTemplate = ({ onContinue }: PhotoUploadStepProps) =
   const handleFileSelect = (file: File) => {
     setSelectedFile(file)
   }
+
+  const onContinue = (documentType: string, file?: File) => {
+  
+  };
 
   const handleContinue = () => {
     if (selectedDocumentType) {
