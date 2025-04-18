@@ -82,9 +82,12 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
 
     useEffect(() => {
         if (!navigator.geolocation) {
+          const currentDate = new Date();
+          const formattedDate = currentDate.toISOString().split('T')[0]; // This gives the format YYYY-MM-DD
+      
           setGeoData({
             coordinates: 'Geolocation not supported',
-            timestamp: new Date().toLocaleString(),
+            timestamp: formattedDate,
           });
           return;
         }
@@ -95,7 +98,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
             const lat = position.coords.latitude.toFixed(4);
             const lng = position.coords.longitude.toFixed(4);
       
-            const now = new Date().toLocaleString();
+            const now = new Date().toISOString().split('T')[0]; // Format the timestamp as YYYY-MM-DD
       
             setGeoData({
               coordinates: `${lat}, ${lng}`,
@@ -104,13 +107,15 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
           },
           (error) => {
             console.error('Geolocation error:', error);
+            const now = new Date().toISOString().split('T')[0]; // Format the timestamp as YYYY-MM-DD
+      
             setGeoData({
               coordinates: 'Unable to fetch location',
-              timestamp: new Date().toLocaleString(),
+              timestamp: now,
             });
           }
         );
-      }, []);
+      }, []);      
       
 
     return (
