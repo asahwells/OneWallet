@@ -38,7 +38,7 @@ const AnalyticsCard = ({title, value, isLoading, icon, ...props}: IAnalyticsCard
                         {isLoading ?
                             <Spinner size={'sm'}/>
                             :
-                            <Text  fontWeight={'600'} fontSize={'20px'} >
+                            <Text  fontWeight={'600'} fontSize={'18px'} >
                                 {value}
                             </Text>}
 
