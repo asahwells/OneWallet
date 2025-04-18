@@ -15,6 +15,7 @@ import {
   DrawerCloseButton,
   DrawerBody,
   useBreakpointValue,
+  Show,
 } from '@chakra-ui/react';
 import Footer from '../../components/organisms/footer/FooterAdmin';
 // Layout components
@@ -107,24 +108,26 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'} shadow={'sm'}  pos={'relative'} top={0} zIndex={10} >
-          <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
-            <IconButton
-              icon={<Armburger />}
-              display={{ base: 'inline-flex', xl: 'none' }}
-              onClick={onOpen}
-              aria-label="Open menu"
-              size="lg"
-              ref={btnRef}
-            />
-            <HeaderLogoIcon />
-            <HStack gap={isMobile? '30px': '28px'} align={'center'}>
-              <BellIconFill onClick={()=> router.push('/admin/notifications')} />
-              {isMobile && <ImageIcon />}
-              {!isMobile &&<ImageIconDesktop />}
-            </HStack>
-          </Flex>
-        </Box>
+        <Show above='lg'>
+          <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'} shadow={'sm'}  pos={'relative'} top={0} zIndex={10} >
+            <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
+              <IconButton
+                icon={<Armburger />}
+                display={{ base: 'inline-flex', xl: 'none' }}
+                onClick={onOpen}
+                aria-label="Open menu"
+                size="lg"
+                ref={btnRef}
+              />
+              <HeaderLogoIcon />
+              <HStack gap={isMobile? '30px': '28px'} align={'center'}>
+                <BellIconFill onClick={()=> router.push('/admin/notifications')} />
+                {isMobile && <ImageIcon />}
+                {!isMobile &&<ImageIconDesktop />}
+              </HStack>
+            </Flex>
+          </Box>
+        </Show>
 
         {isOpen && <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
             <DrawerOverlay />

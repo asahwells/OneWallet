@@ -234,7 +234,6 @@ export const useAddEmail = () => {
             //     title: "Error",
 
             // });
-
             throw new Error(error?.response?.data?.message || "Something went wrong.");
         },
     });
