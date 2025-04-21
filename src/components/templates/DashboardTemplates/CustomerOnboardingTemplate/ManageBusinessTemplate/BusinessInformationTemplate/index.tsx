@@ -18,19 +18,28 @@ import OutlineButton from "components/molecules/buttons/OutlineButton"
 import CheckIcon from "components/atoms/icons/CheckIcon"
 import EditIcon from "components/atoms/icons/EditIcon"
 import StatusBadge from "components/molecules/badge/status-badge"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import BaseButton from "components/molecules/buttons/BaseButton"
 import ConfirmationModal from "components/molecules/modals/ConfirmModal"
 import WarningModal from "components/molecules/modals/WarningModal"
 import FailedModal from "components/molecules/modals/FailedModal"
+import { useFetchCustomer } from "api-services/business-services"
 
 const BusinessInformationTemplate = () => {
   const router = useRouter()
-  const id = useParams();
+  const { id } = useParams() as { id: string };
+
   const isMobile = useBreakpointValue({ base: true, md: false })
   const [status, setStatus] = useState<'approved' | 'pending' | 'pendingV' | 'failed'>('failed')
+
   const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure();
   const { isOpen: isOpenTwo, onOpen: onOpenTwo, onClose: onCloseTwo } = useDisclosure();
+
+  const { mutateAsync: fetchCustomer, data: customer, isPending: isFetchingCustomer } = useFetchCustomer(id);
+
+  useEffect(() => {
+    fetchCustomer();
+  }, []);
 
   return (
     <>

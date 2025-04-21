@@ -34,7 +34,9 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
 
     const dispatch = useAppDispatch()
     const { customerDetails } = useAppSelector(state => state.customer)
+
     const [email, setEmail] = useState('');
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -59,7 +61,7 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
             onNext();
             } catch (error) {
             console.error('Error sending OTP:', error);
-            // Show the error modal
+            setErrorMessage((error as Error)?.message || 'Something went wrong');
             onOpen();
             }
     };
@@ -150,7 +152,7 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     isOpen={isOpen}
                     onClose={onClose}
                     title="Error Message:"
-                    title2="Email is not correct"
+                    title2={errorMessage || "Email is not correct"}
                     //width={{ xs: "95%", lg: "843px" }}
                     height="auto"
                     borderRadius="8px"

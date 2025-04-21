@@ -191,7 +191,7 @@ const RegisterUserForm = () => {
             {currentStep === RegisterSteps.EnterEmail && <EnterEmailTemplate onNext={() => {
                 goToStep(RegisterSteps.VerifyEmail);
             }} onSkip={() => {
-                console.log("")
+                goToStep(RegisterSteps.Complete)
             }} onBack={() => {
                 goToStep(RegisterSteps.HouseDetails);
             }} />}
