@@ -229,6 +229,10 @@ export const inputStyles = {
                 bg: 'white',
                 margin: 'auto',
               },
+              _hover: {
+                bg: mode('#0F454F', '#0F454F')(props),  // Same color as _checked on hover
+                borderColor: mode('#0F454F', '#0F454F')(props),  // Same border color as _checked
+              },
             },
           },
           label: { // Styles for the label text

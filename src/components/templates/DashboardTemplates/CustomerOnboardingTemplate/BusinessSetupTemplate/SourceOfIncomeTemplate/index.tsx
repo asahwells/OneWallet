@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Flex,
@@ -100,32 +100,41 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
     onNext();
   };
 
+  // // Button Disabled Logic
+  // const isButtonDisabled = useMemo(() => {
+  //   const isOtherSourceValid = hasOtherSources === 'No' || (otherSourceType && otherSourceRevenue);
+  //   return !annualRevenue || !isOtherSourceValid;
+  // }, [annualRevenue, hasOtherSources, otherSourceType, otherSourceRevenue]);
+
+
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
       <HeaderBackButton onBack={onBack} header="Business Setup" />
 
-      <Box px={4} pt={4} pb={8}>
+      <Box px={isMobile ? "0": "4"} pt={4} pb={8}>
         <Box
-          bg="white"
-          width={isMobile ? '100%' : '600px'}
+          bg={{lg: "white"}}
+          width={isMobile ? '100%' : '940px'}
           mx="auto"
           borderRadius="8px"
           p={isMobile ? 4 : 8}
-          border="0.5px solid #E2E8F0"
+          pb={12}
+          mb={0}
+          border={{lg: "0.5px solid #E2E8F0"}}
         >
           <Box
             w="full"
             display="flex"
             flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
+            justifyContent={{lg: "center"}}
+            alignItems={{lg: "center"}}
           >
             <Text
               letterSpacing={'-1.2%'}
               variant={'head'}
               textAlign={{
                   base: 'left',
-                  md: 'center',
+                  // md: 'center',
               }}
               mb={2}
             >
@@ -137,7 +146,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
               mb={6}
               textAlign={{
                   base: 'left',
-                  md: 'center',
+                  // md: 'center',
               }}
             >
               Please provide the details of the customer&apos;s business income
@@ -152,7 +161,8 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
 
             {/* Replaced SelectField with FormControlButton */}
             <FormControlButton
-              label="Expected Annual Income"
+              bg="white"
+              label="Select annual income"
               items={annualRevenueItems}
               value={annualRevenue}
               onChange={(selected) => setAnnualRevenue(selected.value)}
@@ -217,6 +227,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             borderRadius="8px"
             bg="#0F454F"
             color="white"
+            // isDisabled={isButtonDisabled}
             fontWeight="600"
             onClick={handleContinue}
             text="Continue"
