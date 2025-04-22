@@ -17,8 +17,9 @@ import {clearBusinessDetails, setCurrentBusinessStep} from "../../../../../redux
 import {BusinessSteps} from "../../../../../redux/slices/business/interfaces";
 import {router} from "next/client";
 import {useRouter} from "next/navigation";
-import {clearCustomerDetails} from "../../../../../redux/slices/customer";
+import {clearCustomerDetails, setCurrentStep} from "../../../../../redux/slices/customer";
 import AttestationCheckbox from '../../../../molecules/inputs/AttestationCheckBox/index';
+import {RegisterSteps} from "../../../../molecules/buttons/interfaces";
 
 
 const BusinessSetupTemplate = () => {
@@ -29,6 +30,7 @@ const BusinessSetupTemplate = () => {
     useEffect(() => {
         return () => {
             dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
+            dispatch(setCurrentStep(RegisterSteps.EnterPhone))
             dispatch(clearBusinessDetails())
             dispatch(clearCustomerDetails())
         }
