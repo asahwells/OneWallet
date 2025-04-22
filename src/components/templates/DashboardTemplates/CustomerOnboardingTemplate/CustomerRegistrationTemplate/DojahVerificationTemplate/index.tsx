@@ -106,7 +106,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
 
         // You can handle other response types ('begin', 'loading', 'close') as needed
     };
-    console.log({govData, userData, metadata, appID, publicKey})
+
 
     // if (isClosed) return <Box />;
 

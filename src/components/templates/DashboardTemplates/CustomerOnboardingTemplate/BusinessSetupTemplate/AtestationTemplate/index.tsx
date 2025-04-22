@@ -195,7 +195,6 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                             <Text variant={'sm'} my={2}>Nationality</Text>
                         </Flex>
                         <EditButton onClick={() => {
-                            console.log("clcked!!")
                             dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
                             dispatch(setFromBusinessStep(BusinessSteps.Atestation))
                         }} />

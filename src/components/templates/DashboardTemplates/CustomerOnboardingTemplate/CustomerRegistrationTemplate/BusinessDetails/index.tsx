@@ -39,7 +39,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
 
   const [categoryItems, setCategoryItems] = useState<ListProps[]>([]);
   const [subCategoryItems, setSubCategoryItems] = useState<ListProps[]>([]);
-  console.log({businessDetails})
+
   const [storeName, setStoreName] = useState(businessDetails?.businessName || '');
   const [industryCategory, setIndustryCategory] = useState(businessDetails?.industryCategory || '');
   const [industryCategoryId, setIndustryCategoryId] = useState(businessDetails?.industryCategoryId || '');
@@ -99,7 +99,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
     onNext();
   };
 
-  console.log({businessDetails})
+
   const isButtonDisabled = useMemo(() => {
     return !storeName || !industryCategory || !industrySubCategory;
   }, [storeName, industryCategory, industrySubCategory]);

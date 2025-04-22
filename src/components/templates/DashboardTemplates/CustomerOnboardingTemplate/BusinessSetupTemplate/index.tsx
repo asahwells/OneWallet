@@ -128,7 +128,7 @@ const BusinessSetupTemplate = () => {
                 break;
         }
     };
-    console.log({currentStep})
+
     return (
         <Box w="full">
             {currentStep === BusinessSteps.UserNationality &&
