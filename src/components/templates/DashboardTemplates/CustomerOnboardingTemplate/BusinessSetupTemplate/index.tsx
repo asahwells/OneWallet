@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box } from '@chakra-ui/react';
 import SourceOfIncomeTemplate from './SourceOfIncomeTemplate';
 import PepVerificationTemplate from './PepVerificationTemplate';
@@ -24,7 +24,16 @@ import AttestationCheckbox from '../../../../molecules/inputs/AttestationCheckBo
 const BusinessSetupTemplate = () => {
     const router = useRouter()
     const dispatch = useAppDispatch()
-    const {currentStep} = useAppSelector(state => state.business)
+
+
+    useEffect(() => {
+        return () => {
+            dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
+            dispatch(clearBusinessDetails())
+            dispatch(clearCustomerDetails())
+        }
+    }, []);
+    const {currentStep, fromStep} = useAppSelector(state => state.business)
     // Navigate to a specific step
     const goToStep = (nextStep: BusinessSteps) => {
         setStep(nextStep);
@@ -35,8 +44,16 @@ const BusinessSetupTemplate = () => {
 
     }
 
+
+
     // Example of "Next" navigation based on current step
     const handleNext = () => {
+
+        if(fromStep){
+            setStep(fromStep);
+            return;
+        }
+
         switch (currentStep) {
             case BusinessSteps.UserNationality:
                 setStep(BusinessSteps.BusinessAddress);
@@ -73,6 +90,11 @@ const BusinessSetupTemplate = () => {
 
     // Example "Back" navigation based on current step
     const handleBack = () => {
+        if(fromStep){
+            setStep(fromStep);
+            return;
+        }
+
         switch (currentStep) {
             case BusinessSteps.BusinessAddress:
                 setStep(BusinessSteps.UserNationality);
@@ -106,7 +128,7 @@ const BusinessSetupTemplate = () => {
                 break;
         }
     };
-
+    console.log({currentStep})
     return (
         <Box w="full">
             {currentStep === BusinessSteps.UserNationality &&

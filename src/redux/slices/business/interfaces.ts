@@ -38,6 +38,7 @@ export interface IBusinessSliceInitialState {
     isLoading: boolean;
     error: string | null;
     currentStep: BusinessSteps;
+    fromStep: BusinessSteps | null;
 }
 
 export enum DocumentType {

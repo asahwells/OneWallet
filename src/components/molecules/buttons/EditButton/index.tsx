@@ -5,7 +5,7 @@ import DownloadIcon from 'components/atoms/icons/DownloadIcon';
 import EditIcon from 'components/atoms/icons/EditIcon';
 
 const EditButton = ({
-  text, onClick, ...props
+  text, ...props
 }: IButtonProps ) => {
   return (
     <Button 

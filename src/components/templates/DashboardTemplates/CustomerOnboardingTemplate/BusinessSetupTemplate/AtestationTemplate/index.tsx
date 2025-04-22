@@ -22,11 +22,18 @@ import { AttestationTemplateProps } from '../interfaces';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import { useAppDispatch, useAppSelector } from '../../../../../../redux/store';
 import { useSetupBusiness } from 'api-services/business-registration-services';
+import {setCurrentBusinessStep, setFromBusinessStep} from "../../../../../../redux/slices/business";
+import {BusinessSteps} from "../../../../../../redux/slices/business/interfaces";
 
 
 const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
     const [isAttested, setIsAttested] = useState(false);
     const isMobile = useBreakpointValue({ base: true, md: false });
+
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        dispatch(setFromBusinessStep(null))
+    }, []);
 
     const { customerDetails } = useAppSelector(state => state.customer)
     const [geoData, setGeoData] = useState({
@@ -187,7 +194,11 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                             </Box>
                             <Text variant={'sm'} my={2}>Nationality</Text>
                         </Flex>
-                        <EditButton />
+                        <EditButton onClick={() => {
+                            console.log("clcked!!")
+                            dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
+                            dispatch(setFromBusinessStep(BusinessSteps.Atestation))
+                        }} />
                     </Flex>
                     
                     <Box>
@@ -211,7 +222,10 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                             </Box>
                             <Text variant={'sm'} my={2}>Business Details</Text>
                         </Flex>
-                        <EditButton />
+                        <EditButton cursor={'pointer'} onClick={() => {
+                            dispatch(setCurrentBusinessStep(BusinessSteps.BusinessDetails))
+                            dispatch(setFromBusinessStep(BusinessSteps.Atestation))
+                        }} />
                     </Flex>
                     
                     <Grid templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap={4}>
@@ -245,7 +259,10 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                             </Box>
                             <Text variant={'sm'} my={2}>Business Address</Text>
                         </Flex>
-                        <EditButton />
+                        <EditButton cursor={'pointer'} onClick={() => {
+                            dispatch(setCurrentBusinessStep(BusinessSteps.BusinessAddress))
+                            dispatch(setFromBusinessStep(BusinessSteps.Atestation))
+                        }} />
                     </Flex>
                     
                     <Grid templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap={4}>
@@ -302,7 +319,10 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                             </Box>
                             <Text variant={'sm'} my={2}>PEP Status</Text>
                         </Flex>
-                        <EditButton />
+                        <EditButton  cursor={'pointer'} onClick={() => {
+                            dispatch(setCurrentBusinessStep(BusinessSteps.PoliticalExposure))
+                            dispatch(setFromBusinessStep(BusinessSteps.Atestation))
+                        }}/>
                     </Flex>
                     
                     <Box>
@@ -326,7 +346,10 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                             </Box>
                             <Text variant={'sm'} my={2}>Source of Income</Text>
                         </Flex>
-                        <EditButton />
+                        <EditButton cursor={'pointer'} onClick={() => {
+                            dispatch(setCurrentBusinessStep(BusinessSteps.SourceOfIncome))
+                            dispatch(setFromBusinessStep(BusinessSteps.Atestation))
+                        }} />
                     </Flex>
                     
                     <Box mb={3}>
