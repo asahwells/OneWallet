@@ -40,14 +40,14 @@ const ConfirmationModal: React.FC<any> = ({
       <ModalContent borderRadius="26.81px" boxShadow="xl" maxW={"700px"} w="full" borderTopRadius={'26.81px'} borderBottomRadius={'26.81px'} position="relative" pb={4} mx={4}>
         <CloseButton position="absolute" right={4} top={6} color="" onClick={onClose} size="md" />
         <ModalBody pt={3} pb={4} px={6}>
-          <Flex direction="column" align="center">
+          <Flex direction="column" align={{base: "left", lg: "center"}}>
             <QuestionIcon />
 
             {/* Title */}
             <Text
               variant={'md'}
               my={4}
-              textAlign="center"
+              textAlign={{base:"left", lg: "center"}}
               color="#004052"
               position="relative"
               zIndex={2}
@@ -61,7 +61,7 @@ const ConfirmationModal: React.FC<any> = ({
                 variant={"sm2"}
                 mb={4}
                 maxW={'343px'}
-                textAlign="center"
+                textAlign={{base: "left", lg: "center"}}
                 position="relative"
                 zIndex={2}
               >
@@ -104,9 +104,8 @@ const ConfirmationModal: React.FC<any> = ({
               borderRadius="8px"
               fontSize="16px"
               fontWeight="600"
-              border={border ?? "1px solid #EF4444"}
-              _hover={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
-              _focus={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
+              border={border ?? "1px solid #0F454F"}
+              _hover={{bg: "rgba(15, 69, 79, 0.05)", borderColor: "#0F454F", color: "#0F454F"}}
               onClick={onSecondaryAction}
             >
               {secondaryButtonText}

@@ -155,7 +155,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                 >
                     <Flex align="center" justify={'center'} mb={4}>
                         <Box mr={2}>
-                            <StarIcon color="#10B981" />
+                            <StarIcon color="#411CAC" />
                         </Box>
                         <Text variant={'sm'}>Geo-Location</Text>
                     </Flex>
@@ -183,7 +183,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                         <Box></Box>
                         <Flex align="center">
                             <Box mr={2}>
-                                <StarIcon color="#3B82F6" />
+                                <StarIcon color="#1C5CAC" />
                             </Box>
                             <Text variant={'sm'} my={2}>Nationality</Text>
                         </Flex>
@@ -207,7 +207,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                         <Box></Box>
                         <Flex align="center">
                             <Box mr={2} color="#10B981">
-                                <StarIcon color="#10B981" />
+                                <StarIcon color="#1CAC97" />
                             </Box>
                             <Text variant={'sm'} my={2}>Business Details</Text>
                         </Flex>
@@ -241,7 +241,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                         <Box></Box>
                         <Flex align="center">
                             <Box mr={2}>
-                                <StarIcon color="#EC4899" />
+                                <StarIcon color="#AC1C87" />
                             </Box>
                             <Text variant={'sm'} my={2}>Business Address</Text>
                         </Flex>
@@ -298,7 +298,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                         <Box></Box>
                         <Flex align="center">
                             <Box color="#8B5CF6" mr={2}>
-                                <StarIcon color="#EC4899" />
+                                <StarIcon color="#6C1CAC" />
                             </Box>
                             <Text variant={'sm'} my={2}>PEP Status</Text>
                         </Flex>
@@ -322,7 +322,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                         <Box></Box>
                         <Flex align="center">
                             <Box mr={2}>
-                                <StarIcon color="#F59E0B" />
+                                <StarIcon color="#AC891C" />
                             </Box>
                             <Text variant={'sm'} my={2}>Source of Income</Text>
                         </Flex>

@@ -174,7 +174,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
               borderRadius="8px"
               border="1.2px solid #6F8F95"
               w="full"
-              disabled={isButtonDisabled || isFetchingIndustry}
+              isDisabled={isButtonDisabled || isFetchingIndustry}
               mt="36px"
               _focus={{ outline: 'none' }}
               h="56px"

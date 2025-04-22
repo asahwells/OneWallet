@@ -34,7 +34,7 @@ export const ProfileCreated = ({
                         <ProfileCreatedIcon />
 
                         <Text fontSize="18px" fontWeight={700} lineHeight="24px" letterSpacing="-1.2%" color="#344256">
-                        Unsaved Changes
+                            Profile Created
                         </Text>
                         <Text textAlign={'center'} fontSize="14px" fontWeight={400} lineHeight="22px" w={{base: 'full', md: '387px'}} letterSpacing="-1%" color="#344256">
                         Congratulations, you have successfully created an account for this user

@@ -18,6 +18,7 @@ import {BusinessSteps} from "../../../../../redux/slices/business/interfaces";
 import {router} from "next/client";
 import {useRouter} from "next/navigation";
 import {clearCustomerDetails} from "../../../../../redux/slices/customer";
+import AttestationCheckbox from '../../../../molecules/inputs/AttestationCheckBox/index';
 
 
 const BusinessSetupTemplate = () => {
