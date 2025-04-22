@@ -5,16 +5,26 @@ import LogoutIcon from 'components/atoms/icons/LogoutIcon';
 import { StorageToken } from 'constants/token';
 import { useRouter } from 'next/navigation';
 import LogoutConfirmationModal from 'components/organisms/logout/LogoutConfirmModal';
-import { useAppSelector } from '../../../../redux/store'; 
+import {useAppDispatch, useAppSelector} from '../../../../redux/store';
+import {clearBusinessDetails, setCurrentBusinessStep} from "../../../../redux/slices/business";
+import {BusinessSteps} from "../../../../redux/slices/business/interfaces";
+import {clearCustomerDetails, setCurrentStep} from "../../../../redux/slices/customer";
+import {RegisterSteps} from "../../../molecules/buttons/interfaces";
 
 const LogoutCard = () => {
     const { userDetails } = useAppSelector(state => state.user)
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const handleLogout = () => {
-        Cookies.remove(StorageToken);  
+        Cookies.remove(StorageToken);
+
+        dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
+        dispatch(setCurrentStep(RegisterSteps.EnterPhone))
+        dispatch(clearBusinessDetails())
+        dispatch(clearCustomerDetails())
 
         toast({
             title: "Logged out",
@@ -23,6 +33,7 @@ const LogoutCard = () => {
             duration: 9000,
             isClosable: true,
         });
+
 
         router.push('/auth/sign-in');
     };

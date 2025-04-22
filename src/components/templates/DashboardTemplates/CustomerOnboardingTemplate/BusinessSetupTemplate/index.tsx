@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Box } from '@chakra-ui/react';
 import SourceOfIncomeTemplate from './SourceOfIncomeTemplate';
 import PepVerificationTemplate from './PepVerificationTemplate';
@@ -17,14 +17,25 @@ import {clearBusinessDetails, setCurrentBusinessStep} from "../../../../../redux
 import {BusinessSteps} from "../../../../../redux/slices/business/interfaces";
 import {router} from "next/client";
 import {useRouter} from "next/navigation";
-import {clearCustomerDetails} from "../../../../../redux/slices/customer";
+import {clearCustomerDetails, setCurrentStep} from "../../../../../redux/slices/customer";
 import AttestationCheckbox from '../../../../molecules/inputs/AttestationCheckBox/index';
+import {RegisterSteps} from "../../../../molecules/buttons/interfaces";
 
 
 const BusinessSetupTemplate = () => {
     const router = useRouter()
     const dispatch = useAppDispatch()
-    const {currentStep} = useAppSelector(state => state.business)
+
+
+    useEffect(() => {
+        return () => {
+            dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
+            dispatch(setCurrentStep(RegisterSteps.EnterPhone))
+            dispatch(clearBusinessDetails())
+            dispatch(clearCustomerDetails())
+        }
+    }, []);
+    const {currentStep, fromStep} = useAppSelector(state => state.business)
     // Navigate to a specific step
     const goToStep = (nextStep: BusinessSteps) => {
         setStep(nextStep);
@@ -35,8 +46,16 @@ const BusinessSetupTemplate = () => {
 
     }
 
+
+
     // Example of "Next" navigation based on current step
     const handleNext = () => {
+
+        if(fromStep){
+            setStep(fromStep);
+            return;
+        }
+
         switch (currentStep) {
             case BusinessSteps.UserNationality:
                 setStep(BusinessSteps.BusinessAddress);
@@ -73,6 +92,11 @@ const BusinessSetupTemplate = () => {
 
     // Example "Back" navigation based on current step
     const handleBack = () => {
+        if(fromStep){
+            setStep(fromStep);
+            return;
+        }
+
         switch (currentStep) {
             case BusinessSteps.BusinessAddress:
                 setStep(BusinessSteps.UserNationality);
