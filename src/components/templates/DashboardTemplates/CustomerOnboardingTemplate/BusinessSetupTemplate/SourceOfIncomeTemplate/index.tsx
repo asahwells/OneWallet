@@ -100,11 +100,10 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
     onNext();
   };
 
-  // // Button Disabled Logic
-  // const isButtonDisabled = useMemo(() => {
-  //   const isOtherSourceValid = hasOtherSources === 'No' || (otherSourceType && otherSourceRevenue);
-  //   return !annualRevenue || !isOtherSourceValid;
-  // }, [annualRevenue, hasOtherSources, otherSourceType, otherSourceRevenue]);
+  const isButtonDisabled = useMemo(() => {
+    const isOtherSourceValid = hasOtherSources === 'No' || (otherSourceType && otherSourceRevenue);
+    return !annualRevenue || !isOtherSourceValid;
+  }, [annualRevenue, hasOtherSources, otherSourceType, otherSourceRevenue]);
 
 
   return (
@@ -227,7 +226,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             borderRadius="8px"
             bg="#0F454F"
             color="white"
-            // isDisabled={isButtonDisabled}
+            isDisabled={isButtonDisabled}
             fontWeight="600"
             onClick={handleContinue}
             text="Continue"
