@@ -13,7 +13,7 @@ import UserNationality from '../CustomerRegistrationTemplate/UserNationality';
 import BusinessAddress from '../CustomerRegistrationTemplate/BusinessAddress';
 import BusinessDetails from '../CustomerRegistrationTemplate/BusinessDetails';
 import {useAppDispatch, useAppSelector} from "../../../../../redux/store";
-import {clearBusinessDetails, setCurrentBusinessStep} from "../../../../../redux/slices/business";
+import {clearBusinessDetails, setCurrentBusinessStep, setFromBusinessStep} from "../../../../../redux/slices/business";
 import {BusinessSteps} from "../../../../../redux/slices/business/interfaces";
 import {router} from "next/client";
 import {useRouter} from "next/navigation";
@@ -46,13 +46,12 @@ const BusinessSetupTemplate = () => {
 
     }
 
-
-
     // Example of "Next" navigation based on current step
     const handleNext = () => {
 
         if(fromStep){
             setStep(fromStep);
+            dispatch(setFromBusinessStep(null));
             return;
         }
 
@@ -94,6 +93,7 @@ const BusinessSetupTemplate = () => {
     const handleBack = () => {
         if(fromStep){
             setStep(fromStep);
+            dispatch(setFromBusinessStep(null));
             return;
         }
 
