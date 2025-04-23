@@ -33,7 +33,7 @@ interface SearchableListProps extends ModalContentProps {
 function SearchableListModal({ isOpen, onClose, items, onSelectItem, ...props }: SearchableListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    item.name && item.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

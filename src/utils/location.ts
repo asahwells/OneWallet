@@ -4,6 +4,7 @@ import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { GetLGA } from 'api-services/lga/route';
 import { GetStates } from 'api-services/states/route';
+import { fetchCountries } from 'api-services/countries/route';
 
 // Handle errors and show a toast if inside a React component
 export const handleError = (error: unknown) => {
@@ -18,6 +19,17 @@ export const handleError = (error: unknown) => {
   //toast.error('An unknown error occurred while processing your request.');
   throw new Error('An unknown error occurred while processing your request.');
 }
+
+// Fetch countries
+export const fetchCountriesList = async () => {
+  try {
+    const countriesData = await fetchCountries();
+    return countriesData; // Returns an array of countries
+  } catch (error) {
+    console.error('Error fetching countries:', error);
+    return [];
+  }
+};
 
 export const fetchStates = async () => {
   try {

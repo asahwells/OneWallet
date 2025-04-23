@@ -105,7 +105,6 @@ const ConfirmationModal: React.FC<any> = ({
               fontSize="16px"
               fontWeight="600"
               border={border ?? "1px solid #0F454F"}
-              _hover={{bg: "rgba(15, 69, 79, 0.05)", borderColor: "#0F454F", color: "#0F454F"}}
               onClick={onSecondaryAction}
             >
               {secondaryButtonText}

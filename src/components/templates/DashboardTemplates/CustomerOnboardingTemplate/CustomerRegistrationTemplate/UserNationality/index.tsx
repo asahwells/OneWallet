@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Flex, Heading, Text, useBreakpointValue } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControlButton from 'components/molecules/buttons/FormControlButton'; // Import your BaseFormControlButton
 import business, { setBusiness } from '../../../../../../redux/slices/business';
 import {useAppDispatch, useAppSelector} from "../../../../../../redux/store";
+import { fetchCountriesList } from 'utils/location';
 
 interface ListProps {
   value?: string;
   name?: string;
-  id?: string | number;
+  // id?: string | number;
 }
 
 interface UserNationalityProps {
@@ -22,6 +23,8 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
   const dispatch = useAppDispatch()
   const { businessDetails } = useAppSelector(state => state.business)
   const { customerDetails } = useAppSelector(state => state.customer)
+  
+  const [countries, setCountries] = useState<{ name: string, value: string }[]>([]);
 
   const handleNationalityChange = (item: ListProps) => {
     dispatch(setBusiness({ 
@@ -30,6 +33,18 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
       userId: customerDetails?.id,
     }));
   }
+
+  useEffect(() => {
+    const fetchCountriesData = async () => {
+      const countryData = await fetchCountriesList();  
+      setCountries(countryData.map((country: any) => ({
+        name: country.name,
+        value: country.name,
+      })));
+    };
+  
+    fetchCountriesData();
+  }, []);  
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
@@ -70,31 +85,18 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
           </Text>
 
           <BaseFormControlButton
-            label="Nigeria"
-            defaultValue={businessDetails?.nationality}
-            items={[
-              { name: 'Afghanistan', value: 'afghanistan', id: 'AF' },
-              { name: 'Albania', value: 'albania', id: 'AL' },
-              { name: 'Algeria', value: 'algeria', id: 'DZ' },
-              { name: 'Andorra', value: 'andorra', id: 'AD' },
-              { name: 'Angola', value: 'angola', id: 'AO' },
-              { name: 'Antigua and Barbuda', value: 'antigua_and_barbuda', id: 'AG' },
-              { name: 'Argentina', value: 'argentina', id: 'AR' },
-              { name: 'Armenia', value: 'armenia', id: 'AM' },
-              { name: 'Australia', value: 'australia', id: 'AU' },
-              { name: 'Austria', value: 'austria', id: 'AT' },
-              { name: 'Azerbaijan', value: 'azerbaijan', id: 'AZ' },
-              { name: 'Nigeria', value: 'nigeria', id: 'NG' },
-              { name: 'Ghana', value: 'ghana', id: 'GH' },
-              { name: 'Libya', value: 'libya', id: 'LIB' },
-            ]}
+            defaultValue={businessDetails?.nationality || "Nigeria" }
+            items={countries}
             onChange={handleNationalityChange}
           />
 
           <BaseButton
             variant={'ghost'}
             text={'Continue'}
-            onClick={onNext}
+            onClick={() => {
+              console.log('Continue clicked');
+              onNext(); // Ensure onNext is triggered
+            }}
             color={'#FCFCFC'}
             border={'1.2px solid #6F8F95'}
             borderRadius={'8px'}
