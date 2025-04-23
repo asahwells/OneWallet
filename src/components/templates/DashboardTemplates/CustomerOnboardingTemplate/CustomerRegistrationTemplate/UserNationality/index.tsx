@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Heading, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useBreakpointValue, FormLabelProps } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControlButton from 'components/molecules/buttons/FormControlButton'; // Import your BaseFormControlButton

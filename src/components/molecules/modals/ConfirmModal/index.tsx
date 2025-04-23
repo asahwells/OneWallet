@@ -61,7 +61,7 @@ const ConfirmationModal: React.FC<any> = ({
                 variant={"sm2"}
                 mb={4}
                 maxW={'343px'}
-                textAlign={{base: "left", lg: "center"}}
+                textAlign={{base: "left", md: "center"}}
                 position="relative"
                 zIndex={2}
               >
@@ -104,7 +104,9 @@ const ConfirmationModal: React.FC<any> = ({
               borderRadius="8px"
               fontSize="16px"
               fontWeight="600"
-              border={border ?? "1px solid #0F454F"}
+              border={border ?? "1px solid #EF4444"}
+              _hover={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
+              _focus={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
               onClick={onSecondaryAction}
             >
               {secondaryButtonText}
