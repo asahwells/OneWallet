@@ -12,6 +12,7 @@ import {
   useBreakpointValue,
   Avatar,
   useDisclosure,
+  Spinner,
 } from "@chakra-ui/react"
 import { useParams, useRouter } from "next/navigation"
 import OutlineButton from "components/molecules/buttons/OutlineButton"
@@ -43,9 +44,18 @@ const BusinessInformationTemplate = () => {
 
   return (
     <>
+    {isFetchingCustomer ?
+      <Box w={'full'} h={'300px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+        <Spinner size={'lg'}/>
+      </Box>
+      :
       <VStack spacing={4} align="stretch">
         <Flex flexDir={{ base: "column", lg: "row" }} justify={{ lg: "space-between" }} gap={{ base: 5, lg: 20 }}>
-          <OutlineButton text={"Upgrade To Tier 2"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/account-upgrade`)}} />
+          {customer?.data?.tier === 'one' ? 
+            <OutlineButton text={"Upgrade To Tier 2"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/account-upgrade`)}} />
+          :
+            <OutlineButton text={"Upgrade To Tier 3"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/upgrade-tier3`)}} />
+          }
           <OutlineButton text={`View Customer's QR`} variant={"outline"} color={"#0F454F"} />
         </Flex>
 
@@ -55,15 +65,17 @@ const BusinessInformationTemplate = () => {
               <Avatar />
             </Flex>
             <Flex flexDir={{base: 'column', lg: 'row'}} justify={'center'} align={'end'} gap={4}>
-              <StatusBadge status="approved" />
-              {status === 'pending' && <BaseButton
+              
+              <StatusBadge status={customer?.data?.status === 'active' ? 'approved' : null} />
+              
+              {customer?.data?.status === 'pending' && <BaseButton
                 text="Complete Application"
                 color={'#FCFCFC'}
                 borderRadius={'8px'}
                 h={'48px'}
                 w={'239px'}
               />}
-              {status === 'pendingV' && <BaseButton
+              {customer?.data?.status === 'pendingV' && <BaseButton
                 text="View Verification Status"
                 color={'#FCFCFC'}
                 borderRadius={'8px'}
@@ -71,7 +83,7 @@ const BusinessInformationTemplate = () => {
                 w={'239px'}
                 onClick={() => {onOpenOne()}}
               />}
-              {status === 'failed' && <BaseButton
+              {customer?.data?.status === 'failed' && <BaseButton
                 text="View Reason"
                 color={'#FCFCFC'}
                 borderRadius={'8px'}
@@ -92,7 +104,7 @@ const BusinessInformationTemplate = () => {
             <Box>
               <Text variant={"label"}>Account Name</Text>
               <Text variant={"base"} mt={2}>
-                Ejike Fabian
+                {customer?.data?.fullName ?? "N/A"}
               </Text>
             </Box>
             <Box>
@@ -100,14 +112,14 @@ const BusinessInformationTemplate = () => {
                 Account Number
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                8165748921
+                {customer?.data?.phone?.slice(1) ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>Verification Type</Text>
               <Text variant={"base"} mt={2}>
-                BVN & NIN
+                {customer?.data?.ninVerified && customer?.data?.bvnVerified ? "BVN & NIN" : customer?.data?.ninVerified ? "NIN" : customer?.data?.bvnVerified ? "BVN" : "N/A"}
               </Text>
             </Box>
             <Box>
@@ -115,14 +127,14 @@ const BusinessInformationTemplate = () => {
                 Phone Number
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                8165473819
+                {customer?.data?.phone ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>Tier Level</Text>
               <Text variant={"base"} mt={2}>
-                Tier 2
+                {customer?.data?.tier === 'one' ? "Tier 1" : customer?.data?.tier === 'two' ? "Tier 2" : customer?.data?.tier === 'three' ? "Tier 3" : "N/A"}
               </Text>
             </Box>
             <Box>
@@ -130,14 +142,14 @@ const BusinessInformationTemplate = () => {
                 State
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                Abia
+                {customer?.data?.state ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>LGA</Text>
               <Text variant={"base"} mt={2}>
-                Isulkwato
+                {customer?.data?.lga ?? "N/A"}
               </Text>
             </Box>
             <Box>
@@ -145,14 +157,14 @@ const BusinessInformationTemplate = () => {
                 Town
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                Acha
+                {customer?.data?.town ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>Landmark/Nearesy Bustop</Text>
               <Text variant={"base"} mt={2}>
-                Whitehart Pharmacy
+                {customer?.data?.landmark ?? "N/A"}
               </Text>
             </Box>
             <Box>
@@ -160,7 +172,7 @@ const BusinessInformationTemplate = () => {
                 Street Address
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                DD 16, Zambia Avenue, Abia State
+                {customer?.data?.address ?? "N/A"}
               </Text>
             </Box>
           </Grid>
@@ -174,7 +186,7 @@ const BusinessInformationTemplate = () => {
               <GridItem>
                 <Text variant={"label"}>Nationality</Text>
                 <Text variant={"base"} mt={2}>
-                  Nigeria
+                  {customer?.data?.tierOne?.country ?? "N/A"}
                 </Text>
               </GridItem>
             </Grid>
@@ -202,7 +214,7 @@ const BusinessInformationTemplate = () => {
                 </Text>
               </GridItem>
 
-              <GridItem>
+              {/* <GridItem>
                 <Text variant={"label"}>Number of Stores</Text>
                 <Text variant={"base"} mt={2}>
                   2
@@ -215,7 +227,7 @@ const BusinessInformationTemplate = () => {
                 <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
                   3
                 </Text>
-              </GridItem>
+              </GridItem> */}
             </Grid>
           </Box>
 
@@ -339,6 +351,7 @@ const BusinessInformationTemplate = () => {
           </Box>
         </Box>
       </VStack>
+}
 
       {isOpenOne && (
         <WarningModal
