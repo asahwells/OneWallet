@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Box,
     Flex,
@@ -8,11 +8,16 @@ import {
     useBreakpointValue,
     Grid,
     Avatar,
+    Spinner,
+    useToast,
 } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import CopyIcon from 'components/atoms/icons/CopyIcon';
 import { SuccessTemplateProps } from '../interface';
 import Tier2Icon from 'components/atoms/icons/Tier2Icon';
+import { useGetCustomerAccountInformation } from 'api-services/business-services';
+import { useParams, useRouter } from 'next/navigation';
+import { router } from 'next/client';
 
 const SuccessTemplate = ({ 
     onDone, 
@@ -30,9 +35,36 @@ const SuccessTemplate = ({
 
     const isMobile = useBreakpointValue({ base: true, md: false });
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(userData.accountNumber);
-    };
+    const id = useParams();
+    const toast = useToast();
+    const router = useRouter();
+
+    const {data: customerInfo, mutateAsync: fetchCustomerInfo, isPending} = useGetCustomerAccountInformation(id?.id as string)
+
+     useEffect(() => {
+        fetchCustomerInfo()
+    }, []);
+
+    const handleCopy = async () => {
+        try {
+          await navigator.clipboard.writeText(customerInfo?.data?.accountNumber || 'not generated');
+          toast({
+            title: 'Copied!',
+            //description: `Account number ${customerInfo?.data?.accountNumber || 'not generated'} has been copied to clipboard.`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true
+          });
+        } catch (err) {
+          toast({
+            title: 'Error!',
+            description: 'Failed to copy account number to clipboard.',
+            status: 'error',
+            duration: 3000,
+            isClosable: true
+          });
+        }
+      };
 
     return (
         <Flex 
@@ -91,9 +123,11 @@ const SuccessTemplate = ({
                                     Account Name
                                 </Text>
 
-                                <Text variant={'sma'}>
-                                    {userData.name}
+                                {isPending ? < Spinner /> :   <Text variant={'sma'}>
+                                    {customerInfo?.data?.accountName || 'not generated'}
                                 </Text>
+
+                                }
                             </Box>
                             <Box display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'end'}>
                                 <Box>
@@ -102,9 +136,10 @@ const SuccessTemplate = ({
                                     </Text>
                                     <Flex align="center">
 
-                                            <Text variant={'sma'}>
-                                                {userData.accountNumber}
+                                            {isPending ? < Spinner /> :   <Text variant={'sma'}>
+                                                {customerInfo?.data?.accountNumber || 'not generated'}
                                             </Text>
+                                            }
                                         <Box 
                                             as="button" 
                                             onClick={handleCopy} 
@@ -190,7 +225,7 @@ const SuccessTemplate = ({
                         onClick={onViewQR}
                     />
                     <BaseButton
-                        text={'Upgrade to Tier 2'}
+                        text={'Upgrade to Tier 3'}
                         h="48px"
                         bg="white"
                         color="#0F454F"
@@ -199,7 +234,7 @@ const SuccessTemplate = ({
                         fontWeight="600"
                         border="1px solid #0F454F"
                         _hover={{ bg: "#F8FAFC" }}
-                        onClick={onUpgrade}
+                        onClick={()=> router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id?.id}/upgrade-tier3`)}
                     />
                 </Grid>
             </Flex>

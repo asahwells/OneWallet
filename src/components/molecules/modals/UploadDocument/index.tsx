@@ -1,5 +1,3 @@
-"use client"
-
 import {
   Modal,
   ModalOverlay,
@@ -11,25 +9,26 @@ import {
   IconButton,
   Box,
   useBreakpointValue,
-} from "@chakra-ui/react"
-import { CloseIcon, ChevronRightIcon } from "@chakra-ui/icons"
-import GalleryIcon from '../../../atoms/icons/GalleryIcon/index';
-import PhotoIcon from '../../../atoms/icons/PhotoIcon/index';
-import { Input, useToast, Button, Image } from '@chakra-ui/react';
+  Button,
+  useToast
+} from '@chakra-ui/react';
+import { CloseIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import GalleryIcon from 'components/atoms/icons/GalleryIcon';
+import PhotoIcon from 'components/atoms/icons/PhotoIcon';
+import { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
+import { uploadBase64ToFirebase } from 'api-services/firebase-services'; // Firebase upload service
 import { useDropzone } from 'react-dropzone';
-import { useCallback, useRef, useState } from 'react';
 
 interface UploadDocumentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onTakePhoto: () => void;
+  onTakePhoto: (url: string) => void;
   onSelectFromGallery: (file: File) => void;
 }
 
 const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery }: UploadDocumentModalProps) => {
-  const isMobile = useBreakpointValue({ base: true, md: false })
-//   const [localImage, setLocalImage] = useState<string | null>(null);
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const webcamRef = useRef<Webcam | null>(null);
@@ -37,80 +36,53 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
-        const file = acceptedFiles[0]
-        setSelectedFile(file)
-        onSelectFromGallery(file)
-        onClose()
-      }
-    }, [onSelectFromGallery, onClose]);
+      const file = acceptedFiles[0];
+      setSelectedFile(file);
+      onSelectFromGallery(file);
+      onClose();
+    }
+  }, [onSelectFromGallery, onClose]);
 
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        // @ts-ignore
-        accept: { 'image/jpeg': ['.jpeg', '.jpg', '.png'] },
-        maxSize: 2 * 1024 * 1024, // 2MB
-    });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: 'image/jpeg, image/jpg, image/png, application/pdf',
+    maxSize: 2 * 1024 * 1024, // 2MB
+  });
 
-    // Open camera view
-    const handleOpenCamera = () => {
-        setIsCameraOpen(true);
-    };
-
-    // Close camera view
-    const handleCloseCamera = () => {
-        setIsCameraOpen(false);
-    };
-
-    // Capture a photo using the webcam and pass it to the parent.
-    const handleCapture = () => {
-        if (webcamRef.current) {
-        const capture = webcamRef.current.getScreenshot()
-        if (capture) {
-            onTakePhoto()
-            onClose()
-        } else {
-            toast({
-            title: "Capture failed",
-            description: "Unable to capture photo. Please try again.",
-            status: "error",
+  const handleCapture = () => {
+    if (webcamRef.current) {
+      const capture = webcamRef.current.getScreenshot();
+      if (capture) {
+        uploadBase64ToFirebase(capture).then((url) => {
+          onTakePhoto(url);  // Pass the URL to parent component
+          onClose();
+          toast({
+            title: 'Photo Captured',
+            description: 'The photo was successfully uploaded.',
+            status: 'success',
             duration: 3000,
-            isClosable: true,
-            })
-        }
-        }
+            isClosable: true
+          });
+        }).catch(() => {
+          toast({
+            title: 'Capture Failed',
+            description: 'Unable to upload the photo.',
+            status: 'error',
+            duration: 3000,
+            isClosable: true
+          });
+        });
+      }
     }
-    // Preview render
-    const renderFilePreview = () => {
-        if (!selectedFile) return null
-
-        if (selectedFile.type.startsWith("image")) {
-        const fileUrl = URL.createObjectURL(selectedFile)
-        return (
-            <Box mt={4}>
-            <Image
-                src={fileUrl}
-                alt="File preview"
-                style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-            />
-            </Box>
-        )
-        }
-
-        return (
-        <Text mt={4} color="#344256" fontSize="md">
-            {selectedFile.name}
-        </Text>
-        )
-    }
-
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered size={isMobile ? "430px" : "674px"}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size={isMobile ? '430px' : '674px'}>
       <ModalOverlay />
-      <ModalContent borderRadius={isMobile ? "0" : "md"} mx={4} mt={40} pb={'42px'} maxW={{lg:"674px"}} width="100%">
+      <ModalContent borderRadius={isMobile ? '0' : 'md'} mx={4} mt={40} pb={'42px'} maxW={{ lg: '674px' }} width="100%">
         <ModalHeader textAlign="center" pt={6} pb={4}>
           <Flex justifyContent="space-between" alignItems="center">
-            <Box flex="1" /> 
+            <Box flex="1" />
             <Text fontSize="xl" fontWeight="semibold" color="#344256" textAlign="center" flex="2">
               Upload Document
             </Text>
@@ -132,7 +104,7 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
             {/* Take a photo option */}
             <Flex
               as="button"
-              onClick={handleOpenCamera}
+              onClick={() => setIsCameraOpen(true)}
               alignItems="center"
               justifyContent="space-between"
               p={4}
@@ -141,9 +113,9 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
               borderRadius="md"
               width="100%"
               height="56px"
-              _hover={{ bg: "gray.50" }}
+              _hover={{ bg: 'gray.50' }}
             >
-                <Box></Box>
+              <Box />
               <Flex justifyContent="center" alignItems="center" gap={4}>
                 <Box color="#C5B27D" fontSize="24px">
                   <PhotoIcon />
@@ -153,7 +125,6 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
                 </Text>
               </Flex>
               <ChevronRightIcon color="gray.400" boxSize={6} />
-              
             </Flex>
 
             {/* Select from gallery option */}
@@ -167,10 +138,10 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
               borderRadius="md"
               width="100%"
               height="56px"
-              _hover={{ bg: "gray.50" }}
+              _hover={{ bg: 'gray.50' }}
               {...getRootProps()}
             >
-                <Box></Box>
+              <Box />
               <Flex alignItems="center" gap={4}>
                 <Box color="#C5B27D" fontSize="24px">
                   <GalleryIcon />
@@ -182,42 +153,11 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
               <ChevronRightIcon color="gray.400" boxSize={6} />
               <input {...getInputProps()} />
             </Flex>
-            {renderFilePreview()}
           </Flex>
-          {isCameraOpen && (
-            <Box
-                position="fixed"
-                top="0"
-                left="0"
-                width="100vw"
-                height="100vh"
-                backgroundColor="rgba(0, 0, 0, 0.9)"
-                zIndex="1000"
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-            >
-                <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                style={{ width: '90%', minHeight: '80vh', borderRadius: '8px' }}
-                />
-                <Box mt={4}>
-                <Button colorScheme="green" mr={2}>
-                    Capture Photo
-                </Button>
-                <Button onClick={handleCloseCamera} colorScheme="red">
-                    Close Camera
-                </Button>
-                </Box>
-            </Box>
-            )}
         </ModalBody>
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default UploadDocumentModal
+export default UploadDocumentModal;

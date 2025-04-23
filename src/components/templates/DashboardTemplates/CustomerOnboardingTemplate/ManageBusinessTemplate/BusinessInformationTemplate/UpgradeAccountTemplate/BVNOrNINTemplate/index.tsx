@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Flex, Heading, HStack, Input, Text, useBreakpointValue, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Heading, HStack, Input, Text, useBreakpointValue, useDisclosure, useToast } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import FailedModal from 'components/molecules/modals/FailedModal';
 import SuccessModal from 'components/molecules/modals/SuccessModal';
+import {useAppDispatch, useAppSelector} from "../../../../../../../../redux/store";
+import { setUpgrade } from '../../../../../../../../redux/slices/upgrade';
+import { useParams } from 'next/navigation';
+import { useUpgradeTierTwo } from 'api-services/business-services';
 
 interface EnterBVNOrNINProps {
     onNext: () => void;
@@ -12,7 +16,13 @@ interface EnterBVNOrNINProps {
 
 const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [isBvn, setIsBvn] = useState(false)
+  const [isBvn, setIsBvn] = useState(false);
+
+  const toast = useToast();
+  const id = useParams();
+
+  const dispatch = useAppDispatch()
+  const { upgradeDetails } = useAppSelector(state => state.upgrade)
 
   const maxLength = isBvn ? 11 : 11;
   const [inputValue, setInputValue] = useState('')
@@ -21,9 +31,46 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
   const { isOpen: isOpenOne, onOpen: onOpenOne, onClose: onCloseOne } = useDisclosure()
   const { isOpen: isOpenTwo, onOpen: onOpenTwo, onClose: onCloseTwo } = useDisclosure()
 
-  const handleVerify = async() => {
-    
-  }
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const { mutateAsync: upgradeTierTwo, isPending: isUpgrading } = useUpgradeTierTwo();
+  
+
+  const handleContinue = async () => {
+    try {
+      if (inputValue?.length !== 11) {
+        toast({
+          title: isBvn ? 'Invalid BVN' : 'Invalid NIN',
+          description: isBvn ? 'BVN number must be 11 digits' : 'NIN number must be 11 digits',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+  
+      const payload = isBvn
+        ? { bvn: inputValue, userId: id?.id as string }
+        : { nin: inputValue, userId: id?.id as string };
+
+      await upgradeTierTwo(payload);
+
+      setSuccessMessage(
+        isBvn
+          ? 'You have successfully submitted the BVN of this customer'
+          : 'You have successfully submitted the NIN of this customer'
+      );
+      onOpenTwo();
+      // onNext();
+  
+    } catch (error: any) {
+      // Show the error modal
+      setErrorMessage(error?.message || 'An error occurred');
+      onOpenOne();
+    }
+  };
+  
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
@@ -93,7 +140,8 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
                 bg={!isButtonDisabled ? '#0F454F' : '#E2E8F0'}
                 color={!isButtonDisabled ? 'white' : '#94A3B8'}
                 fontWeight="600"
-                onClick={onNext}
+                isLoading={isUpgrading}
+                onClick={handleContinue}
                 isDisabled={isButtonDisabled}
                 text={'Continue'}
             />
@@ -105,7 +153,7 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
             isOpen={isOpenOne}
             onClose={onCloseOne}
             title="Error Message:"
-            title2="NIN does not exist or is incorrect"
+            title2={errorMessage  || "NIN does not exist or is incorrect"}
             height="auto"
             borderRadius="8px"
             padding="24px"
@@ -116,10 +164,10 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
         {/* Success Modal */}
         {isOpenTwo && <SuccessModal
             isOpen={isOpenTwo}
-            onClose={onCloseTwo}
+            onClose={onNext}
             title="Submission Successful"
-            title2="You have successfully submitted the NIN of this customer "
-            height="240px"
+            title2={successMessage}
+            height={"240px"}
             borderRadius="8px"
             padding="24px"
             borderTopRadius={'26.81px'}

@@ -48,7 +48,7 @@ function SearchableListModal({ isOpen, onClose, items, onSelectItem, ...props }:
             </InputLeftElement>
             <Input
               w={'full'}
-              placeholder="Search for country"
+              placeholder="Search the list"
               color={'#344256'}
               fontSize={'16px'}
               lineHeight={'24px'}

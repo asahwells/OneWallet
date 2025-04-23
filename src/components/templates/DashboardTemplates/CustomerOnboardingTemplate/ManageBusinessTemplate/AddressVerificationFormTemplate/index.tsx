@@ -1,120 +1,97 @@
-"use client"
-
-import { useState, useRef } from 'react';
-import { Box, VStack, Heading, Text, Button, useDisclosure, Container, useBreakpointValue } from "@chakra-ui/react"
-import SelectField from "components/organisms/select/SelectField"
-import HeaderBackButton from '../../../../../molecules/buttons/HeaderBackButton/index';
-import DocumentUploader from '../../../../../organisms/uploaders/DocumentUploader/index';
-import UploadDocumentModal from '../../../../../molecules/modals/UploadDocument/index';
-
-interface PhotoUploadStepProps {
-  onContinue: (documentType: string, file?: File) => void;
-}
+import React, { useState, useRef } from 'react';
+import { Box, Button, useDisclosure, Container, useBreakpointValue, Text, Image, Link } from '@chakra-ui/react';
+import SelectField from 'components/organisms/select/SelectField';
+import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
+import DocumentUploader from 'components/organisms/uploaders/DocumentUploader';
+import UploadDocumentModal from 'components/molecules/modals/UploadDocument';
 
 const AddressVerificationFormTemplate = () => {
-  const isMobile = useBreakpointValue({ base: true, md: false })
-  const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>("")
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>('');
+  const [fileUrl, setFileUrl] = useState<string | null>(null); // Store file URL here
+  const { isOpen, onOpen, onClose } = useDisclosure(); // OnOpen will trigger the modal
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDocumentTypeSelect = (documentType: string) => {
-    setSelectedDocumentType(documentType)
-  }
-
-  const handleFileSelect = (file: File) => {
-    setSelectedFile(file)
-  }
-
-  const onContinue = (documentType: string, file?: File) => {
-  
+  const handleFileSelect = (file: string | File) => {
+    if (typeof file === 'string') {
+      setFileUrl(file); // URL returned from Firebase
+    } else {
+      console.log('File selected:', file);
+      // Handle file if needed (in case of file upload, not URL)
+    }
   };
 
   const handleContinue = () => {
-    if (selectedDocumentType) {
-      onContinue(selectedDocumentType, selectedFile || undefined)
+    if (selectedDocumentType && fileUrl) {
+      // Proceed with the selected document type and file URL (whether from file or camera)
+      console.log('Document Type:', selectedDocumentType);
+      console.log('File URL:', fileUrl); // Use file URL from Firebase or uploaded file
+      // Continue the flow
     }
-  }
-
-  const handleTakePhoto = () => {
-    onClose()
-    if (fileInputRef.current) {
-      fileInputRef.current.click()
-    }
-  }
-
-  const handleSelectFromGallery = () => {
-    onClose()
-    if (fileInputRef.current) {
-      fileInputRef.current.click()
-    }
-  }
+  };
 
   return (
     <Box bg="#F8FAFC" minH="100vh">
       <HeaderBackButton header="Account Upgrade - Tier 3" />
       <Container maxW="container.md" py={4}>
         <Box borderWidth="1px" borderColor="gray.200" borderRadius="lg" p={6} bg="white" boxShadow="sm">
-          <VStack spacing={6} align="stretch">
-            <Box textAlign="center">
-              <Text variant={'otvVerifyTitle'} mb={4}>
-                Address Verification
-              </Text>
-              <Text variant={'otvVerifySubTitle'} lineHeight={'22px'} letterSpacing={'-1%'}>
-                We accept light, water, and waste bills as well as bank statements. Bill must not be more than 3 months
-                old. Ensure user&apos;s address matches that on their &quot;Proof of Address&quot;
-              </Text>
-            </Box>
+          <SelectField
+            type="select"
+            label="Document Type"
+            value={selectedDocumentType}
+            placeholder="Select Document Type"
+            options={[
+              { value: 'electricityBill', label: 'Electricity Bill' },
+              { value: 'waterBill', label: 'Water Bill' },
+              { value: 'landUseCharge', label: 'Land Use Charge' },
+              { value: 'bankStatement', label: 'Bank Statement' },
+              { value: 'wasteBill', label: 'Waste Bill' },
+            ]}
+            onChange={(e: any) => setSelectedDocumentType(e.target.value)}
+          />
 
-            <Box>
-              <SelectField
-                type="select"
-                label="Document Type"
-                value={selectedDocumentType}
-                placeholder="Select Document Type"
-                options={[
-                  { value: "electricityBill", label: "Electricity Bill" },
-                  { value: "waterBill", label: "Water Bill" },
-                  { value: "landUseCharge", label: "Land Use Charge" },
-                  { value: "bankStatement", label: "Bank Statement" },
-                  { value: "wasteBill", label: "Waste Bill" },
-                ]}
-              />
-            </Box>
+          {/* Pass the onOpen as onUploadClick to trigger the modal when clicking the upload area */}
+          <DocumentUploader onFileSelect={handleFileSelect} onUploadClick={onOpen} /> 
 
-            <Box>
-              <Text variant={'base'} mb={2} textAlign="center">
-                Upload Document
-              </Text>
-              <DocumentUploader onFileSelect={handleFileSelect} onUploadClick={onOpen} />
+          {/* Display uploaded file */}
+          {fileUrl && (
+            <Box mt={4} textAlign="center">
+              {fileUrl.includes('.jpg') || fileUrl.includes('.png') ? (
+                <Image src={fileUrl} alt="Uploaded file" maxWidth="300px" mx="auto" />
+              ) : (
+                <Link href={fileUrl} target="_blank" color="blue.500" fontSize="lg">
+                  View Uploaded File
+                </Link>
+              )}
             </Box>
+          )}
 
-            <Box mt={4}>
-              <Button
-                onClick={handleContinue}
-                // isDisabled={!selectedDocumentType}
-                bg="#0F454F"
-                color="white"
-                size="lg"
-                height="56px"
-                borderRadius="md"
-                width="100%"
-              >
-                Continue
-              </Button>
-            </Box>
-          </VStack>
+          <Box mt={4}>
+            <Button
+              onClick={handleContinue}
+              bg="#0F454F"
+              color="white"
+              size="lg"
+              height="56px"
+              borderRadius="md"
+              width="100%"
+            >
+              Continue
+            </Button>
+          </Box>
         </Box>
       </Container>
 
-      {isOpen && <UploadDocumentModal
+      {isOpen && (
+        <UploadDocumentModal
           isOpen={isOpen}
           onClose={onClose}
-          onTakePhoto={handleTakePhoto}
-          onSelectFromGallery={handleSelectFromGallery}
-        />}
+          onTakePhoto={(url: string) => handleFileSelect(url)}  // Pass URL from camera capture
+          onSelectFromGallery={(file: File) => handleFileSelect(file)}  // Pass file to handler
+        />
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default AddressVerificationFormTemplate
+export default AddressVerificationFormTemplate;

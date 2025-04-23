@@ -5,7 +5,8 @@ import {
   Heading,
   Text,
   VStack,
-  useBreakpointValue
+  useBreakpointValue,
+  useToast
 } from '@chakra-ui/react';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControl from 'components/molecules/forms/BaseFormControl';
@@ -16,6 +17,8 @@ import BaseButton from 'components/molecules/buttons/BaseButton';
 import { useFetchIndustries } from 'api-services/business-registration-services';
 import { ListProps } from 'components/molecules/buttons/interfaces';
 import FormControlButton from 'components/molecules/buttons/FormControlButton';
+import { useAddNextOfKin } from 'api-services/business-services';
+import { useParams } from 'next/navigation';
 
 interface IIndustry {
   id: string;
@@ -29,16 +32,48 @@ interface BusinessDetailsProps {
 
 const NextOfKinTemplate = ({ onBack, onNext }: BusinessDetailsProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const toast = useToast();
+  const id = useParams();
 
-  const { mutateAsync: fetchIndustries, isPending: isFetchingIndustry } = useFetchIndustries();
+  const { mutateAsync: addNextOfKin, isPending: isAdding } = useAddNextOfKin();
 
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
+  const [relationship, setRelationship] = useState('');
 
 
-  const onContinue = () => {
-    onNext();
+  const onContinue = async() => {
+    try {
+      // Ensure all fields are filled before proceeding
+      if (!name || !phoneNumber || !address || !relationship) {
+        toast({
+          title: 'Missing Fields',
+          description: 'Please fill out all fields before submitting.',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+
+      const payload = {
+        nextOfKinRelationship: relationship,
+        nextOfKinName: name,
+        nextOfKinPhone: phoneNumber,
+        nextOfKinAddress: address,
+        userId: id?.id as string
+      };
+
+      // Call the API to add next of kin
+      await addNextOfKin(payload);
+
+      // Proceed to next step
+      onNext();
+
+    } catch (error) {
+
+    }
   };
 
   const isButtonDisabled = useMemo(() => {
@@ -110,7 +145,7 @@ const NextOfKinTemplate = ({ onBack, onNext }: BusinessDetailsProps) => {
                 { name: 'Step-Father', value: 'Step-Father' },
                 { name: 'Step-Mother', value: 'Step-Mother' },
               ]}
-              onChange={(item) => handleChange('relationship', item.value)}
+              onChange={(item) => setRelationship(item.value)}
             />
             <BaseFormControl border="0px" label="Name">
               <BaseInput
@@ -144,7 +179,8 @@ const NextOfKinTemplate = ({ onBack, onNext }: BusinessDetailsProps) => {
               borderRadius="8px"
               border="1.2px solid #6F8F95"
               w="full"
-              disabled={isButtonDisabled || isFetchingIndustry}
+              disabled={isButtonDisabled || isAdding}
+              isLoading={isAdding}
               mt="36px"
               _focus={{ outline: 'none' }}
               h="56px"

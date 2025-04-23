@@ -14,7 +14,8 @@ import {
     HStack,
     Avatar,
     Icon,
-    IconButton, Spinner
+    IconButton, Spinner,
+    useToast
 } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import CopyIcon from 'components/atoms/icons/CopyIcon';
@@ -39,7 +40,6 @@ const SuccessTemplate = ({
     }
 }: SuccessTemplateProps) => {
 
-
     useEffect(() => {
         fetchCustomerInfo()
     }, []);
@@ -47,12 +47,29 @@ const SuccessTemplate = ({
     const {customerDetails} = useAppSelector(state => state.customer)
     const {data: customerInfo, mutateAsync: fetchCustomerInfo, isPending} = useGetCustomerInformation(customerDetails?.id)
 
-
+    const toast = useToast()
     const isMobile = useBreakpointValue({ base: true, md: false });
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(userData.accountNumber);
-    };
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(customerInfo?.data?.accountNumber || 'not generated');
+            toast({
+              title: 'Copied!',
+              //description: `Account number ${customerInfo?.data?.accountNumber || 'not generated'} has been copied to clipboard.`,
+              status: 'success',
+              duration: 3000,
+              isClosable: true
+            });
+        } catch (err) {
+          toast({
+            title: 'Error!',
+            description: 'Failed to copy account number to clipboard.',
+            status: 'error',
+            duration: 3000,
+            isClosable: true
+          });
+        }
+      };
 
     return (
         <Flex 

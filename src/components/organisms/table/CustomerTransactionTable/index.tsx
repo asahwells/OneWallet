@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     TableContainer,
     Tbody,
@@ -12,21 +12,31 @@ import {
     Text,
     Stack,
     HStack,
-    useBreakpointValue
+    useBreakpointValue,
+    Spinner
 } from '@chakra-ui/react';
 import TableCell from 'components/atoms/tableDetails/TableCell';
 import TableHeaderCell from 'components/atoms/tableDetails/TableHeaderCell';
 import TableRow from 'components/atoms/tableDetails/TableRow';
 import PaginationComponent from '../../pagination/PaginationComponent';
 import EmptyTaskIcon from 'components/atoms/icons/EmptyTasksIcon';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { useFetchAllTransactions } from 'api-services/business-services';
 // import { Icon } from '@chakra-ui/icons'; // or your custom icon
 
 const CustomerTransactionTable = ({ data }: { data: any[] }) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const router = useRouter()
 
-    if (!data?.length) {
+    const { id } = useParams() as { id: string };
+    
+    const { mutateAsync: fetchTransactions, data: transactions, isPending: isFetchingTransactions } = useFetchAllTransactions(id);
+
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
+
+    if (!transactions?.data?.length) {
         return (
             <Stack align="center" py={16} spacing={4} w="100%">
                 <EmptyTaskIcon />
@@ -40,8 +50,13 @@ const CustomerTransactionTable = ({ data }: { data: any[] }) => {
     if (isMobile) {
         // MOBILE LIST VIEW
         return (
+            (isFetchingTransactions ? 
+                <Box w={'full'} h={'350px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                    <Spinner size={'lg'}/> 
+                </Box>
+                :
             <Stack spacing={4} mt={4}>
-                {data.map((row, index) => (
+                {transactions?.data.map((row, index) => (
                     <Box
                         key={index}
                         borderBottom="1px solid #E2E8F0"
@@ -70,12 +85,12 @@ const CustomerTransactionTable = ({ data }: { data: any[] }) => {
 
                             <Stack spacing={2}>
                                 <Text fontWeight="700" fontSize="14px">
-                                    {row?.fullName ?? 'N/A'}
+                                    {row?.user?.firstName ?? 'N/A'} {row?.user?.lastName ?? 'N/A'}
                                 </Text>
                                 <Text fontSize="14px"   fontWeight="400">
-                                    {row?.state ? `${row?.state} State` : 'N/A'}
+                                    {row?.user?.state ? `${row?.user?.state} State` : 'N/A'}
                                 </Text>
-                                <Text fontSize="14px" fontWeight="400">{row?.tier ?? 'N/A'}</Text>
+                                <Text fontSize="14px" fontWeight="400">{row?.user?.tier ?? 'N/A'}</Text>
                                 <Text
                                     fontSize="14px"
                                     fontWeight="600"
@@ -90,12 +105,18 @@ const CustomerTransactionTable = ({ data }: { data: any[] }) => {
 
                 {/* Mobile Pagination */}
                 <PaginationComponent totalPages={10} currentPage={1} onPageChange={console.log} />
-            </Stack>
+            </Stack>)
         );
     }
 
     // DESKTOP TABLE VIEW
     return (
+        (isFetchingTransactions ?
+                    
+            <Box w={'100%'} h={'350px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                <Spinner size={'lg'}/> 
+            </Box>
+            :
         <TableContainer mt="24px" borderTop="0.5px solid #7C92B0">
             <Table>
                 <Thead>
@@ -121,15 +142,15 @@ const CustomerTransactionTable = ({ data }: { data: any[] }) => {
                     </TableRow>
                 </Thead>
                 <Tbody>
-                    {data.map((row, index) => (
-                        <TableRow key={index} style={{ cursor: 'pointer' }} onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${index}/transaction-detail/${index}`)}}>
+                    {transactions?.data.map((row, index) => (
+                        <TableRow key={index} style={{ cursor: 'pointer' }} onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/transaction-detail/${row?.id}`)}}>
                             <TableCell>{index + 1}</TableCell>
-                            <TableCell>{row?.fullName ?? 'N/A'}</TableCell>
-                            <TableCell>{row?.accountNumber ?? 'N/A'}</TableCell>
-                            <TableCell>{row?.state ?? 'N/A'}</TableCell>
-                            <TableCell>{row?.tier ?? 'N/A'}</TableCell>
+                            <TableCell>{row?.user?.firstName ?? 'N/A'} {row?.user?.lastName ?? 'N/A'}</TableCell>
+                            <TableCell>{row?.user?.accountNumber ?? 'N/A'}</TableCell>
+                            <TableCell>{row?.user?.state ?? 'N/A'}</TableCell>
+                            <TableCell>{row?.user?.tier ?? 'N/A'}</TableCell>
                             <TableCell
-                                color={row?.status === 'Pending' ? '#C5B27D' : '#22C55E'}
+                                color={row?.status === 'pending' ? '#C5B27D' : '#22C55E'}
                             >
                                 {row?.status ?? 'N/A'}
                             </TableCell>
@@ -138,7 +159,7 @@ const CustomerTransactionTable = ({ data }: { data: any[] }) => {
                 </Tbody>
             </Table>
             <PaginationComponent totalPages={10} currentPage={1} onPageChange={console.log} />
-        </TableContainer>
+        </TableContainer>)
     );
 };
 

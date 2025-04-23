@@ -10,6 +10,7 @@ const FormControlButton = ({
                              items,
                              defaultValue,
                              onChange,
+                             click,
                              ...props
                            }: IFormControlButton) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,6 +57,7 @@ const FormControlButton = ({
             px="16px"
             h="100%"
             cursor="pointer"
+            pointerEvents={click ?? "auto"}
         >
           <Text flex="1" fontSize="16px" fontWeight="400" color={hasValue ? "#344256" : "#A0AEC0"}>
             {selectedItem?.name || ""}

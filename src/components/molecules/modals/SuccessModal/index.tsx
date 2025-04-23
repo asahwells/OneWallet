@@ -32,7 +32,7 @@ const SuccessModal = ({
     <Modal isOpen={isOpen} onClose={onClose} size="lg" trapFocus={true} autoFocus={false}>
       <ModalOverlay />
       <ModalContent 
-        height={height || '419.99px'}
+        height={{base: '270px', lg: height || '419.99px'}}
         w={'full'}
         mx={'7px'}
         {...props}
