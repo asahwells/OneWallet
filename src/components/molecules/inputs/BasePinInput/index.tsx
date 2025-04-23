@@ -22,14 +22,14 @@ const BasePinInput: React.FC<BasePinInputProps> = ({ count = 4, onChange, value 
           <PinInputField 
             placeholder="" 
             autoFocus={i===0}
-            width={'69px'}
+            width={'69.13px'}
             height={'60px'}
-            background={'#F7F8F9'}
+            background={'#FFFFFF'}
             _focus={{
               borderColor: "#0F454F",
               backgroundColor: "#FFFFFF",
             }}
-            border={"1px solid #E2E8F0"}
+            border={"1px solid #0F454F"}
             sx={{
               "&::placeholder": { color: "transparent" },
               "&::-webkit-input-placeholder": { color: "transparent" },

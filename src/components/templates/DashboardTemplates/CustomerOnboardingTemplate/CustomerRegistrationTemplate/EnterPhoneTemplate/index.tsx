@@ -81,7 +81,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
             <Box px={{base: 0, md: 4}} pt={4} pb={8}>
                 <Box
                     bg={{md: "white"}}
-                    width={isMobile ? '100%' : '600px'}
+                    width={isMobile ? '100%' : '941px'}
                     mx="auto" /* Centers horizontally */
                     borderRadius={{md: "8px"}}
                     p={isMobile ? '20px' : 8}

@@ -111,12 +111,12 @@ const EnterPinTemplate = ({
             )}
 
             {/* Main Content */}
-            <Box px={4} pt={4} pb={8}>
+            <Box px={{base: 0, md: 4}} pt={4} pb={8}>
                 <Box
-                    bg="white"
-                    width={isMobile ? '100%' : '600px'}
+                    bg={{base: "", md: "white"}}
+                    width={isMobile ? '100%' : '941px'}
                     mx="auto" /* centers horizontally */
-                    borderRadius="8px"
+                    borderRadius={{base: 0, md: "8px"}}
                     boxShadow={isMobile ? 'none' : 'md'}
                     p={isMobile ? 4 : 8}
                 >

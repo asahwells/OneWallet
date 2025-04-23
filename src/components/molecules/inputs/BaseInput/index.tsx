@@ -20,7 +20,7 @@ const BaseInput = ({ value, icon, onFocus, onBlur, ...props }: IInputProps) => {
     return (
         <InputGroup height="100%">
             <Input
-
+            pt={'18px'}
                 value={value}
                 onFocus={handleFocus}
                 onBlur={handleBlur}

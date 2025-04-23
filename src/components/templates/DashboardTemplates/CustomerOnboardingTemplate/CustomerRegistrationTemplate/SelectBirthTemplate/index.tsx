@@ -20,6 +20,7 @@ import { useAddDateOfBirth } from 'api-services/business-registration-services';
 import { useAppSelector } from '../../../../../../redux/store';
 import {useDispatch} from "react-redux";
 import {setCustomer} from "../../../../../../redux/slices/customer";
+import { TagLabel } from '@chakra-ui/react';
 
 interface SelectBirthtemplateProps {
     onNext: () => void;
@@ -61,10 +62,10 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
             <HeaderBackButton onBack={onBack} />
 
             {/* Main Content */}
-            <Box px={4} pt={4} pb={8}>
+            <Box px={{base: 0, md: 4}} pt={4} pb={8}>
                 <Box
-                    bg="white"
-                    width={isMobile ? '100%' : '600px'}
+                    bg={{base: "", md: "white"}}
+                    width={isMobile ? '100%' : '941px'}
                     mx="auto"
                     borderRadius="8px"
                     boxShadow={isMobile ? 'none' : 'md'}
