@@ -27,14 +27,14 @@ const BusinessSetupTemplate = () => {
     const dispatch = useAppDispatch()
 
 
-    useEffect(() => {
-        return () => {
-            dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
-            dispatch(setCurrentStep(RegisterSteps.EnterPhone))
-            dispatch(clearBusinessDetails())
-            dispatch(clearCustomerDetails())
-        }
-    }, []);
+    // useEffect(() => {
+    //     return () => {
+    //         dispatch(setCurrentBusinessStep(BusinessSteps.UserNationality))
+    //         dispatch(setCurrentStep(RegisterSteps.EnterPhone))
+    //         dispatch(clearBusinessDetails())
+    //         dispatch(clearCustomerDetails())
+    //     }
+    // }, []);
     const {currentStep, fromStep} = useAppSelector(state => state.business)
     // Navigate to a specific step
     const goToStep = (nextStep: BusinessSteps) => {
