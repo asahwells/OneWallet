@@ -12,15 +12,16 @@ import {
     REGISTER,
     REHYDRATE,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storageSession from 'redux-persist/lib/storage/session'
 import { TypedUseSelectorHook, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import rootReducer from "../reducers";
 
 const persistConfig = {
     key: "onewallet-store",
-    storage,
+    storage: storageSession,
     version: 1.0,
+    blacklist: ['customer', 'business'],
 };
 
 export const baseStore = configureStore({

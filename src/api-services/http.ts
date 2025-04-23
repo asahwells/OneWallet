@@ -29,6 +29,9 @@ const responseErrorConfig = (error: any) => {
         (error.response.status === 403 || error.response.status === 401)
     ) {
         Cookies.remove(StorageToken);
+
+        //clear local storage
+        sessionStorage.clear()
         window.location.href = "/auth/sign-in";
     }
     return Promise.reject(error);
