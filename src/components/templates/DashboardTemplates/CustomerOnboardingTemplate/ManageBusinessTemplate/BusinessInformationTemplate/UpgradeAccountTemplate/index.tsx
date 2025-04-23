@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { Box, Flex, Heading, HStack, Input, Text, useBreakpointValue, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { UpgradeSteps } from './interface';
 import BVNOrNINTemplate from './BVNOrNINTemplate';
 import NextOfKinTemplate from './NOKTemplate';
 import SuccessTemplate from './CongratulationsTemplate';
+import { UpgradeSteps } from '../../../../../../../redux/slices/upgrade/interface';
+import { useDispatch } from 'react-redux';
+import {setCurrentStep} from "../../../../../../../redux/slices/upgrade";
+import {useAppSelector} from "../../../../../../../redux/store";
 
 const UpgradeAccountTemplate = () => {
     const router = useRouter()
-    //const dispatch = useDispatch()
-   
-    const [currentStep, setCurrentStep] = useState(UpgradeSteps.BvnOrNin)
+    const dispatch = useDispatch()
+
+    const {currentStep} = useAppSelector(state => state.upgrade)
 
     const setStep = (step: UpgradeSteps) => {
+        // @ts-ignore
+        dispatch(setCurrentStep(step))
     }
 
    const goToStep = (nextStep: UpgradeSteps) => {
@@ -22,10 +27,10 @@ const UpgradeAccountTemplate = () => {
    const handleNext = () => {
        switch (currentStep) {
            case UpgradeSteps.BvnOrNin:
-               setCurrentStep(UpgradeSteps.NextOfKin);
+                setStep(UpgradeSteps.NextOfKin);
                break;
             case UpgradeSteps.NextOfKin:
-               setCurrentStep(UpgradeSteps.Success);
+                setStep(UpgradeSteps.Success);
                break;
            default:
                break;
@@ -35,10 +40,10 @@ const UpgradeAccountTemplate = () => {
    const handleBack = () => {
        switch (currentStep) {
            case UpgradeSteps.NextOfKin:
-               setCurrentStep(UpgradeSteps.BvnOrNin);
+                setStep(UpgradeSteps.BvnOrNin);
                break;
             case UpgradeSteps.Success:
-                setCurrentStep(UpgradeSteps.NextOfKin);
+                setStep(UpgradeSteps.NextOfKin);
                 break;
            default:
                break;

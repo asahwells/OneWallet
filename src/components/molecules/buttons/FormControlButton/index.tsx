@@ -5,7 +5,7 @@ import SearchableListModal from "components/molecules/modals/SearchableListModal
 import { IFormControlButton, ListProps } from "../interfaces";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 
-const FormControlButton = ({ label, labelPt, items, onChange, ...props }: IFormControlButton) => {
+const FormControlButton = ({ label, labelPt, items, onChange, click, ...props }: IFormControlButton) => {
   const [hasValue, setHasValue] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ListProps | null>(null);
@@ -48,6 +48,8 @@ const FormControlButton = ({ label, labelPt, items, onChange, ...props }: IFormC
         padding="0 16px"
         height="100%"
         cursor="pointer"
+        pointerEvents={click ?? "auto"}
+        opacity={0.6}
       >
         <Text flex="1" fontSize={'16px'} fontWeight={400} color={selectedItem ? "#344256" : "#A0AEC0"}>
           {selectedItem && selectedItem.name} 

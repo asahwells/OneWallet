@@ -5,7 +5,7 @@ import {
   Flex, HStack, Icon, Menu, MenuButton, MenuItem, MenuList, Stack, Tag, TagCloseButton,
   TagLabel, Text, useBreakpointValue, useDisclosure, VStack,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDownIcon, CloseIcon } from '@chakra-ui/icons';
 import FilterButton from '../../../../../molecules/buttons/FilterButton';
 import SelectFilterBox from '../../../../../organisms/filter/SelectFilterBox';
@@ -17,6 +17,8 @@ import { Select, Button, SimpleGrid } from '@chakra-ui/react';
 import TransactionVolumeIcon from '../../../../../atoms/icons/TransactionVolumeIcon/index';
 import TransactionValueIcon from '../../../../../atoms/icons/TransactionValueIcon/index';
 import MonthFilter from '../../../../../organisms/filter/MonthFilters/index';
+import { useParams } from 'next/navigation';
+import { useFetchAllTransactions } from 'api-services/business-services';
 
 const TransactionTemplate = () => {
   const { isOpen, onClose, onToggle } = useDisclosure();
@@ -26,6 +28,14 @@ const TransactionTemplate = () => {
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
 
+  const { id } = useParams() as { id: string };
+
+  const { mutateAsync: fetchTransactions, data: transactions, isPending: isFetchingTransactions } = useFetchAllTransactions(id);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+  
   const handleMonthSelect = (month: string) => {
     console.log('Month selected:', month);
   };

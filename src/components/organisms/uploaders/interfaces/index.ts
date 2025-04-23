@@ -8,7 +8,7 @@ export interface ImageUploaderProps {
 }
 
 export interface DocumentUploaderProps {
-    onFileSelect: (file: File) => void;
+    onFileSelect: (file: File | string) => void;
     onUploadClick?: () => void;
     fileTypes?: string | string[];
     maxFileSize?: number;

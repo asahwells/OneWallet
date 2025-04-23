@@ -81,6 +81,7 @@ export enum RegisterSteps {
     children?: React.ReactNode;
     label?: string;
     value?: any;
+    click?: any;
     labelPt?: string | number;
     items: ListProps[];
     onChange?: (item: ListProps) => void; // Define onChange separately

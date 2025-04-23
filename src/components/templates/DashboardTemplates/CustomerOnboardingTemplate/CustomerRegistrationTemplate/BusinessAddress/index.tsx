@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Box, Heading, useBreakpointValue, Text, VStack } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
@@ -12,6 +12,7 @@ import CameraUpload from 'components/organisms/forms/CameraUploadForm';
 import { useAppDispatch, useAppSelector } from '../../../../../../redux/store';
 import { setBusiness } from '../../../../../../redux/slices/business';
 import FormControlButton from 'components/molecules/buttons/FormControlButton';
+import { fetchLGA, fetchStates } from 'utils/location'; // Adjust your import to the correct function
 
 interface BusinessAddressProps {
   onBack: () => void;
@@ -36,11 +37,35 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
     photoUrl: businessDetails?.photoUrl || '',
   });
 
+  // New state for holding fetched states and LGAs
+  const [states, setStates] = useState<{ name: string, value: string }[]>([]);
+  const [lgas, setLgas] = useState<{ name: string, value: string }[]>([]);
+  const [state, setState] = useState(formData.businessState); // Set initial state from formData
   const [isAttested, setIsAttested] = useState(false);
 
   const handleChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };  
+    if (name === 'businessState') {
+      console.log('State changed:', value);
+      setState(value); // Update state when businessState changes
+    }
+  };
+
+  // Fetch states and LGAs when component mounts or state changes
+  useEffect(() => {
+    const fetchData = async () => {
+      const stateData = await fetchStates();
+      setStates(stateData);
+
+      // Fetch LGAs only if state is selected
+      if (state) {
+        const lgaData = await fetchLGA(state);
+        setLgas(lgaData);
+      }
+    };
+
+    fetchData();
+  }, [state]); // Fetch states and LGAs whenever state changes
 
   const handleAttestationChange = (checked: boolean) => {
     setIsAttested(checked);
@@ -77,8 +102,8 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
             letterSpacing={'-1.2%'}
             variant={'head'}
             textAlign={{
-                base: 'left',
-                md: 'center',
+              base: 'left',
+              md: 'center',
             }}
             mb={2}
           >
@@ -89,8 +114,8 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
             variant={'sm'}
             mb={6}
             textAlign={{
-                base: 'left',
-                md: 'center',
+              base: 'left',
+              md: 'center',
             }}
           >
             Enter the address of the business/store
@@ -104,25 +129,24 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
               onChange={(value) => handleChange('locatedInMarket', value)}
             />
 
-            {/* State Select */}
+            {/* State Select with dynamically loaded states */}
             <FormControlButton
               label="State"
-              items={[
-                { name: 'Abuja', value: 'Abuja' },
-                { name: 'Lagos', value: 'Lagos' },
-                { name: 'Plateau', value: 'Plateau' },
-              ]}
+              items={states.map((state) => ({
+                value: state.value,
+                name: state.name,
+              }))}
               onChange={(item) => handleChange('businessState', item.value)}
             />
 
-            {/* LGA Select */}
+            {/* LGA Select with dynamically loaded LGAs */}
             <FormControlButton
               label="LGA"
-              items={[
-                { name: 'Bwari', value: 'Bwari' },
-                { name: 'Wuse', value: 'Wuse' },
-                { name: 'Karu', value: 'Karu' },
-              ]}
+              click={state ? 'auto' : 'none'}
+              items={lgas.map((lga) => ({
+                value: lga.value,
+                name: lga.name,
+              }))}
               onChange={(item) => handleChange('businessLga', item.value)}
             />
 
@@ -169,10 +193,10 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
               variant="ghost"
               text="Continue"
               color={'#FCFCFC'}
-              onClick={handleContinue} 
+              onClick={handleContinue}
               border="1.2px solid #6F8F95"
               borderRadius="8px"
-              isDisabled={!isAttested} 
+              isDisabled={!isAttested}
               w="full"
               mt="36px"
               _focus={{ outline: 'none' }}

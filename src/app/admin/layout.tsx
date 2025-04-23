@@ -108,7 +108,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
       >
         <Sidebar routes={routes} display="none" {...rest} />
 
-        <Show above='lg'>
+        {/* <Show above='lg'> */}
           <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'} shadow={'sm'}  pos={'relative'} top={0} zIndex={10} >
             <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
               <IconButton
@@ -127,7 +127,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
               </HStack>
             </Flex>
           </Box>
-        </Show>
+        
 
         {isOpen && <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
             <DrawerOverlay />
