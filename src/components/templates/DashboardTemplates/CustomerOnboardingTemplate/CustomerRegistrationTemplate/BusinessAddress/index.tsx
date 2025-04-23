@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Flex, Box, Heading, useBreakpointValue, Text, VStack } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
@@ -81,6 +81,20 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
 
     onNext();
   };
+
+  const isButtonDisabled = useMemo(() => {
+    const {
+      businessState,
+      businessLga,
+      marketName,
+      storeNumber,
+      fullShopAddress,
+      photoUrl,
+    } = formData;
+
+    return !businessState || !businessLga || !marketName || !storeNumber || !fullShopAddress || !photoUrl || !isAttested;
+  }, [formData, isAttested]);
+
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
@@ -196,7 +210,7 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
               onClick={handleContinue}
               border="1.2px solid #6F8F95"
               borderRadius="8px"
-              isDisabled={!isAttested}
+              isDisabled={isButtonDisabled} 
               w="full"
               mt="36px"
               _focus={{ outline: 'none' }}

@@ -7,6 +7,7 @@ const initialState: IBusinessSliceInitialState = {
     isLoading: false,
     error: null,
     currentStep: BusinessSteps.UserNationality,
+    fromStep: BusinessSteps.UserNationality,
 };
 
 const businessSlice = createSlice({
@@ -22,6 +23,10 @@ const businessSlice = createSlice({
             state.currentStep = action.payload;
         },
 
+        setFromBusinessStep: (state, action: PayloadAction<BusinessSteps | null>) => {
+            state.fromStep = action.payload;
+        },
+
         clearBusinessDetails: (state) => {
             state.businessDetails = null;
             state.currentStep = BusinessSteps.UserNationality;
@@ -32,6 +37,6 @@ const businessSlice = createSlice({
     }
 });
 
-export const {setBusiness, setCurrentBusinessStep, clearBusinessDetails} = businessSlice.actions;
+export const {setBusiness, setCurrentBusinessStep, clearBusinessDetails, setFromBusinessStep} = businessSlice.actions;
 
 export default businessSlice.reducer;

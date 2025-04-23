@@ -40,7 +40,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
   const [categoryItems, setCategoryItems] = useState<ListProps[]>([]);
   const [subCategoryItems, setSubCategoryItems] = useState<ListProps[]>([]);
 
-  const [storeName, setStoreName] = useState(businessDetails?.storeName || '');
+  const [storeName, setStoreName] = useState(businessDetails?.businessName || '');
   const [industryCategory, setIndustryCategory] = useState(businessDetails?.industryCategory || '');
   const [industryCategoryId, setIndustryCategoryId] = useState(businessDetails?.industryCategoryId || '');
   const [industrySubCategory, setIndustrySubCategory] = useState(businessDetails?.industrySubCategory || '');
@@ -99,6 +99,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
     onNext();
   };
 
+
   const isButtonDisabled = useMemo(() => {
     return !storeName || !industryCategory || !industrySubCategory;
   }, [storeName, industryCategory, industrySubCategory]);
@@ -155,12 +156,14 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
             <BaseFormControlButton
               label="Industry Category"
               items={categoryItems}
+              defaultValue={businessDetails?.industryCategory}
               value={industryCategory}
               onChange={(selected) => handleChange(selected, 'category')}
             />
 
             <BaseFormControlButton
               label="Industry SubCategory"
+                defaultValue={businessDetails?.industrySubCategory}
               value={industrySubCategory}
               items={subCategoryItems}     
               onChange={(selected) => handleChange(selected, 'subcategory')}
@@ -174,7 +177,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
               borderRadius="8px"
               border="1.2px solid #6F8F95"
               w="full"
-              disabled={isButtonDisabled || isFetchingIndustry}
+              isDisabled={isButtonDisabled || isFetchingIndustry}
               mt="36px"
               _focus={{ outline: 'none' }}
               h="56px"

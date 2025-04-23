@@ -70,9 +70,20 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
           </Text>
 
           <BaseFormControlButton
-            label="Nationality"
+            label="Nigeria"
             defaultValue={businessDetails?.nationality}
             items={[
+              { name: 'Afghanistan', value: 'afghanistan', id: 'AF' },
+              { name: 'Albania', value: 'albania', id: 'AL' },
+              { name: 'Algeria', value: 'algeria', id: 'DZ' },
+              { name: 'Andorra', value: 'andorra', id: 'AD' },
+              { name: 'Angola', value: 'angola', id: 'AO' },
+              { name: 'Antigua and Barbuda', value: 'antigua_and_barbuda', id: 'AG' },
+              { name: 'Argentina', value: 'argentina', id: 'AR' },
+              { name: 'Armenia', value: 'armenia', id: 'AM' },
+              { name: 'Australia', value: 'australia', id: 'AU' },
+              { name: 'Austria', value: 'austria', id: 'AT' },
+              { name: 'Azerbaijan', value: 'azerbaijan', id: 'AZ' },
               { name: 'Nigeria', value: 'nigeria', id: 'NG' },
               { name: 'Ghana', value: 'ghana', id: 'GH' },
               { name: 'Libya', value: 'libya', id: 'LIB' },

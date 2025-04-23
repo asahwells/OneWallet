@@ -7,7 +7,7 @@ import {
   Stack,
   Center,
   Select,
-  useBreakpointValue
+  useBreakpointValue,
 } from '@chakra-ui/react';
 // Custom components
 import Card from '../../../../components/molecules/card/Card';
@@ -49,10 +49,17 @@ const ExpectedPaymentChart = () => {
           w="100%"
           mb="8px"
         >
-          <Text variant="sm" fontSize={'16px'} fontWeight={'600'} mt="4px" color={'#C5B27D'}>
-            Expected Repayment vs Actual
-          </Text>
+          <Box mb="8px" maxW="70%">
+            <Text variant="md2" mt="4px" color={'#C5B27D'}>
+              Expected Repayment vs Actual
+            </Text>
 
+            <Box>
+              <Text variant="sml" mt="15px">
+                January - December 2025
+              </Text>
+            </Box>
+          </Box>
           <Select
             id="user_type"
             w="unset"
@@ -60,7 +67,7 @@ const ExpectedPaymentChart = () => {
             display="flex"
             alignItems="center"
             defaultValue="2025"
-            color="'#344256'"
+            color="#344256"
           >
             <option value="2025">2025</option>
             <option value="2024">2024</option>
@@ -69,14 +76,8 @@ const ExpectedPaymentChart = () => {
           </Select>
         </Flex>
 
-        <Box>
-          <Text variant="sm" fontSize={'14px'} fontWeight={'400'} mt="4px">
-            January - December 2025
-          </Text>
-        </Box>
-
-        <Box h={'85%'} >
-          {(isMobile ? 
+        <Box h={'85%'}>
+          {isMobile ? (
             <Box overflowX={'auto'} w="full">
               <Box minW={'600px'}>
                 <BarChart
@@ -85,15 +86,13 @@ const ExpectedPaymentChart = () => {
                 />
               </Box>
             </Box>
-            : 
+          ) : (
             <BarChart
               chartData={barChartDataDailyTraffic}
               chartOptions={barChartOptionsDailyTraffic}
             />
           )}
         </Box>
-        
-  
 
         <HStack p={[8, 0]} w={'full'} gap={[12, 4]} justifyContent={'center'}>
           <HStack spacing={4} alignItems="center">

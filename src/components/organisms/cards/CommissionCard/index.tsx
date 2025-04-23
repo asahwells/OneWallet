@@ -7,7 +7,7 @@ const CommissionCard  = ({commission, isLoading}: CommissionCardProps) => {
     return (
         <Stack bg={'#0F454F'} w={'full'} borderRadius={'8px'} py={3} px={6} >
 
-            <HStack py={2} px={5} borderRadius={'4px'} bg={'white'} w={'full'} alignItems={'center'} justifyContent={'space-between'} spacing={20}>
+            <HStack py={2} px={5} borderRadius={'4px'} bg={'white'} w={'full'} alignItems={'center'} justifyContent={'space-between'} spacing={{ base: "10", md:"20" }}>
                 <Stack spacing={1} w={'full'}>
                     <Text fontWeight={'700'} fontSize={'14px'} color={'#344256'}>
                         Commissions
@@ -24,7 +24,7 @@ const CommissionCard  = ({commission, isLoading}: CommissionCardProps) => {
 
                 </Stack>
 
-                <BaseButton bg={'#C5B27D'} color={'white'} p={2} borderRadius={'5px'} px={6} text={'Cash Out'} isDisabled={commission < 1}/>
+                <BaseButton bg={'#C5B27D'} variant={'sm'} color={'white'} borderRadius={'5.14px'} px={8} text={'Cash Out'} isDisabled={commission < 1} />
 
             </HStack>
 

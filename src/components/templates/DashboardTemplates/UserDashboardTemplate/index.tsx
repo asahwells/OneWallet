@@ -118,7 +118,7 @@ const UserDashboardTemplate = () =>  {
                     md: '65%'
                 }} borderRadius={'4px'}
                 >
-                    <ExpectedPaymentChart/>
+                    <ExpectedPaymentChart />
 
                 </Box>
             </Stack>

@@ -91,16 +91,16 @@ const UserBvnDetails = ({
                         title="Kindly ask the user to confirm the information below before proceeding. If the information is incorrect, ask the user to visit the bank to update the information before proceeding."
                         />
 
-                        <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'First Name'}>
+                        <BaseFormControl mb={{base: '20px', md: '24px'}} bg={'#E2E8F0'} label={'First Name'}>
                             <BaseInput  color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.firstName} />
                         </BaseFormControl>
-                        <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'Last Name'}>
+                        <BaseFormControl mb={{base: '20px', md: '24px'}} bg={'#E2E8F0'} label={'Last Name'}>
                             <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.lastName} />
                         </BaseFormControl>
-                        <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'Date of Birth'}>
+                        <BaseFormControl mb={{base: '20px', md: '24px'}} bg={'#E2E8F0'} label={'Date of Birth'}>
                             <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.dob} />
                         </BaseFormControl>
-                        <BaseFormControl labelPt={'2px'} border={'1px solid #CBD5E1'} bg={'#E2E8F0'} label={'Gender'}>
+                        <BaseFormControl mb={{base: '20px', md: '24px'}}  bg={'#E2E8F0'} label={'Gender'}>
                             <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.gender} />
                         </BaseFormControl>
 

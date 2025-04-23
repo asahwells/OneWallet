@@ -145,6 +145,9 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
               audio={false}
               ref={webcamRef}
               screenshotFormat="image/jpeg"
+              videoConstraints={{
+                facingMode: 'environment',
+              }}
               style={{ width: '90%', minHeight: '80vh', borderRadius: '8px' }}
             />
             <Box mt={4}>
