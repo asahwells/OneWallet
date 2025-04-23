@@ -6,7 +6,8 @@ import {
   ModalCloseButton,
   ModalBody,
   VStack,
-  Text
+  Text,
+  Flex
 } from '@chakra-ui/react';
 import ForgotPasswordIcon from 'components/atoms/icons/forgotPasswordIcon';
 import { IForgotPasswordModalProps } from '../interfaces';
@@ -21,13 +22,27 @@ const ForgotPasswordModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg" trapFocus={true} autoFocus={false}>
       <ModalOverlay />
-      <ModalContent 
+      <ModalContent
+        p={20}
         {...props} 
       >
-        <ModalCloseButton display={{base: 'inline-block', md: 'none'}} />
         <ModalBody>
           <VStack alignItems={{base:'flex-start', md: 'center'}} position={'relative'} spacing={4}>
-            <ForgotPasswordIcon  />
+          <Flex 
+              justify="space-between" 
+              align="center"
+              w="100%"
+              position="relative"
+            >
+              <ForgotPasswordIcon />
+              
+              <ModalCloseButton 
+                position="relative"
+                top="unset" 
+                right="unset"
+                display={{base: 'inline-block', md: 'none'}}
+              />
+            </Flex>
             <Text fontSize="16px" fontWeight={500} lineHeight="24.63px" letterSpacing="-1.2%" color="#344256">
               Forgot Password?
             </Text>

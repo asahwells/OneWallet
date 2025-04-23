@@ -59,7 +59,7 @@ const UserDashboardTemplate = () =>  {
             <Stack
                 direction={{ base: 'column', md: 'row' }} // Responsive layout: column on mobile, row on desktop
                 w="full"
-                gap={{base: 3, md: 10}}
+                gap={{base: 3, md: 8}}
                 align="stretch" // Ensures children stacks stretch to equal height
             >
                 {/* Left Hand Side */}

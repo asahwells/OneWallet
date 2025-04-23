@@ -32,6 +32,11 @@ const BaseInput = ({ value, icon, onFocus, onBlur, ...props }: IInputProps) => {
                 _focus={{
                     boxShadow: 'none',
                 }}
+                _autofill= {{
+                    bg: "#FFFFFF",
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: '#000000',
+                }}
                 position="relative"
                 zIndex="1"
                 {...props}
