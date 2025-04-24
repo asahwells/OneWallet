@@ -23,19 +23,18 @@ import EmptyTaskIcon from 'components/atoms/icons/EmptyTasksIcon';
 import { useParams, useRouter } from 'next/navigation';
 import { useFetchAllTransactions } from 'api-services/business-services';
 import { format } from 'date-fns';
-// import { Icon } from '@chakra-ui/icons'; // or your custom icon
 
-const CustomerTransactionTable = ({ data, isLoading, currentPage, totalPages, onPageChange }: { data: any[], isLoading: boolean, currentPage: number, totalPages: number, onPageChange: ()=>{} }) => {
+const CustomerTransactionTable = ({ data, isLoading, onPageChange }: { data: any[], isLoading: boolean, currentPage: number, totalPages: number, onPageChange: ()=>{} }) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
     const router = useRouter()
 
     const { id } = useParams() as { id: string };
-    var [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 10;
     
     const { mutateAsync: fetchTransactions, data: transactions, isPending } = useFetchAllTransactions();
 
-    var totalPages = transactions?.pagination?.lastPage;
+    const totalPages = transactions?.pagination?.lastPage;
     const page = transactions?.pagination?.currentPage;
 
     useEffect(() => {
