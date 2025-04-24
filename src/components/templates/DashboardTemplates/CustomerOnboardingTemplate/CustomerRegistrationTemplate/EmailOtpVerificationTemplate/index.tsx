@@ -168,36 +168,38 @@ const EmailOtpVerificationTemplate = ({
                     </HStack>
                 </Flex>
 
-                {isSuccessModalOpen && <SuccessModal
-                    isOpen={isSuccessModalOpen}
-                    onClose={() => {
-                        onSuccessModalClose()
-                        onNext()
-                    }}
-                    title="Congratulations!"
-                    title2="Successful Email Verification"
-                    //width={{ xs: "95%", lg: "843px" }}
-                    height="240px"
-                    borderRadius="8px"
-                    padding="24px"
-                    borderTopRadius={'26.81px'}
-                    borderBottomRadius={'26.81px'}
-                />}
 
-                {/* Failed Modal */}
-                {isOpenOne && <FailedModal
-                    isOpen={isOpenOne}
-                    onClose={onCloseOne}
-                    title="Error Message:"
-                    title2="You entered a wrong OTP. This account will be locked for 3 hours after 2 more attempts."
-                    //width={{ xs: "95%", lg: "843px" }}
-                    height="auto"
-                    borderRadius="8px"
-                    padding="24px"
-                    borderTopRadius={'26.81px'}
-                    borderBottomRadius={'26.81px'}
-                />}
             </Flex>
+
+            {isSuccessModalOpen && <SuccessModal
+                isOpen={isSuccessModalOpen}
+                onClose={() => {
+                    onSuccessModalClose()
+                    onNext()
+                }}
+                title="Congratulations!"
+                title2="Successful Email Verification"
+                //width={{ xs: "95%", lg: "843px" }}
+                height="240px"
+                borderRadius="8px"
+                padding="24px"
+                borderTopRadius={'26.81px'}
+                borderBottomRadius={'26.81px'}
+            />}
+
+            {/* Failed Modal */}
+            {isOpenOne && <FailedModal
+                isOpen={isOpenOne}
+                onClose={onCloseOne}
+                title="Error Message:"
+                title2="You entered a wrong OTP. This account will be locked for 3 hours after 2 more attempts."
+                //width={{ xs: "95%", lg: "843px" }}
+                height="auto"
+                borderRadius="8px"
+                padding="24px"
+                borderTopRadius={'26.81px'}
+                borderBottomRadius={'26.81px'}
+            />}
         </>
     );
 };

@@ -33,7 +33,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const dispatch = useAppDispatch();
-  const { businessDetails } = useAppSelector((state) => state.business);
+  const { businessDetails, fromStep } = useAppSelector((state) => state.business);
 
   const { mutateAsync: fetchIndustries, isPending: isFetchingIndustry } = useFetchIndustries();
 
@@ -171,7 +171,7 @@ const BusinessDetails = ({ onBack, onNext }: BusinessDetailsProps) => {
 
             <BaseButton
               variant="ghost"
-              text="Continue"
+              text={fromStep ? "Update": "Continue"}
               color="#FCFCFC"
               onClick={onContinue}
               borderRadius="8px"

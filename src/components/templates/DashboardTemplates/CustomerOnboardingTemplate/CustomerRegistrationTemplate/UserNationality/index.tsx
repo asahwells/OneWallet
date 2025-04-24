@@ -22,10 +22,18 @@ interface UserNationalityProps {
 const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const dispatch = useAppDispatch()
-  const { businessDetails } = useAppSelector(state => state.business)
+  const { businessDetails, fromStep } = useAppSelector(state => state.business)
   const { customerDetails } = useAppSelector(state => state.customer)
   
   const [countries, setCountries] = useState<{ name: string, value: string }[]>([]);
+
+  useEffect(() => {
+    if(fromStep) return
+    dispatch(setBusiness({
+      ...businessDetails,
+      nationality: 'Nigeria'
+    }))
+  }, [fromStep]);
 
   const handleNationalityChange = (item: ListProps) => {
     dispatch(setBusiness({ 
@@ -89,12 +97,12 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
           <FormControlButton
               label="Nationality"
               items={countries}
-              defaultValue={businessDetails?.nationality || 'Nigeria'}
+              defaultValue={businessDetails?.nationality}
               onChange={handleNationalityChange}  />
 
           <BaseButton
             variant={'ghost'}
-            text={'Continue'}
+            text={fromStep ? 'Update': 'Continue'}
             onClick={() => {
               console.log('Continue clicked');
               onNext(); // Ensure onNext is triggered
