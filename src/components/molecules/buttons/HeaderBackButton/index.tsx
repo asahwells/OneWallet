@@ -17,10 +17,11 @@ const HeaderBackButton = ({ onBack, header, iconType}: HeaderBackButtonProps) =>
                     alignItems="center"
                     justifyContent="space-between"
                     h="60px"
+                    bg="#FFFFFF"
                     borderBottom="1px solid #E2E8F0"
                     position="relative"
                     w={'full'}
-                    px={'10px'}
+                    px={'14px'}
 
                 >
                     <Box cursor={'pointer'} onClick={onBack}>

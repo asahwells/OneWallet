@@ -15,7 +15,7 @@ import AddIcon from 'components/atoms/icons/AddIcon';
 import Webcam from 'react-webcam';
 import EditIcon, { EditCameraIcon } from 'components/atoms/icons/EditIcon';
 import { uploadBase64ToFirebase } from 'api-services/firebase-services';
-import {useAppSelector} from "../../../../redux/store";
+import { useAppSelector } from '../../../../redux/store';
 
 interface CameraUploadProps {
   // Instead of returning base64, we return the final Firebase URL
@@ -23,7 +23,7 @@ interface CameraUploadProps {
 }
 
 const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
-  const {businessDetails} = useAppSelector(state => state.business)
+  const { businessDetails } = useAppSelector((state) => state.business);
   const [localImage, setLocalImage] = useState<string | null>(businessDetails?.photoUrl || null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const webcamRef = useRef<Webcam>(null);
@@ -44,7 +44,7 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
         try {
           const downloadURL = await uploadBase64ToFirebase(screenshot);
           console.log('Firebase URL:', downloadURL);
-        setLocalImage(downloadURL);
+          setLocalImage(downloadURL);
           setImage(downloadURL);
         } catch (error) {
           toast({
@@ -131,19 +131,19 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
 
         {isCameraOpen && (
           <Box
-          position="fixed"
-          inset={0}                
-          w="100%"                  
-          h="100%"                   
-          bg="rgba(0,0,0,0.9)"
-          zIndex="1000"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          px={4}                    
-          pt={4}                
-          pb="env(safe-area-inset-bottom, 16px)"
+            position="fixed"
+            inset={0}
+            w="100%"
+            h="100%"
+            bg="rgba(0,0,0,0.9)"
+            zIndex="1000"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            px={4}
+            pt={4}
+            pb="env(safe-area-inset-bottom, 16px)"
           >
             <Webcam
               audio={false}
@@ -154,22 +154,14 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
               }}
               style={{ width: '100%', maxHeight: '80vh', borderRadius: '8px' }}
             />
-               <HStack spacing={3} mt={4} w="full">
-                  <Button
-                    onClick={handleCapturePhoto}
-                    w="full"                // full width of the VStack
-                    colorScheme="green"
-                  >
-                    Capture Photo
-                  </Button>
-                  <Button
-                    onClick={handleCloseCamera}
-                    w="full"
-                    colorScheme="red"
-                  >
-                    Close Camera
-                  </Button>
-                </HStack>
+            <HStack spacing={3} mt={4}>
+              <Button onClick={handleCapturePhoto} w="full" colorScheme="green">
+                Capture Photo
+              </Button>
+              <Button onClick={handleCloseCamera} w="full" colorScheme="red">
+                Close Camera
+              </Button>
+            </HStack>
           </Box>
         )}
       </Box>

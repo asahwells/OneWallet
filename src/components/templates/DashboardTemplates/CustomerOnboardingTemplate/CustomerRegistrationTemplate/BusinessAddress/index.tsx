@@ -100,7 +100,7 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
     <Flex direction="column" bg="#F8FAFC" w="full">
       <HeaderBackButton onBack={onBack} header="Business Setup" />
 
-      <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
+      <Box px={{base: '20px', md: 4}} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
           width={{ base: '100%', lg: '941px' }}
@@ -135,7 +135,7 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
             Enter the address of the business/store
           </Text>
 
-          <VStack mt="35px" gap="24px">
+          <VStack mt="25px" gap="10px">
             {/* Market location Radio */}
             <RadioInputButton
               value={formData.locatedInMarket}

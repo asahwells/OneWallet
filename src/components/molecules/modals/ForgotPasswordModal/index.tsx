@@ -7,7 +7,8 @@ import {
   ModalBody,
   VStack,
   Text,
-  Flex
+  Flex,
+  useBreakpointValue
 } from '@chakra-ui/react';
 import ForgotPasswordIcon from 'components/atoms/icons/forgotPasswordIcon';
 import { IForgotPasswordModalProps } from '../interfaces';
@@ -18,18 +19,22 @@ const ForgotPasswordModal = ({
   onClose,
   ...props
 }: IForgotPasswordModalProps) => {
-
+    const modalSize = useBreakpointValue({ base: 'xs', md: 'md' });
+  
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg" trapFocus={true} autoFocus={false}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size={modalSize}>
       <ModalOverlay />
-      <ModalContent
-        p={20}
-        {...props} 
-      >
-        <ModalBody>
+        <ModalContent borderRadius="26.81px" boxShadow="xl" maxW={"700px"} w="full" borderTopRadius={'26.81px'} borderBottomRadius={'26.81px'} position="relative" pb={4} mx={4}>
+       <ModalCloseButton
+                          color="#475569"
+                          _focus={{ boxShadow: 'none' }}
+                          _hover={{ bg: '#F1F5F9' }}
+                          display={{base: 'none', md: 'flex'}}
+                      />
+      <ModalBody p={{md: '20px'}}>
           <VStack alignItems={{base:'flex-start', md: 'center'}} position={'relative'} spacing={4}>
           <Flex 
-              justify="space-between" 
+              justify={{base: "space-between", md: "center"}}
               align="center"
               w="100%"
               position="relative"
@@ -59,7 +64,7 @@ const ForgotPasswordModal = ({
               borderRadius={"8px"}
               border={'1.2px solid #0F454F'}
               h={"56px"}
-              w={{base: '100%', md: '520px'}}
+              w={{base: 'full', md: '458px'}}
               />
           </VStack>
         </ModalBody>

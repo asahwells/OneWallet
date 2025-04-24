@@ -58,6 +58,7 @@ const FormControlButton = ({
             h="100%"
             cursor="pointer"
             pointerEvents={click ?? "auto"}
+            bg='#FFFFFF'
         >
           <Text flex="1" fontSize="16px" fontWeight="400" color={hasValue ? "#344256" : "#A0AEC0"}>
             {selectedItem?.name || ""}
