@@ -14,6 +14,7 @@ const FormControlButton: React.FC<IFormControlButton> = ({
                                                              onChange,
                                                              click,         // preserves any external pointerEvents override
                                                              labelPt,
+                                                                isDisabled,
                                                              ...props
                                                          }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +31,11 @@ const FormControlButton: React.FC<IFormControlButton> = ({
     const hasValue = Boolean(selectedItem);
     const isFocused = isModalOpen;
 
-    const open = () => setIsModalOpen(true);
+    const open = () => {
+        if (!isDisabled) {
+            setIsModalOpen(true);
+        }
+    }
     const close = () => setIsModalOpen(false);
 
     const handleSelect = (item: ListProps) => {
@@ -95,7 +100,6 @@ const FormControlButton: React.FC<IFormControlButton> = ({
             {isModalOpen && (
                 <SearchableListModal
                     pt={8}
-                    minWidth={{ base: "100%", md: "40%", lg: "980px" }}
                     isOpen
                     onClose={close}
                     items={items}

@@ -78,7 +78,7 @@ const VerificationModal = ({
                             {title}
                         </Text>
 
-                        <Text textAlign="center" variant={'sm'}>
+                        <Text textAlign="start" variant={'sm'}>
                             {description}
                         </Text>
                     </VStack>
