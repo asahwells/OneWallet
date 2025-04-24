@@ -7,6 +7,7 @@ import AttestationCheckbox from 'components/molecules/inputs/AttestationCheckBox
 import BaseInput from 'components/molecules/inputs/BaseInput';
 import RadioInputButton from 'components/molecules/inputs/RadioInputButton';
 import CameraUpload from 'components/organisms/forms/CameraUploadForm';
+import { Switch } from '@chakra-ui/react';
 
 // 1) Import your Redux hooks and action
 import { useAppDispatch, useAppSelector } from '../../../../../../redux/store';
@@ -21,7 +22,7 @@ interface BusinessAddressProps {
 
 const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-
+  
   // 2) Access relevant slices from Redux (optional – adjust to your slice names)
   const dispatch = useAppDispatch();
   const { businessDetails } = useAppSelector((state) => state.business);
@@ -35,7 +36,12 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
     storeNumber: businessDetails?.storeNumber || '',
     fullShopAddress: businessDetails?.fullShopAddress || '',
     photoUrl: businessDetails?.photoUrl || '',
+    isResidentialAddress: businessDetails?.isResidentialAddress || false,
   });
+
+  const [isResidentialAddress, setIsSameAsResidential] = useState(
+    businessDetails?.isResidentialAddress || false
+  );
 
   // New state for holding fetched states and LGAs
   const [states, setStates] = useState<{ name: string, value: string }[]>([]);
@@ -90,10 +96,37 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
       storeNumber,
       fullShopAddress,
       photoUrl,
+      locatedInMarket,
     } = formData;
 
-    return !businessState || !businessLga || !marketName || !storeNumber || !fullShopAddress || !photoUrl || !isAttested;
+    if (formData.locatedInMarket === 'no' && !isResidentialAddress) {
+      return !businessState || !businessLga || !fullShopAddress || !photoUrl || !isAttested;
+    }
+
+    if (formData.locatedInMarket === 'no' && isResidentialAddress) {
+      return !photoUrl || !isAttested;
+    }
+    // If locatedInMarket is 'yes', check for marketName and storeNumber
+    if (formData.locatedInMarket === 'yes' ) {
+      return !businessState || !businessLga || !marketName || !storeNumber || !fullShopAddress || !photoUrl || !isAttested;
+    }
+
+    if (formData.locatedInMarket === '') {
+      return !locatedInMarket || !isAttested;
+    }
+    
   }, [formData, isAttested]);
+
+  const handleLocatedInMarketChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      locatedInMarket: value,
+      businessState: '',  // Reset businessState
+      businessLga: '',    // Reset businessLga
+    }));
+    setState(''); // Reset state when locatedInMarket changes
+    setLgas([]); // Reset LGAs when locatedInMarket changes
+  };
 
 
   return (
@@ -140,59 +173,76 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
             <RadioInputButton
               value={formData.locatedInMarket}
               label="Is the Customer Business Address located in a market?"
-              onChange={(value) => handleChange('locatedInMarket', value)}
+              onChange={(value) => handleLocatedInMarketChange(value)}
             />
 
-            {/* State Select with dynamically loaded states */}
-            <FormControlButton
-              label="State"
-              items={states.map((state) => ({
-                value: state.value,
-                name: state.name,
-              }))}
-              onChange={(item) => handleChange('businessState', item.value)}
-            />
+            {formData.locatedInMarket === 'no' ? (
+              <>
+                <Flex 
+                w="full" 
+                alignItems="center" 
+                justifyContent="space-between" 
+                p="4" 
+                border="1px solid #E2E8F0" 
+                borderRadius="md"
+              >
+                <Switch 
+                  size="md"
+                  sx={{
+                    '& .chakra-switch__track[data-checked]': {
+                      backgroundColor: '#0F454F',
+                    },
+                    '& .chakra-switch__thumb': {
+                      backgroundColor: 'white',
+                    }
+                  }}
+                  isChecked={isResidentialAddress}
+                  onChange={(e) => {
+                    setIsSameAsResidential(e.target.checked);
+                    handleChange('isSameAsResidential', e.target.checked);
+                  }}
+                />
+                <Text variant="base" ml={3}>
+                  {"Store/business address is the same as the business' residential address"}
+                </Text>
 
-            {/* LGA Select with dynamically loaded LGAs */}
-            <FormControlButton
-              label="LGA"
-              click={state ? 'auto' : 'none'}
-              items={lgas.map((lga) => ({
-                value: lga.value,
-                name: lga.name,
-              }))}
-              onChange={(item) => handleChange('businessLga', item.value)}
-            />
+              </Flex>
+              {/* State Select with dynamically loaded states */}
+              {!isResidentialAddress && (
+                <>
+                  <FormControlButton
+                    label="State"
+                    items={states.map((state) => ({
+                      value: state.value,
+                      name: state.name,
+                    }))}
+                    onChange={(item) => handleChange('businessState', item.value)}
+                  />
 
-            {/* Market Name */}
-            <BaseFormControl border="0px" label="Market Name">
-              <BaseInput
-                placeholder=""
-                value={formData.marketName}
-                onChange={(e: any) => handleChange('marketName', e.target.value)}
-              />
-            </BaseFormControl>
+                  {/* LGA Select with dynamically loaded LGAs */}
+                  <FormControlButton
+                    label="LGA"
+                    click={state ? 'auto' : 'none'}
+                    items={lgas.map((lga) => ({
+                      value: lga.value,
+                      name: lga.name,
+                    }))}
+                    onChange={(item) => handleChange('businessLga', item.value)}
+                  />
 
-            {/* Store Line */}
-            <BaseFormControl label="Store Line/Number">
-              <BaseInput
-                placeholder=""
-                value={formData.storeNumber}
-                onChange={(e: any) => handleChange('storeNumber', e.target.value)}
-              />
-            </BaseFormControl>
-
-            {/* Address Description */}
-            <BaseFormControl label="Shop Address Description">
-              <BaseInput
-                placeholder=""
-                value={formData.fullShopAddress}
-                onChange={(e: any) => handleChange('fullShopAddress', e.target.value)}
-              />
-            </BaseFormControl>
+                  {/* Address Description - always show this regardless of Yes/No selection */}
+                  <BaseFormControl label="Shop Address Description">
+                    <BaseInput
+                      placeholder=""
+                      value={formData.fullShopAddress}
+                      onChange={(e: any) => handleChange('fullShopAddress', e.target.value)}
+                    />
+                  </BaseFormControl>
+                </>
+              )}
 
             {/* Camera for capturing store photo */}
-            <CameraUpload setImage={(imageUrl) => handleChange('photoUrl', imageUrl)} />
+              <CameraUpload setImage={(imageUrl) => handleChange('photoUrl', imageUrl)} />
 
             {/* Attestation Checkbox */}
             <AttestationCheckbox
@@ -201,6 +251,71 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
               onChange={handleAttestationChange}
               label="I attest that all the information provided is correct"
             />
+
+              </>
+            ) : (
+              // Show residential address toggle when "No" is selected
+              <>
+              {/* State Select with dynamically loaded states */}
+              <FormControlButton
+                  label="State"
+                  items={states.map((state) => ({
+                    value: state.value,
+                    name: state.name,
+                  }))}
+                  onChange={(item) => handleChange('businessState', item.value)}
+                />
+
+                {/* LGA Select with dynamically loaded LGAs */}
+                <FormControlButton
+                  label="LGA"
+                  click={state ? 'auto' : 'none'}
+                  items={lgas.map((lga) => ({
+                    value: lga.value,
+                    name: lga.name,
+                  }))}
+                  onChange={(item) => handleChange('businessLga', item.value)}
+                />
+
+                {/* Market Name */}
+                <BaseFormControl border="0px" label="Market Name">
+                  <BaseInput
+                    placeholder=""
+                    value={formData.marketName}
+                    onChange={(e: any) => handleChange('marketName', e.target.value)}
+                  />
+                </BaseFormControl>
+
+                {/* Store Line */}
+                <BaseFormControl label="Store Line/Number">
+                  <BaseInput
+                    placeholder=""
+                    value={formData.storeNumber}
+                    onChange={(e: any) => handleChange('storeNumber', e.target.value)}
+                  />
+                </BaseFormControl>
+
+                {/* Address Description - always show this regardless of Yes/No selection */}
+                <BaseFormControl label="Shop Address Description">
+                  <BaseInput
+                    placeholder=""
+                    value={formData.fullShopAddress}
+                    onChange={(e: any) => handleChange('fullShopAddress', e.target.value)}
+                  />
+                </BaseFormControl>
+
+                {/* Camera for capturing store photo */}
+                  <CameraUpload setImage={(imageUrl) => handleChange('photoUrl', imageUrl)} />
+
+                {/* Attestation Checkbox */}
+                <AttestationCheckbox
+                  w="full"
+                  isChecked={isAttested}
+                  onChange={handleAttestationChange}
+                  label="I attest that all the information provided is correct"
+                />
+              </>
+            )}
 
             {/* Continue Button */}
             <BaseButton

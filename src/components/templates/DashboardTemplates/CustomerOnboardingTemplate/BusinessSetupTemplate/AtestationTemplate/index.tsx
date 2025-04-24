@@ -267,7 +267,7 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                     <Grid templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap={4}>
                         <Box mb={3}>
                             <Text variant={'sm'} my={2}>Is the Customer Business Address located in a market?</Text>
-                            <Text variant={'md2'} fontWeight="500">{businessDetails?.locatedInMarket ? 'Yes' : "No"}</Text>
+                            <Text variant={'md2'} fontWeight="500">{businessDetails?.locatedInMarket === 'yes' ? 'Yes' : "No"}</Text>
                         </Box>
                         <Box mb={3} ml={{lg:40}}>
                             <Text variant={'sm'} my={2}>State</Text>
