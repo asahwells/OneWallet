@@ -143,7 +143,7 @@ const RegisterUserForm = () => {
                 <BvnOrNinTemplate
                     onVerify={() => {goToStep(RegisterSteps.DojahVerification)}}
                     onBack={handleBack}
-                    onAttachmentSelect={() => goToStep(RegisterSteps.PhotoUpload)}
+                    onAttachmentSelect={() => goToStep(RegisterSteps.DojahVerification)}
                     onCameraSelect={() => goToStep(RegisterSteps.DojahVerification)}
                 />
             )}

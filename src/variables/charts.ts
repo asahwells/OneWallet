@@ -4,11 +4,11 @@ type ApexGeneric = ApexOptions & any;
 export const barChartDataDailyTraffic = [
   {
     name: "Expected Repayment",
-    data: [65, 90, 70, 35, 75, 65, 60, 90, 70, 35, 75, 65],
+    data: [65, 100, 70, 35, 75, 65, 60, 100, 70, 35, 75, 75],
   },
   {
     name: "Actual Repayment",
-    data: [40, 60, 35, 65, 45, 55, 40, 60, 35, 65, 45, 55],
+    data: [40, 60, 35, 75, 45, 55, 40, 70, 35, 65, 45, 55],
   },
 ];
 

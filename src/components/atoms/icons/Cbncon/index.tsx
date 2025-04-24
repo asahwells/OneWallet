@@ -1,6 +1,6 @@
 import { IIconProps } from '../interfaces';
 
-const CbnIcon = ({ width = 17, height = 22, onClick }: IIconProps) => {
+const CbnIcon = ({ width = '16.57px', height = 22, onClick }: IIconProps) => {
   return (
     <svg
       width={width}
