@@ -14,16 +14,13 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
-import {
-    PinInput,
-    PinInputField,
-} from '@chakra-ui/react';
 import BaseButton from '../../../../../molecules/buttons/BaseButton';
 import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton";
 import { usePhoneNumberVerification, useResendOTP } from 'api-services/business-registration-services';
-import { useAppSelector } from '../../../../../../redux/store'; 
+import {useAppDispatch, useAppSelector} from '../../../../../../redux/store';
 import FailedModal from 'components/molecules/modals/FailedModal';
 import BasePinInput from "../../../../../molecules/inputs/BasePinInput";
+import {setCustomer} from "../../../../../../redux/slices/customer";
 
 interface EnterPinTemplateProps {
     onVerify: () => void; // Called when the user successfully enters the OTP
@@ -34,6 +31,7 @@ const EnterPinTemplate = ({
         onVerify,
         onBack,
     }: EnterPinTemplateProps) => {
+    const dispatch = useAppDispatch()
     const { customerDetails } = useAppSelector(state => state.customer)
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -67,7 +65,11 @@ const EnterPinTemplate = ({
              userId: customerDetails?.id,
         };
         try {
-            await verifyPhone(payload);
+            const resp = await verifyPhone(payload);
+
+            dispatch(setCustomer({ ...customerDetails,
+                id: resp?.data?.userId,
+            }))
             onVerify();
           } catch (error) {
             console.error('Error verifying phone number:', error);
