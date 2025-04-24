@@ -25,10 +25,11 @@ const BaseInput = ({ value, icon, onFocus, onBlur, ...props }: IInputProps) => {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 height="100%"
-                border="2px solid #E2E8F0"
+                border="0.5px solid #CBD5E1"
                 placeholder=""
                 bg="#FFFFFF"
                 focusBorderColor="#E2E8F0"
+            borderRadius={'8px'}
                 _focus={{
                     boxShadow: 'none',
                 }}
