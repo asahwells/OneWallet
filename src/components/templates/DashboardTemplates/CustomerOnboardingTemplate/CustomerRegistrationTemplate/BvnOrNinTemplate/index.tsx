@@ -8,7 +8,7 @@ import {
   Heading,
   HStack,
   Input,
-  Link,
+  Link, Show,
   Text,
   useBreakpointValue,
   useDisclosure,
@@ -136,60 +136,73 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
       <HeaderBackButton onBack={onBack} />
 
       {/* Main Content */}
-      <Box px={{ base: 0, md: 4 }} pt={4} pb={8}>
+      <Box px={{ base: 0, md: 4 }} pt={4} pb={8} >
         <Box
           bg={{ base: '', md: 'white' }}
           width={isMobile ? '100%' : '941px'}
           mx="auto"
           borderRadius="8px"
           boxShadow={isMobile ? 'none' : 'md'}
-          p={isMobile ? 4 : 8}
+          alignItems={'center'}
+          pt={4}
+          pb={'74px'}
+
+
         >
-          <Heading
-            fontSize="18px"
-            fontWeight="700"
-            textAlign={{
-              base: 'left',
-              md: 'center',
-            }}
-            mb={2}
-            color="#222B38"
-          >
-            Enter User’s BVN or NIN
-          </Heading>
+          <Box px={{
+            base:5, md:0
+          }} >
+            <Heading
+                fontSize="18px"
+                fontWeight="700"
+                textAlign={{
+                  base: 'left',
+                  md: 'center',
+                }}
+                mb={2}
+                color="#222B38"
+            >
+              Enter User’s BVN or NIN
+            </Heading>
 
-          <Text
-            fontSize="14px"
-            fontWeight="400"
-            color="#344256"
-            mb={8}
-            textAlign={{
-              base: 'left',
-              md: 'center',
-            }}
-          >
-            Please provide either the User’s BVN or NIN Number
-          </Text>
+            <Text
+                fontSize="14px"
+                fontWeight="400"
+                color="#344256"
+                mb={8}
+                textAlign={{
+                  base: 'left',
+                  md: 'center',
+                }}
+            >
+              Please provide either the User’s BVN or NIN Number
+            </Text>
 
-          {/* Toggle Switch (BVN / NIN) */}
-          <Text
-            fontSize="16px"
-            fontWeight="500"
-            mt={6}
-            mb={2}
-            textAlign={{
-              base: 'left',
-              md: 'center',
-            }}
-          >
-            Select Either BVN or NIN
-          </Text>
+            {/* Toggle Switch (BVN / NIN) */}
+            <Text
+                fontSize="16px"
+                fontWeight="500"
+                mt={6}
+                mb={2}
+                textAlign={{
+                  base: 'left',
+                  md: 'center',
+                }}
+                color={'#222B38'}
+            >
+              Select Either BVN or NIN
+            </Text>
+          </Box>
+
 
           {/*
             Pill container with #CBD5E1 background.
             Inside, two "tabs" for BVN and NIN.
           */}
-          <HStack bg="#CBD5E1" borderRadius="8px" p="4px" mb={4} spacing={0}>
+          <HStack  bg="#CBD5E1" borderRadius="8px" p="4px" mb={4} spacing={0} mx={{
+            base: 5,
+            md: '30%',
+          }} >
             {/* BVN Tab */}
             <Box
               as="button"
@@ -204,8 +217,8 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
               }
               color={
                 customerDetails?.selectedDocumentType === DocumentType.BVN
-                  ? '#0F454F'
-                  : '#344256'
+                  ? '#344256'
+                  : '#F8FAFC'
               }
               fontWeight="600"
               onClick={() => {
@@ -235,8 +248,8 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
               }
               color={
                 customerDetails?.selectedDocumentType === DocumentType.NIN
-                  ? '#0F454F'
-                  : '#344256'
+                    ? '#344256'
+                    : '#F8FAFC'
               }
               fontWeight="600"
               onClick={() => {
@@ -256,9 +269,12 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
           </HStack>
 
           {/* Input Field */}
-          <Box position="relative" mb={2}>
+          <Box position="relative" mb={2} mx={{
+            base: 5,
+            md: '16%',
+          }}>
             <BaseFormControl
-              mb={{ base: '20px', md: '24px' }}
+              mb={{ base: '20px', md: '5px' }}
               label={isBvn ? "Enter User's BVN" : "Enter User's NIN"}
             >
               <BaseInput
@@ -274,25 +290,29 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
                 }}
               />
             </BaseFormControl>
+            {/* Character Count */}
+            <Show above="md">
+              <HStack justifyContent="flex-end" mb={0} mr={2}>
+                <Text fontSize="12px" color="#344256">
+                  {inputValue.length}/{maxLength}
+                </Text>
+              </HStack>
+            </Show>
           </Box>
 
-          {/* Character Count */}
-          <HStack justifyContent="flex-end" mb={0}>
-            <Text fontSize="12px" color="#344256">
-              {inputValue.length}/{maxLength}
-            </Text>
-          </HStack>
+
 
           {/* Terms & Conditions Section (gray background, top border radius) */}
-          <Box mt={6} p={4}>
-            <HStack alignItems="flex-start" spacing={2}>
+          <Box mt={6} px={4} py={{
+            base:'22px',
+            md:'16px'
+          }} borderTop={'1px solid #CBD5E1'} borderBottom={'1px solid #CBD5E1'}>
+            <HStack alignItems="center" justifyContent={'center'} spacing={4}>
               <Checkbox
-                // colorScheme="teal"
-                size="md"
                 isChecked={hasAgreed}
                 onChange={(e) => setHasAgreed(e.target.checked)}
-                mt={1}
                 borderRadius={'4px'}
+                size={'lg'}
                 sx={{
                     '.chakra-checkbox__control[data-checked]': {
                       bg: '#0F454F',
@@ -305,11 +325,11 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
               />
               <Text fontSize="14px" color="#344256" lineHeight="20px">
                 This user has read and agreed to OneWallet{' '}
-                <Link color="#0F454F" textDecoration="underline">
+                <Link color="#C5B27D" textDecoration="underline">
                   Terms & Conditions
                 </Link>{' '}
                 and{' '}
-                <Link color="#0F454F" textDecoration="underline">
+                <Link color="#C5B27D" textDecoration="underline">
                   Privacy Policy
                 </Link>
                 .
@@ -318,7 +338,10 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
           </Box>
 
           {/* Verify Button */}
-          <Box mt={4}>
+          <Box mt={'36px'}  mx={{
+            base: 5,
+            md: '12%',
+          }}>
             <BaseButton
               width="100%"
               height="48px"
