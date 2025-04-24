@@ -7,6 +7,7 @@ import { PendingTableProps } from '../interfaces';
 import { format } from "date-fns"
 import { useRouter } from 'next/navigation';
 import { IPendingMerchantRes, IPendingUserRes } from 'api-services/user-services/interfaces';
+import moment from "moment/moment";
 
 const PendingMerchantTableComponent = ({data}: IPendingMerchantRes) => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const PendingMerchantTableComponent = ({data}: IPendingMerchantRes) => {
               <TableCell>{'three'}</TableCell>
               <TableCell>{row?.accountNumber ? row?.accountNumber : 'N/A'}</TableCell>
               <TableCell>{row?.utilityBillType ? row?.utilityBillType : 'N/A'}</TableCell>
-              <TableCell>{format(row?.dateOfSubmissions, "yyyy-dd-MM HH:mm a")}</TableCell>
+              <TableCell>{moment(row?.dateOfSubmissions).format('YYYY-MM-DD HH:mm a')}</TableCell>
               <TableCell >
                 <Box cursor={'pointer'} >
                   ...

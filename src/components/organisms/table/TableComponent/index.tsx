@@ -7,6 +7,7 @@ import { PendingTableProps } from '../interfaces';
 import { format } from "date-fns"
 import { useRouter } from 'next/navigation';
 import { IPendingUserRes } from 'api-services/user-services/interfaces';
+import moment from "moment";
 
 const TableComponent = ({data}: IPendingUserRes) => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const TableComponent = ({data}: IPendingUserRes) => {
               <TableCell>{row?.tier ? row?.tier : 'N/A'}</TableCell>
               <TableCell>{row?.accountNumber ? row?.accountNumber : 'N/A'}</TableCell>
               <TableCell>{row?.approvalType ? row?.approvalType : 'N/A'}</TableCell>
-              <TableCell>{format(row?.dateOfSubmission, "yyyy-dd-MM HH:mm a")}</TableCell>
+              <TableCell>{moment(row?.dateOfSubmission).format('YYYY-MM-DD HH:mm a')}</TableCell>
               <TableCell >
                 <Box cursor={'pointer'} >
                   ...
