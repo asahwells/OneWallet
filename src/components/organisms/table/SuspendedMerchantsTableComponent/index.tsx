@@ -7,6 +7,7 @@ import { PendingTableProps } from '../interfaces';
 import { useRouter } from 'next/navigation';
 import { ISuspendedMerchantRes, ISuspendedUserRes } from 'api-services/user-services/interfaces';
 import { format } from 'date-fns';
+import moment from "moment/moment";
 
 const SuspendedMerchantsTableComponent = ({data}: ISuspendedMerchantRes) => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const SuspendedMerchantsTableComponent = ({data}: ISuspendedMerchantRes) => {
               <TableCell>{row?.tier ? row?.tier : 'N/A'}</TableCell>
               <TableCell>{row?.accountNumber ? row?.accountNumber : 'N/A'}</TableCell>
               <TableCell>{row?.category ? row?.category : 'N/A'}</TableCell>
-              <TableCell>{row?.createdAt ? format(row?.createdAt, "yyyy-dd-MM HH:mm a") : "N/A"}</TableCell>
+              <TableCell>{moment(row?.createdAt).format('YYYY-MM-DD HH:mm a')}</TableCell>
               <TableCell >
                 <Tooltip label='View' bg={'#E4E4E7'} variant="base" mt={-3} mr={5} borderBottomRadius={'12px'}>
                   <Box onClick={()=>handleView(row?.id)} cursor={'pointer'} >

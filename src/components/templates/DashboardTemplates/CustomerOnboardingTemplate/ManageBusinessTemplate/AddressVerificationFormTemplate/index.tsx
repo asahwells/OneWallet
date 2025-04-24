@@ -89,6 +89,7 @@ const AddressVerificationFormTemplate = () => {
           isOpen={isOpen}
           onClose={onClose}
           onTakePhoto={(url: string) => handleFileSelect(url)} // Pass URL from camera capture
+            // @ts-ignore
           onSelectFromGallery={(file: File) => handleFileSelect(file)} // Pass file to handler
         />
       )}

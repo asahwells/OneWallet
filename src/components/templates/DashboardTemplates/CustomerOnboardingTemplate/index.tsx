@@ -12,7 +12,7 @@ const CustomerOnboardingTemplate = () =>  {
 
 
     return (
-        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }}  gap={5} bg={'white'}>
+        <Stack pt={{ base: '20px', md: '60px', xl: '10px' }}  gap={5} bg={'white'}>
 
             <Tabs>
                 <TabList borderBottomColor={'#E5E9EB'}>

@@ -28,6 +28,7 @@ import { setCustomer } from '../../../../../../redux/slices/customer';
 import BaseFormControl from 'components/molecules/forms/BaseFormControl';
 import BaseInput from 'components/molecules/inputs/BaseInput';
 import CbnIcon from 'components/atoms/icons/Cbncon';
+import NdicIcon from 'components/atoms/icons/NdicIcon';
 
 interface BvnOrNinTemplateProps {
   onVerify: (type: 'BVN' | 'NIN', value: string) => void; // callback with user input
@@ -337,21 +338,24 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
       {/* Footer (Logos or text, if needed) */}
       <Flex
         pos="absolute"
-        bottom={20}
+        bottom={{base: 0, md: 15}}
         w="full"
+        h="52px"
         mt="auto"
         py={2}
         justifyContent="center"
         alignItems="center"
-        bg="transparent"
+        bg={{base: "white", md: "transparent"}}
       >
         {/* Example placeholder for your footer logos or text */}
         <HStack>
           {/* Some logo SVG */}
           <Box as="span"><CbnIcon /></Box>
           <Text fontSize="12px" color="#344256" fontWeight="500" mt={1}>
-            Licensed by the CBN and insured by the NDIC
+            Licensed by the CBN and insured by the
           </Text>
+          <Box as="span"><NdicIcon /></Box>
+
         </HStack>
       </Flex>
 

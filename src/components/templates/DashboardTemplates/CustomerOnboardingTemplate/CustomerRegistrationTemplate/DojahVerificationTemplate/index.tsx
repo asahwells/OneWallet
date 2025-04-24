@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import Dojah from 'react-dojah'
 import {Box, CloseButton, useToast} from '@chakra-ui/react';
 import {useAppSelector} from "../../../../../../redux/store";
+import {useDispatch} from "react-redux";
 
 interface DojahVerificationTemplateProps {
     onVerificationComplete: () => void;
@@ -17,6 +18,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
                                                                              }) => {
 
     const toast = useToast()
+    const dispatch = useDispatch()
 
     const {customerDetails} = useAppSelector(state => state.customer)
 
@@ -43,7 +45,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
     const publicKey = process.env.NEXT_PUBLIC_DOJAH_PUBLIC_KEY
     const widgetID = process.env.NEXT_PUBLIC_DOJAH_WIDGET_ID
 
-    const type = "custom"; // Could also be "verification", "identification", etc.
+    const type = "identification"; // Could also be "verification", "identification", etc.
     const config = {
         widget_id: widgetID,
         webhook: true, // Ensure your webhook is set up if needed
@@ -100,8 +102,10 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
             return
         }
 
-        if(responseType === 'close') {
+        if(responseType === 'close' && !data) {
             // Handle close event
+
+            onBack()
         }
 
         // You can handle other response types ('begin', 'loading', 'close') as needed

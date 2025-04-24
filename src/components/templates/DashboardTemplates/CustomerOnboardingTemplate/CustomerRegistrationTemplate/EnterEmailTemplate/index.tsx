@@ -19,6 +19,7 @@ import { useAddAddress, useAddEmail } from 'api-services/business-registration-s
 import {useAppDispatch, useAppSelector} from '../../../../../../redux/store';
 import FailedModal from 'components/molecules/modals/FailedModal';
 import {setCustomer} from "../../../../../../redux/slices/customer";
+import BaseFormControl from "../../../../../molecules/forms/BaseFormControl";
 
 interface EnterEmailTemplateProps {
     onNext: () => void;
@@ -109,12 +110,13 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
 
                 {/* Email Input */}
                 <VStack spacing={6}>
+                    <BaseFormControl label="Enter User’s Email address">
                     <BaseInput
-                        placeholder="Enter User’s Email address"
                         value={email}
                         onChange={(e: any) => setEmail(e.target.value)}
                         h="56px"
                     />
+                    </BaseFormControl>
                 </VStack>
 
                 {/* Continue Button */}

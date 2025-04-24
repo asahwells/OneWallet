@@ -42,7 +42,7 @@ const ExpectedPaymentChart = () => {
       border="0.88px solid #E4E4E7"
       overflowY="auto"
     >
-      <Box w="full" h={'100%'} bg="white" pos={'relative'}>
+      <Box w="full" h={{base: '100%', md: '81%'}} bg="white" pos={'relative'}>
         <Flex
           justifyContent="space-between"
           alignItems="center"

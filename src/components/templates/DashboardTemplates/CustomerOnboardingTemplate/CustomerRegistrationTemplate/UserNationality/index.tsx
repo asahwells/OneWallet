@@ -6,6 +6,7 @@ import BaseFormControlButton from 'components/molecules/buttons/FormControlButto
 import business, { setBusiness } from '../../../../../../redux/slices/business';
 import {useAppDispatch, useAppSelector} from "../../../../../../redux/store";
 import { fetchCountriesList } from 'utils/location';
+import FormControlButton from "components/molecules/buttons/FormControlButton";
 
 interface ListProps {
   value?: string;
@@ -84,12 +85,11 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
             Select User&apos;s Country
           </Text>
 
-          <BaseFormControlButton
-            defaultValue={businessDetails?.nationality || "Nigeria" }
-            items={countries}
-            onChange={handleNationalityChange}
-            // isRequired
-          />
+          {/* State Select with dynamically loaded states */}
+          <FormControlButton
+              label="State"
+              items={countries}
+              onChange={handleNationalityChange}  />
 
           <BaseButton
             variant={'ghost'}
