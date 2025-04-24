@@ -8,14 +8,15 @@ import {
 import BusinessInformationTemplate from './BusinessInformationTemplate';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import TransactionTemplate from './TransactionTemplate/index';
+import { useRouter } from 'next/navigation';
 
 
 const ManageBusinessTemplate = () =>  {
 
-
+    const router = useRouter()
     return (
         <Stack bg={'#F8FAFC'} px={{base:0, lg:5}}>
-            <HeaderBackButton header='Business' />
+            <HeaderBackButton header='Business' onBack={()=> router.back()}/>
 
             <Tabs mx={{base:0, lg:5}} bg={'white'} py={4} px={{base:0, lg:2}} borderRadius={'8px'}>
                 <TabList  borderBottomColor={'#E5E9EB'}>

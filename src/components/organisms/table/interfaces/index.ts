@@ -31,3 +31,10 @@ export interface TransactionTableProps {
     isLoading: boolean;
 }
 
+export interface CustomerRegistrationTableProps {
+  data: any[];
+  isLoading: boolean;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
+}

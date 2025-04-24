@@ -36,10 +36,60 @@ export interface ICustomerRes {
     bvnVerified: boolean,
     selfieUrl: string
     avatar: string
-    merchant: null,
     accountNumber: string,
     country: string,
     nationality: string,
+    merchant: {
+        id: string,
+        active: boolean,
+        createdAt: string,
+        updatedAt: string,
+        deletedAt: null,
+        version: string,
+        userId: string,
+        name: string,
+        hasCac: boolean,
+        fromWithoutCac: boolean,
+        phone: string,
+        businessRegistrationNumber: null,
+        businessType: string,
+        certificateOfIncorporationUrl: null,
+        cacStatusReportUrl: null,
+        utilityBillUrl: string,
+        utilityBillType: string,
+        location: string,
+        state: string,
+        lga: string,
+        city: string,
+        locatedInMarket: boolean,
+        isResidentialAddress: boolean,
+        marketName: null,
+        storeNumber: null,
+        fullShopAddress: string,
+        landmark: string,
+        photoUrl: string,
+        reason: null,
+        street: string,
+        country: string,
+        comments: null,
+        provider: string,
+        status: string,
+        neighborName: string,
+        neighborPhone: string,
+        neighborComment: string,
+        noOfStores: null,
+        noOfEmployees: null,
+        coordinate: null,
+        timestamp: null,
+        category: string,
+        subCategory: null,
+        dojahPhotos: "[\"\"]",
+        dojahReferenceId: string
+        annualIncome: null,
+        otherSourceOfIncome: null,
+        otherSourceAnnualIncome: null,
+        politicalExposed: null
+    },
     tierOne: {
         id: string,
         userId: string,
@@ -75,6 +125,16 @@ export interface ITransactionsRes {
 export interface  ICustomersInfoRes {
     data: ICustomersRes[];
     message?: string;
+    pagination?: {
+        hasPrevious: boolean,
+        prevPage: number,
+        hasNext: boolean,
+        next: number,
+        currentPage: number,
+        pageSize: number,
+        lastPage: number,
+        total: number
+    }
     status?: string;
     state?: number;
 }
@@ -89,6 +149,16 @@ export interface  ICustomerInfoRes {
 export interface  ITransactionsInfoRes {
     data: ITransactionsRes[];
     message?: string;
+    pagination?: {
+        hasPrevious: boolean,
+        prevPage: number,
+        hasNext: boolean,
+        next: number,
+        currentPage: number,
+        pageSize: number,
+        lastPage: number,
+        total: number,
+    }
     status?: string;
     state?: number;
 }
@@ -119,4 +189,11 @@ export interface  ICustomerBankInfoResponse {
     status: number
 
 
+}
+
+
+export interface ITierThreeUpgradePayload {
+    userId?: string;
+    utilityBillType: string,
+    utilityBillUrl: string,
 }

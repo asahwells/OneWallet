@@ -1,20 +1,19 @@
 import { useMutation } from "@tanstack/react-query";
 import { BASE_AXIOS, HttpClient } from "api-services/http";
-import { IAddNextOfKinPayload, ICustomerBankInfoResponse, ICustomerInfoRes, ICustomersInfoRes, ITierTwoUpgradePayload, ITransactionsInfoRes } from "./interface";
+import { IAddNextOfKinPayload, ICustomerBankInfoResponse, ICustomerInfoRes, ICustomersInfoRes, ITierThreeUpgradePayload, ITierTwoUpgradePayload, ITransactionsInfoRes } from "./interface";
 import { useToast } from "@chakra-ui/react";
 import { IResponse } from "api-services/business-registration-services/interface";
 
+// api-services/business-services.ts
 export const useFetchAllCustomers = () => {
-  
     return useMutation({
-        mutationFn: (): Promise<ICustomersInfoRes> => {
-           return HttpClient.get(BASE_AXIOS, { url: `sales-agent/customers` })
-        },
-        onSuccess: (res: ICustomersInfoRes) => {
-          return res;
-        },
+      mutationFn: ({ page, pageSize }: { page: number; pageSize: number }): Promise<ICustomersInfoRes> =>
+        HttpClient.get(BASE_AXIOS, {
+          url: `sales-agent/customers?page=${page}&limit=${pageSize}`,
+        }),
     });
-}
+  };
+  
 
 export const useFetchCustomer = (id: string) => {
   
@@ -28,18 +27,28 @@ export const useFetchCustomer = (id: string) => {
     });
 }
 
-export const useFetchAllTransactions = (id:string) => {
+export const useFetchAllTransactions = () =>
+    useMutation({
+      mutationFn: ({
+        id,
+        page,
+        limit,
+        month,
+        pageSize,
+        ...filters
+      }: {
+        id: string;
+        page: number;     // Keep page as a number
+        limit: number;    // Keep limit as a number
+        month?: string;   // Allow month to be a string
+        pageSize?: number; // Keep pageSize as a number
+      } ): Promise<ITransactionsInfoRes> =>
+        HttpClient.get<ITransactionsInfoRes>(BASE_AXIOS, {
+          url: `sales-agent/customers/${id}/transactions`,
+          params: { page, limit, month, ...filters }, // Pass filters as strings
+        }),
+    });
   
-  return useMutation({
-      mutationFn: (): Promise<ITransactionsInfoRes> => {
-         return HttpClient.get(BASE_AXIOS, { url: `sales-agent/customers/${id}/transactions` })
-      },
-      onSuccess: (res: ITransactionsInfoRes) => {
-        return res;
-      },
-  });
-}
-
 export const useUpgradeTierTwo = () => {
 
 return useMutation({
@@ -102,3 +111,19 @@ export const useGetCustomerAccountInformation = (userId: string) => {
         }
     });
 }
+
+export const useUpgradeTierThree = () => {
+  return useMutation({
+    mutationFn: (data: ITierThreeUpgradePayload): Promise<IResponse> =>
+        HttpClient.post(BASE_AXIOS, { url: "sales-agent/upgrade-account/tier-three", data }),
+    onSuccess: (res: IResponse) => {
+        return res;
+    },
+    onError: (error: any) => {
+        throw new Error(
+        error?.response?.data?.message || 'Something went wrong. Please try again.'
+        );
+    },
+    }
+);
+};
