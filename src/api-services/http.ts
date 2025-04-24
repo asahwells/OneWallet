@@ -24,6 +24,7 @@ const requestConfig = (config: AxiosRequestConfig) => {
 };
 
 const responseErrorConfig = (error: any) => {
+    console.warn({error})
     if (
         window.location.pathname !== "/auth/sign-in" &&
         (error.response.status === 403 || error.response.status === 401)
