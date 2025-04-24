@@ -88,6 +88,7 @@ const VerificationModal = ({
                         <BaseButton
                             variant={'brand'}
                             w={'full'}
+                            h={"56px"}
                             text={primaryBtnText}
                             borderRadius="8px"
                             onClick={onPrimaryAction || onClose}

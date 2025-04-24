@@ -91,7 +91,7 @@ function OnboardingErrorBox({
         color="#0F454F"
         borderRadius={"8px"}
         border={'1.23px solid #0F454F'}
-        h={"57.63px"}
+        h={"56px"}
         mt={'36px'}
         w='full'
         />

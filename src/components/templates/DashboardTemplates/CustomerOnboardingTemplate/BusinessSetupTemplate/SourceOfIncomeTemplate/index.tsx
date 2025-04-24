@@ -30,7 +30,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
 
   // Local State for user’s selections
   const [annualRevenue, setAnnualRevenue] = useState(businessDetails?.annualIncome || '');
-  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(businessDetails?.hasOtherSources || 'No');
+  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(businessDetails?.hasOtherSources || '');
   const [otherSourceType, setOtherSourceType] = useState(businessDetails?.otherSourceOfIncome || '');
   const [otherSourceRevenue, setOtherSourceRevenue] = useState(businessDetails?.otherSourceAnnualIncome || '');
   // For dispatching to Redux
@@ -180,13 +180,53 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
               value={hasOtherSources}
               mb={4}
             >
-              <Stack direction="row" spacing={6} mt={4}>
-                <Radio value="Yes" colorScheme="teal" fontSize="16px" fontWeight={400}>
-                  <Text color="#344256">Yes</Text>
-                </Radio>
-                <Radio value="No" colorScheme="teal" fontSize="16px" fontWeight={400}>
-                  <Text color="#344256">No</Text>
-                </Radio>
+              <Stack direction="row" spacing={6} mt={4} h={"18px"}>
+              <Radio 
+                value="Yes" 
+                colorScheme="teal" 
+                sx={{
+                  '.chakra-radio__control': {
+                    width: '18px',
+                    height: '18px',
+                    minWidth: '18px',
+                    minHeight: '18px',
+                    _checked: {
+                      bg: '#344256',
+                      borderColor: '#344256',
+                    }
+                  },
+                  '.chakra-radio__label': {
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    color: '#0F454F'
+                  }
+                }}
+              >
+                Yes
+              </Radio>
+              <Radio 
+                value="No" 
+                colorScheme="teal" 
+                sx={{
+                  '.chakra-radio__control': {
+                    width: '18px',
+                    height: '18px',
+                    minWidth: '18px',
+                    minHeight: '18px',
+                    _checked: {
+                      bg: '#0F454F',
+                      borderColor: '#0F454F',
+                    }
+                  },
+                  '.chakra-radio__label': {
+                    fontSize: '16px',
+                    fontWeight: 400,
+                    color: '#344256'
+                  }
+                }}
+              >
+                No
+              </Radio>
               </Stack>
             </RadioGroup>
           </Box>
@@ -223,6 +263,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
           {/* Continue Button */}
           <BaseButton
             w="full"
+            h={"56px"}
             borderRadius="8px"
             bg="#0F454F"
             color="white"
