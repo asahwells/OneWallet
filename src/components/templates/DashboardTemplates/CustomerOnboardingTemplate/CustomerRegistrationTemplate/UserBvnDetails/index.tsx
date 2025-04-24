@@ -7,6 +7,7 @@ import { RegisterSteps } from "components/molecules/buttons/interfaces";
 import BaseFormControl from "components/molecules/forms/BaseFormControl";
 import BaseInput from "components/molecules/inputs/BaseInput";
 import UnsaveChangesModal from "components/molecules/modals/UnsavedChangesModal";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 interface UserBvnDetailsProps {
@@ -18,6 +19,7 @@ const UserBvnDetails = ({
     onBack,
     onNext
 }: UserBvnDetailsProps) => {
+    const router = useRouter();
     const isMobile = useBreakpointValue({ base: true, md: false });
     const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -41,11 +43,15 @@ const UserBvnDetails = ({
             window.removeEventListener("popstate", handleBackButton);
         };
     }, [onOpen]);
+
+    const goTohomepage = () => {
+        router.push('/admin/dashboard');
+    }
     
     return (
         <Flex direction="column" bg="#F8FAFC" w="full" mx={'auto'}>
             <HeaderBackButton onBack={onOpen} />
-            <Box px={{base: 0, md: 4}} pt={isMobile ? '6px' : '36px'} pb={8}>
+            <Box px={{base: '20px', md: 4}} pt={isMobile ? '6px' : '36px'} pb={8}>
                 <Box 
                     bg={isMobile ? '' : 'white'}
                     width={{base: '100%', lg: '941px'}}
@@ -79,7 +85,7 @@ const UserBvnDetails = ({
                     </Text>
 
                     <Flex 
-                        gap={'24px'}
+                        gap={6}
                         w={isMobile ? '100%' : '580px'} direction={'column'} mx={'auto'}>
                         <NoticeBox
                         pl={'18px'}
@@ -91,17 +97,17 @@ const UserBvnDetails = ({
                         title="Kindly ask the user to confirm the information below before proceeding. If the information is incorrect, ask the user to visit the bank to update the information before proceeding."
                         />
 
-                        <BaseFormControl mb={{base: '20px', md: '24px'}} bg={'#E2E8F0'} label={'First Name'}>
-                            <BaseInput  color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.firstName} />
+                        <BaseFormControl label={'First Name'}>
+                            <BaseInput  color={'#344256'} border={'#CBD5E1'} bg={'#E2E8F0'} placeholder="" value={data?.data?.firstName} />
                         </BaseFormControl>
-                        <BaseFormControl mb={{base: '20px', md: '24px'}} bg={'#E2E8F0'} label={'Last Name'}>
-                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.lastName} />
+                        <BaseFormControl label={'Last Name'}>
+                            <BaseInput color={'#344256'} border={'#CBD5E1'} bg={'#E2E8F0'} placeholder="" value={data?.data?.lastName} />
                         </BaseFormControl>
-                        <BaseFormControl mb={{base: '20px', md: '24px'}} bg={'#E2E8F0'} label={'Date of Birth'}>
-                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.dob} />
+                        <BaseFormControl label={'Date of Birth'}>
+                            <BaseInput color={'#344256'} border={'#CBD5E1'} bg={'#E2E8F0'} placeholder="" value={data?.data?.dob} />
                         </BaseFormControl>
-                        <BaseFormControl mb={{base: '20px', md: '24px'}}  bg={'#E2E8F0'} label={'Gender'}>
-                            <BaseInput color={'#344256'} border={'none'} bg={'#CBD5E1'} placeholder="" value={data?.data?.gender} />
+                        <BaseFormControl label={'Gender'}>
+                            <BaseInput color={'#344256'} border={'#CBD5E1'} bg={'#E2E8F0'} placeholder="" value={data?.data?.gender} />
                         </BaseFormControl>
 
                         <VStack w={'full'} gap={'34px'} mt={'8.5px'}>
@@ -117,6 +123,7 @@ const UserBvnDetails = ({
                         />
 
                         <BaseButton
+                        onClick={goTohomepage}
                         backgroundColor="#FFFFFF"
                         color="#0F454F"
                         borderRadius={"8px"}

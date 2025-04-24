@@ -29,11 +29,11 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
             alignItems="center"
             flexDirection="column"
             w="100%"
-            h="100%"
+            h="320px"
             border='0.88px solid #E4E4E7'
             overflowY="auto"
         >
-            <Box w="full" bg="white" pos={'relative'}>
+            <Box w="full" pos={'relative'}>
                 <Flex
                     justifyContent="space-between"
                     alignItems="center"
@@ -68,11 +68,11 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
 
                 {/*</Center>*/}
 
-                <PieChart h="100%" w="100%" chartData={rawData} chartOptions={options} />
+                <PieChart h="100%" w="150%" chartData={rawData} chartOptions={options} />
 
-                <HStack  spacing={4} p={8} w={'full'} justifyContent={'space-between'}>
+                <HStack  spacing={4} pt={4} w={'full'} justifyContent={'space-between'}>
 
-                    <HStack spacing={4} alignItems="center">
+                    <HStack spacing={3} alignItems="center">
                         <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="4" cy="4" r="4" fill="#7987FF"/>
                         </svg>

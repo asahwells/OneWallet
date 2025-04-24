@@ -57,7 +57,7 @@ const RegisterUserForm = () => {
                 setStep(RegisterSteps.SelectBirth);
                 break;
             case RegisterSteps.SelectBirth:
-                setStep(RegisterSteps.BvnOrNin);
+                setStep(RegisterSteps.ProfileCreated);
                 break;
             case RegisterSteps.BvnOrNin:
                 setStep(RegisterSteps.PhotoUpload);
