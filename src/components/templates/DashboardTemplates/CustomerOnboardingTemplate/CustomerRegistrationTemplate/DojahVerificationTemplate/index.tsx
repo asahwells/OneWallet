@@ -45,7 +45,7 @@ const DojahVerificationTemplate: React.FC<DojahVerificationTemplateProps> = ({
     const publicKey = process.env.NEXT_PUBLIC_DOJAH_PUBLIC_KEY
     const widgetID = process.env.NEXT_PUBLIC_DOJAH_WIDGET_ID
 
-    const type = "verification"; // Could also be "verification", "identification", etc.
+    const type = "identification"; // Could also be "verification", "identification", etc.
     const config = {
         widget_id: widgetID,
         webhook: true, // Ensure your webhook is set up if needed

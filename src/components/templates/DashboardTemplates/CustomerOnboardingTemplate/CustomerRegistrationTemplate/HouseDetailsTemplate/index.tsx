@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Flex,
@@ -19,167 +19,206 @@ import HeaderBackButton from "../../../../../molecules/buttons/HeaderBackButton"
 import { useAddAddress } from 'api-services/business-registration-services';
 import {useAppDispatch, useAppSelector} from '../../../../../../redux/store';
 import {setCustomer} from "../../../../../../redux/slices/customer";
-
-// or your normal input component
+import BaseFormControl from "../../../../../molecules/forms/BaseFormControl";
+import {fetchLGA, fetchStates} from "../../../../../../utils/location";
+import FormControlButton from "../../../../../molecules/buttons/FormControlButton";
 
 interface IHouseDetailsTemplateProps {
     onNext: () => void;
     onBack: () => void;
 }
 
-const HouseDetailsTemplate = ({
-        onNext,
-        onBack
-    }: IHouseDetailsTemplateProps) => {
-    const dispatch = useAppDispatch()
+const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
+                                                                        onNext,
+                                                                        onBack,
+                                                                    }) => {
+    const dispatch = useAppDispatch();
+    const { customerDetails } = useAppSelector((s) => s.customer);
 
-    const { customerDetails } = useAppSelector(state => state.customer)
-    const isMobile = useBreakpointValue({base: true, md: false});
-    const [stateValue, setStateValue] = useState('');
-    const [lgaValue, setLgaValue] = useState('');
-    const [houseNumber, setHouseNumber] = useState('');
-    const [streetName, setStreetName] = useState('');
-    const [landmark, setLandmark] = useState('');
+    const [stateValue, setStateValue] = useState(customerDetails?.state || '');
+    const [lgaValue, setLgaValue] = useState(customerDetails?.lga || '');
+    const [houseNumber, setHouseNumber] = useState(customerDetails?.address || '');
+    const [streetName, setStreetName] = useState(customerDetails?.streetName || '');
+    const [landmark, setLandmark] = useState(customerDetails?.landmark || '');
 
-    const { mutateAsync: addAddress, isPending } = useAddAddress();
+    // --- states fetch ---
+    const [states, setStates] = useState<{ name: string; value: string }[]>([]);
+    const [statesLoading, setStatesLoading] = useState(false);
+    const [statesError, setStatesError] = useState<string | null>(null);
 
-    const handleContinue = async() => {
-        const payload ={
+    // --- LGAs fetch ---
+    const [lgas, setLgas] = useState<{ name: string; value: string }[]>([]);
+    const [lgasLoading, setLgasLoading] = useState(false);
+    const [lgasError, setLgasError] = useState<string | null>(null);
+
+    // load all states on mount
+    useEffect(() => {
+        let cancelled = false;
+        setStatesLoading(true);
+        fetchStates()
+            .then((data) => {
+                if (!cancelled) setStates(data);
+            })
+            .catch((err) => {
+                if (!cancelled) setStatesError(err.message || 'Unable to load states');
+            })
+            .finally(() => {
+                if (!cancelled) setStatesLoading(false);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    // load LGAs whenever the stateValue changes
+    useEffect(() => {
+        // reset LGA if state changed
+        setLgaValue('');
+        setLgas([]);
+        setLgasError(null);
+
+        if (!stateValue) return;
+
+        let cancelled = false;
+        setLgasLoading(true);
+        fetchLGA(stateValue)
+            .then((data) => {
+                if (!cancelled) setLgas(data);
+            })
+            .catch((err) => {
+                if (!cancelled) setLgasError(err.message || 'Unable to load LGAs');
+            })
+            .finally(() => {
+                if (!cancelled) setLgasLoading(false);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [stateValue]);
+
+    const { mutateAsync: addAddress, isPending: saving } = useAddAddress();
+
+    const handleContinue = async () => {
+        const payload = {
             state: stateValue,
             lga: lgaValue,
             address: houseNumber,
             streetName,
             landmark,
             userId: customerDetails?.id,
-            town: 'Test'
+            town: 'Test',
         };
 
         try {
             await addAddress(payload);
-
-            dispatch(setCustomer({
-                ...customerDetails,
-                ...payload
-            } ))
-            onNext(); // Proceed to the next step
-        } catch (error) {
-            console.error('Error adding address:', error);
+            dispatch(setCustomer({ ...customerDetails, ...payload }));
+            onNext();
+        } catch (err) {
+            console.error(err);
         }
     };
 
     return (
-
         <>
-
             <HeaderBackButton onBack={onBack} />
+
             <Flex
                 direction="column"
                 bg="white"
-                p={isMobile ? 4 : 8}
+                p={{ base: 4, md: 8 }}
                 borderRadius="8px"
-                boxShadow={isMobile ? 'none' : 'md'}
-                w={isMobile ? '100%' : '60vw'}
+                boxShadow={{ base: 'none', md: 'md' }}
+                w={{ base: '100%', md: '60vw' }}
                 mx="auto"
                 mt={4}
             >
-                {/* Heading */}
                 <Heading
                     as="h1"
-                    variant={'headerBold'}
-                    fontSize={'18px'}
-                    textAlign={isMobile ? 'left' : 'center'}
+                    variant="headerBold"
+                    fontSize="18px"
+                    textAlign="center"
                     mb={2}
                 >
                     Enter House Address
                 </Heading>
-
-                <Text
-                    variant={'sm'}
-                    mb={6}
-                    textAlign={isMobile ? 'left' : 'center'}
-                    lineHeight={'22px'}
-                >
-                    Enter user&apos;s house address. Ensure the address they are using match same on their Utility Bill.
+                <Text variant="sm" mb={6} textAlign="center" lineHeight="22px">
+                    Ensure the address matches what’s on their Utility Bill.
                 </Text>
 
-                <VStack spacing={6} w={'full'}>
-                    <FloatingLabelSelect
+                <VStack spacing={6} w="full">
+                    {/* State */}
+                    <FormControlButton
                         label="State"
-                        placeholder="Select State"
-                        options={[
-                            {label: 'Lagos', value: 'lagos'},
-                            {label: 'Abuja', value: 'abuja'},
-                            {label: 'Rivers', value: 'rivers'}
-                        ]}
-                        value={stateValue}
-                        onChange={(e: any) => setStateValue(e.target.value)}
+                        items={states.map((st) => ({ value: st.value, name: st.name }))}
+                        onChange={({ value }) => setStateValue(value)}
+                        placeholder={statesLoading ? 'Loading states…' : 'Select a state'}
+                        isDisabled={statesLoading}
                     />
 
-
-                    <FloatingLabelSelect
+                    {/* LGA */}
+                    <FormControlButton
                         label="LGA"
-                        placeholder="Select LGA"
-                        options={[
-                            {label: 'Eti-Osa', value: 'eti-osa'},
-                            {label: 'Ikeja', value: 'ikeja'},
-                            {label: 'Wuse', value: 'wuse'}
-                        ]}
-                        value={lgaValue}
-                        onChange={(e: any) => setLgaValue(e.target.value)}
+                        items={lgas.map((l) => ({ value: l.value, name: l.name }))}
+                        onChange={({ value }) => setLgaValue(value)}
+                        placeholder={
+                            !stateValue
+                                ? 'Select a state first'
+                                : lgasLoading
+                                    ? 'Loading LGAs…'
+                                    : 'Select an LGA'
+                        }
+                        isDisabled={!stateValue || lgasLoading}
                     />
 
-                    <BaseInput
-                        h={'56px'}
-                        placeholder="Enter House Number"
-                        value={houseNumber}
-                        onChange={(e: any) => setHouseNumber(e.target.value)}
-                    />
+                    {/* House Number */}
+                    <BaseFormControl label="Enter House Number">
+                        <BaseInput
+                            h="56px"
+                            value={houseNumber}
+                            onChange={(e) => setHouseNumber(e.target.value)}
+                        />
+                    </BaseFormControl>
 
+                    {/* Street Name */}
+                    <BaseFormControl label="Enter Street Name">
+                        <BaseInput
+                            h="56px"
+                            value={streetName}
+                            onChange={(e) => setStreetName(e.target.value)}
+                        />
+                    </BaseFormControl>
 
-                    {/* Street Name - normal input */}
-                    <BaseInput
-                        h={'56px'}
-                        placeholder="Enter Street Name"
-                        value={streetName}
-                        onChange={(e: any) => setStreetName(e.target.value)}
-                    />
-
-                    {/* Landmark/Description - Textarea */}
-                    <Box w={'full'}>
-                        <Text
-                            mb="8px"
-                            color="#344256"
-                            fontWeight="600"
-                            fontSize="14px"
-                            lineHeight="20px"
-                        >
-                            Landmark / Description
-                        </Text>
-                        <Textarea
-                            placeholder="E.g. Near Landmark or Additional Description"
+                    {/* Landmark */}
+                    <BaseFormControl label="Landmark / Nearest Bus Stop">
+                        <BaseInput
+                            h="56px"
                             value={landmark}
                             onChange={(e) => setLandmark(e.target.value)}
-                            borderColor="#E2E8F0"
-                            focusBorderColor="#CBD5E1"
-                            borderRadius="8px"
-                            fontSize="14px"
-                            resize="none"
-                            h="100px"
                         />
-                    </Box>
+                    </BaseFormControl>
                 </VStack>
 
-
-                <Button
-                    mt={9}
-                    variant={'brand'}
-                    w={'full'}
-                    isLoading={isPending}
-                    onClick={handleContinue}
-                >
-                    Continue
-                </Button>
-
+                <Box mt={8}>
+                    <BaseButton
+                        width="100%"
+                        height="48px"
+                        borderRadius="8px"
+                        bg="#0F454F"
+                        color="white"
+                        fontWeight="600"
+                        isLoading={saving}
+                        isDisabled={
+                            saving ||
+                            !stateValue ||
+                            !lgaValue ||
+                            !houseNumber ||
+                            !streetName ||
+                            !landmark
+                        }
+                        onClick={handleContinue}
+                        text="Continue"
+                    />
+                </Box>
             </Flex>
         </>
     );
