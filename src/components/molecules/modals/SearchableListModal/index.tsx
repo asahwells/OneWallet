@@ -25,6 +25,7 @@ interface ListProps {
 
 interface SearchableListDrawerProps {
   isOpen: boolean;
+  notSearchable?: boolean;
   onClose: () => void;
   items: ListProps[];
   onSelectItem?: (item: ListProps) => void;
@@ -36,6 +37,7 @@ const SearchableListModal: React.FC<SearchableListDrawerProps> = ({
                                                                      isOpen,
                                                                      onClose,
                                                                      items,
+                                                                     notSearchable,
                                                                      onSelectItem,
                                                                      pt = 8,
                                                                      minWidth,
@@ -70,10 +72,12 @@ const SearchableListModal: React.FC<SearchableListDrawerProps> = ({
         >
           <DrawerCloseButton />
           <DrawerBody>
-            <InputGroup w="full">
-              <InputLeftElement pointerEvents="none">
-                <Icon as={SearchIcon} w="18px" h="18px" color="#344256" />
-              </InputLeftElement>
+            <InputGroup w="full" gap={4}>
+              {!notSearchable && (
+                <>
+                <InputLeftElement pointerEvents="none">
+                  <Icon as={SearchIcon} w="18px"  h="18px" color="#344256" />
+                </InputLeftElement>
               <Input
                   w="full"
                   placeholder="Search the list"
@@ -82,13 +86,18 @@ const SearchableListModal: React.FC<SearchableListDrawerProps> = ({
                   color="#344256"
                   fontSize="16px"
                   lineHeight="24px"
+                  pl={8}
+                  //ml={10}
                   letterSpacing="-1.2%"
                   fontWeight={500}
                   aria-label="Search Items"
               />
+              </>
+          
+            )}
             </InputGroup>
 
-            <List w="full" spacing={0} mt={4}>
+            <List w="full" spacing={0} mt={notSearchable ? -4 : 4}>
               {filteredItems.map((item, idx) => (
                   <React.Fragment key={item.id ?? idx}>
                     <ListItem

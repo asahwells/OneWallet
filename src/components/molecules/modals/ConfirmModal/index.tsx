@@ -67,7 +67,7 @@ const ConfirmationModal: React.FC<any> = ({
               variant={'md'}
               my={4}
               textAlign={{base:"left", lg: "center"}}
-              color="#004052"
+              //color="#004052"
               position="relative"
               zIndex={2}
             >
@@ -82,7 +82,9 @@ const ConfirmationModal: React.FC<any> = ({
                 maxW={'343px'}
                 textAlign={{base: "left", md: "center"}}
                 position="relative"
+                lineHeight={'22px'}
                 zIndex={2}
+                color={"#222B38"}
               >
                 {subTitle}
               </Text>

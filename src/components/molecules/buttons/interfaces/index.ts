@@ -82,6 +82,7 @@ export enum RegisterSteps {
     label?: string;
     value?: any;
     click?: any;
+    notSearchable?: boolean;
     labelPt?: string | number;
     items: ListProps[];
     onChange?: (item: ListProps) => void; // Define onChange separately

@@ -29,21 +29,13 @@ const SourceOfIncomeTemplate = ({
   const toast = useToast();
 
   const dispatch = useAppDispatch();
-  const { businessDetails } = useAppSelector((state) => state.business);
+  const { businessDetails, fromStep } = useAppSelector((state) => state.business);
 
   // Local State for user’s selections
-  const [annualRevenue, setAnnualRevenue] = useState(
-    businessDetails?.annualIncome || '',
-  );
-  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(
-    businessDetails?.hasOtherSources || 'No',
-  );
-  const [otherSourceType, setOtherSourceType] = useState(
-    businessDetails?.otherSourceOfIncome || '',
-  );
-  const [otherSourceRevenue, setOtherSourceRevenue] = useState(
-    businessDetails?.otherSourceAnnualIncome || '',
-  );
+  const [annualRevenue, setAnnualRevenue] = useState(businessDetails?.annualIncome || '');
+  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(businessDetails?.hasOtherSources || '');
+  const [otherSourceType, setOtherSourceType] = useState(businessDetails?.otherSourceOfIncome || '');
+  const [otherSourceRevenue, setOtherSourceRevenue] = useState(businessDetails?.otherSourceAnnualIncome || '');
   // For dispatching to Redux
 
   // Pre-defined items for "Annual Revenue"
@@ -200,6 +192,7 @@ const SourceOfIncomeTemplate = ({
             {/* Replaced SelectField with FormControlButton */}
             <FormControlButton
               bg="white"
+              notSearchable={true}
               label="Select annual income"
               items={annualRevenueItems}
               value={annualRevenue}
@@ -219,24 +212,19 @@ const SourceOfIncomeTemplate = ({
               value={hasOtherSources}
               mb={4}
             >
-              <Stack direction="row" spacing={6} mt={4}>
-                <Radio
-                  value="Yes"
-                  variant='radioButton'
-                  fontSize="16px"
-                  fontWeight={400}
-            
-                >
-                  <Text color="#344256">Yes</Text>
-                </Radio>
-                <Radio
-                  value="No"
-                  variant='radioButton'
-                  fontSize="16px"
-                  fontWeight={400}
-                >
-                  <Text color="#344256">No</Text>
-                </Radio>
+              <Stack direction="row" spacing={6} mt={4} h={"18px"}>
+              <Radio 
+                variant="radioButton" 
+                value="yes"
+              >
+                Yes
+              </Radio>
+              <Radio 
+                variant="radioButton" 
+                value="no"
+              >
+                No
+              </Radio>
               </Stack>
             </RadioGroup>
           </Box>
@@ -249,6 +237,7 @@ const SourceOfIncomeTemplate = ({
                   Other source of revenue
                 </Text>
                 <FormControlButton
+                  notSearchable={true}
                   value={otherSourceType}
                   label="Select customer's other source of revenue"
                   items={otherSourceTypeItems}
@@ -261,6 +250,7 @@ const SourceOfIncomeTemplate = ({
                   Expected annual revenue from other sources
                 </Text>
                 <FormControlButton
+                  notSearchable={true}
                   value={otherSourceRevenue}
                   label="Select customer's other source of revenue"
                   items={otherSourceRevenueItems}
@@ -273,13 +263,14 @@ const SourceOfIncomeTemplate = ({
           {/* Continue Button */}
           <BaseButton
             w="full"
+            h={"56px"}
             borderRadius="8px"
             bg="#0F454F"
             color="white"
             isDisabled={isButtonDisabled}
             fontWeight="600"
             onClick={handleContinue}
-            text="Continue"
+            text={fromStep ? "Update": "Continue"}
           />
         </Box>
       </Box>
