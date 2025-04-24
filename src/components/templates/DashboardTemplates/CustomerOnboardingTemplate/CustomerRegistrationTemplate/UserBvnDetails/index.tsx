@@ -9,6 +9,9 @@ import BaseInput from "components/molecules/inputs/BaseInput";
 import UnsaveChangesModal from "components/molecules/modals/UnsavedChangesModal";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import {useDispatch} from "react-redux";
+import {clearBusinessDetails} from "../../../../../../redux/slices/business";
+import {clearCustomerDetails} from "../../../../../../redux/slices/customer";
 
 interface UserBvnDetailsProps {
   onBack: () => void;
@@ -19,6 +22,7 @@ const UserBvnDetails = ({
     onBack,
     onNext
 }: UserBvnDetailsProps) => {
+    const dispatch = useDispatch()
     const router = useRouter();
     const isMobile = useBreakpointValue({ base: true, md: false });
     const { isOpen, onClose, onOpen } = useDisclosure();
@@ -45,6 +49,8 @@ const UserBvnDetails = ({
     }, [onOpen]);
 
     const goTohomepage = () => {
+        dispatch(clearBusinessDetails())
+        dispatch(clearCustomerDetails())
         router.push('/admin/dashboard');
     }
     

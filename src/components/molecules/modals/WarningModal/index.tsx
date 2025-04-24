@@ -64,7 +64,7 @@ const WarningModal: React.FC<any> = ({
                 variant={"sm"}
                 mb={4}
                 maxW={'570px'}
-                textAlign="center"
+                textAlign="start"
                 position="relative"
                 zIndex={2}
               >

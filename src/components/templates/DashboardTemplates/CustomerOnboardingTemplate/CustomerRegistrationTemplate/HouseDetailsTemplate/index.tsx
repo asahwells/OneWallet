@@ -8,7 +8,15 @@ import {
     Text,
     Button,
     Textarea,
-    useBreakpointValue, IconButton, VStack
+    useBreakpointValue,
+    IconButton,
+    VStack,
+    useDisclosure,
+    Drawer,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
+    DrawerHeader, DrawerBody, Center
 } from '@chakra-ui/react';
 import FloatingLabelSelect from 'components/molecules/inputs/FloatingLabelSelect';
 // or wherever your floating label select is located
@@ -33,6 +41,7 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                                                                         onBack,
                                                                     }) => {
     const dispatch = useAppDispatch();
+    const {isOpen, onOpen, onClose} = useDisclosure()
     const { customerDetails } = useAppSelector((s) => s.customer);
 
     const [stateValue, setStateValue] = useState(customerDetails?.state || '');
@@ -124,7 +133,10 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
 
             <Flex
                 direction="column"
-                bg="white"
+                bg={{
+                    base: '#F8FAFC',
+                    md: 'white',
+                }}
                 p={{ base: 4, md: 8 }}
                 borderRadius="8px"
                 boxShadow={{ base: 'none', md: 'md' }}
@@ -136,12 +148,12 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                     as="h1"
                     variant="headerBold"
                     fontSize="18px"
-                    textAlign="center"
+                    textAlign="start"
                     mb={2}
                 >
                     Enter House Address
                 </Heading>
-                <Text variant="sm" mb={6} textAlign="center" lineHeight="22px">
+                <Text variant="sm" mb={6} textAlign="start" lineHeight="22px">
                     Ensure the address matches what’s on their Utility Bill.
                 </Text>
 
@@ -160,6 +172,12 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                         label="LGA"
                         items={lgas.map((l) => ({ value: l.value, name: l.name }))}
                         onChange={({ value }) => setLgaValue(value)}
+
+                        onClick={() => {
+                            if (!stateValue) {
+                                onOpen();
+                            }
+                        }}
                         placeholder={
                             !stateValue
                                 ? 'Select a state first'
@@ -220,6 +238,45 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                     />
                 </Box>
             </Flex>
+
+            {isOpen &&    <Drawer
+                isOpen={isOpen}
+                placement='bottom'
+                onClose={onClose}
+
+            >
+                <DrawerOverlay />
+                <DrawerContent
+                    alignSelf="center"
+                    borderTopRadius="8px"
+                    w={{ base: "100%", md: "50%" }}
+                    maxW="600px"             // optional cap
+                    mx="auto"                // ensure it’s centered
+                >
+                    <DrawerCloseButton />
+                    <DrawerHeader>
+                        <Center>
+                            <Text color={'#344256'} fontWeight={'500'} fontSize={'16px'} >No Information</Text>
+                        </Center>
+                    </DrawerHeader>
+
+                    <DrawerBody>
+                        <Center>
+                            <Text color={'#344256'} fontWeight={'400'} fontSize={'14px'} my={'27px'} >
+                                Please select a state to proceed
+                            </Text>
+                        </Center>
+                    </DrawerBody>
+
+                    {/*<DrawerFooter>*/}
+                    {/*    <Button variant='outline' mr={3} onClick={onClose}>*/}
+                    {/*        Cancel*/}
+                    {/*    </Button>*/}
+                    {/*    <Button colorScheme='blue'>Save</Button>*/}
+                    {/*</DrawerFooter>*/}
+                </DrawerContent>
+            </Drawer> }
+
         </>
     );
 };

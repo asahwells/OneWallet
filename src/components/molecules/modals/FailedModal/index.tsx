@@ -70,14 +70,14 @@ const FailedModal = ({
                     title={title}
                     variant="md"
                     lineHeight="24px"
-                    textAlign="center"
+                    textAlign="start"
                 />
                 {title2 && (
                     <Modaltext
                         title={title2}
                         variant="sml"
                         lineHeight="24px"
-                        textAlign={{ base: 'start', md: 'center' }}
+                        textAlign="start"
                     />
                 )}
 
