@@ -87,8 +87,9 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
 
           {/* State Select with dynamically loaded states */}
           <FormControlButton
-              label="State"
+              label="Nationality"
               items={countries}
+              defaultValue={businessDetails?.nationality || 'Nigeria'}
               onChange={handleNationalityChange}  />
 
           <BaseButton

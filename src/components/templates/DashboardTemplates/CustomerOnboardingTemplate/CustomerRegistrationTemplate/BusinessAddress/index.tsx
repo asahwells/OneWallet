@@ -1,5 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Flex, Box, Heading, useBreakpointValue, Text, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  Box,
+  Heading,
+  useBreakpointValue,
+  Text,
+  VStack,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent, DrawerCloseButton, DrawerHeader, Center, DrawerBody, useDisclosure
+} from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControl from 'components/molecules/forms/BaseFormControl';
@@ -25,6 +35,7 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
   
   // 2) Access relevant slices from Redux (optional – adjust to your slice names)
   const dispatch = useAppDispatch();
+  const {isOpen, onOpen, onClose} = useDisclosure()
   const { businessDetails } = useAppSelector((state) => state.business);
 
   // Local form data
@@ -274,6 +285,11 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
                     value: lga.value,
                     name: lga.name,
                   }))}
+                  onClick={() => {
+                    if (!state) {
+                      onOpen();
+                    }
+                  }}
                   onChange={(item) => handleChange('businessLga', item.value)}
                 />
 
@@ -334,6 +350,44 @@ const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
           </VStack>
         </Box>
       </Box>
+
+      {isOpen &&    <Drawer
+          isOpen={isOpen}
+          placement='bottom'
+          onClose={onClose}
+
+      >
+        <DrawerOverlay />
+        <DrawerContent
+            alignSelf="center"
+            borderTopRadius="8px"
+            w={{ base: "100%", md: "50%" }}
+            maxW="600px"             // optional cap
+            mx="auto"                // ensure it’s centered
+        >
+          <DrawerCloseButton />
+          <DrawerHeader>
+            <Center>
+              <Text color={'#344256'} fontWeight={'500'} fontSize={'16px'} >No Information</Text>
+            </Center>
+          </DrawerHeader>
+
+          <DrawerBody>
+            <Center>
+              <Text color={'#344256'} fontWeight={'400'} fontSize={'14px'} my={'27px'} >
+                Please select a state to proceed
+              </Text>
+            </Center>
+          </DrawerBody>
+
+          {/*<DrawerFooter>*/}
+          {/*    <Button variant='outline' mr={3} onClick={onClose}>*/}
+          {/*        Cancel*/}
+          {/*    </Button>*/}
+          {/*    <Button colorScheme='blue'>Save</Button>*/}
+          {/*</DrawerFooter>*/}
+        </DrawerContent>
+      </Drawer> }
     </Flex>
   );
 };
