@@ -26,7 +26,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
   const toast = useToast();
 
   const dispatch = useAppDispatch();
-  const { businessDetails } = useAppSelector((state) => state.business);
+  const { businessDetails, fromStep } = useAppSelector((state) => state.business);
 
   // Local State for user’s selections
   const [annualRevenue, setAnnualRevenue] = useState(businessDetails?.annualIncome || '');
@@ -229,7 +229,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             isDisabled={isButtonDisabled}
             fontWeight="600"
             onClick={handleContinue}
-            text="Continue"
+            text={fromStep ? "Update": "Continue"}
           />
         </Box>
       </Box>
