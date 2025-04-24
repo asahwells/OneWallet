@@ -21,6 +21,8 @@ import FailedModal from 'components/molecules/modals/FailedModal';
 import {useDispatch} from "react-redux";
 import {useAppDispatch, useAppSelector} from "../../../../../../redux/store";
 import {setCustomer} from "../../../../../../redux/slices/customer";
+import BaseInput from 'components/molecules/inputs/BaseInput';
+import BaseFormControl from 'components/molecules/forms/BaseFormControl';
 
 interface EnterPhoneTemplateProps {
     onNext: () => void;
@@ -76,14 +78,14 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
            <HeaderBackButton onBack={onBack} />
 
             {/* Main Content (Card near the top, not centered vertically) */}
-            <Box px={4} pt={4} pb={8}>
+            <Box px={{base: 0, md: 4}} pt={4} pb={8}>
                 <Box
-                    bg="white"
-                    width={isMobile ? '100%' : '600px'}
+                    bg={{md: "white"}}
+                    width={isMobile ? '100%' : '941px'}
                     mx="auto" /* Centers horizontally */
-                    borderRadius="8px"
-                    p={isMobile ? 4 : 8}
-                    border={'0.5px solid #E2E8F0'}
+                    borderRadius={{md: "8px"}}
+                    p={isMobile ? '20px' : 8}
+                    border={{md: '0.5px solid #E2E8F0'}}
                 >
                     <Text
                         letterSpacing={'-1.2%'}
@@ -109,17 +111,23 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
                     </Text>
 
                     <Box position="relative" mb={2}>
-                        <Input
-                            placeholder="Enter customer's phone number"
+                       <BaseFormControl
+                            mb={{ base: '20px', md: '24px' }}
+                            label="Enter customer's phone number"
+                            >
+                            <BaseInput
+                            placeholder=""
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="\d*"
                             maxLength={11}
                             value={phoneNumber}
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                            borderRadius="8px"
-                            borderColor="#E2E8F0"
-                            focusBorderColor="#CBD5E1"
-                            height="48px"
-                            fontSize="16px"
-                        />
+                            onChange={(e: any) => {
+                                const digitsOnly = e.target.value.replace(/\D/g, '');
+                                setPhoneNumber(digitsOnly);
+                            }}
+                            />
+                        </BaseFormControl>
                     </Box>
 
                     <HStack justifyContent="flex-end" mb={6}>
@@ -130,6 +138,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
 
                     <BaseButton
                         w="full"
+                        h='48px'
                         borderRadius="8px"
                         bg={phoneNumber.length === 11 ? '#0F454F' : '#E2E8F0'}
                         color={phoneNumber.length === 11 ? 'white' : '#94A3B8'}

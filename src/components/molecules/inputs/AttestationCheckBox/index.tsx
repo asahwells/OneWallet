@@ -15,8 +15,24 @@ const AttestationCheckbox: React.FC<AttestationCheckboxProps> = ({ isChecked, on
         onChange={(e) => onChange(e.target.checked)}
         size="md" // You can adjust the size
         variant={'attestation'}
-        colorScheme="blue" // You can adjust the color scheme
-      />
+        sx={{
+          '.chakra-checkbox__control[data-checked]': {
+            bg: '#0F454F',
+          },
+          // For checkmark color
+          '.chakra-checkbox__control[data-checked] .chakra-checkbox__icon': {
+            color: 'white'
+          }
+        }}                
+    />
+       {/* <Checkbox
+                      // colorScheme="teal"
+                      size="md"
+                      isChecked={hasAgreed}
+                      onChange={(e) => setHasAgreed(e.target.checked)}
+                      mt={1}
+                      borderRadius={'4px'}
+                    */}
       <Text ml={'12px'} lineHeight={'22px'} letterSpacing={'-1%'} fontWeight={400} color={'#344256'} fontSize="14px">
         {label}
       </Text>

@@ -7,7 +7,7 @@ const initialState: IBusinessSliceInitialState = {
     isLoading: false,
     error: null,
     currentStep: BusinessSteps.UserNationality,
-    fromStep: BusinessSteps.UserNationality,
+    fromStep: null,
 };
 
 const businessSlice = createSlice({

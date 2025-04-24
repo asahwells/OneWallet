@@ -31,10 +31,10 @@ import {
 } from 'utils/navigation';
 import BellIcon, { BellIconFill } from 'components/atoms/icons/BellIcon';
 import ImageIcon from 'components/atoms/icons/ImageIcon';
-import {useRouter} from "next/navigation";
-import Cookies from "js-cookie";
-import {StorageToken} from "../../constants/token";
-import FullScreenLoader from "../../components/organisms/loaders/FullScreenLoader";
+import { usePathname, useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { StorageToken } from '../../constants/token';
+import FullScreenLoader from '../../components/organisms/loaders/FullScreenLoader';
 import { IoMenuOutline } from 'react-icons/io5';
 import SidebarContent from 'components/organisms/sidebar/components/Content';
 import { useFetchLoggedInUser } from 'api-services/dashboard-services';
@@ -50,9 +50,15 @@ interface DashboardLayoutProps extends PropsWithChildren {
 // Custom Chakra theme
 export default function AdminLayout(props: DashboardLayoutProps) {
   const { children, ...rest } = props;
-  const { mutateAsync: fetchUser, isPending: isFetchingUser, isError } = useFetchLoggedInUser();
-  const [isRehydratingUser, setIsRehydratingUser] = useState(true)
+  const {
+    mutateAsync: fetchUser,
+    isPending: isFetchingUser,
+    isError,
+  } = useFetchLoggedInUser();
+  const [isRehydratingUser, setIsRehydratingUser] = useState(true);
+  const pathname = usePathname();
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const isDashboardSection = pathname === '/admin/dashboard';
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
@@ -62,17 +68,14 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   // functions for changing the states from components
 
-
-
   useEffect(() => {
-    if(isFetchingUser) return
+    if (isFetchingUser) return;
 
-    if(isError) {
+    if (isError) {
       Cookies.remove(StorageToken);
-      router.replace("/auth/sign-in");
+      router.replace('/auth/sign-in');
       return;
     }
-
   }, [isError]);
 
   useEffect(() => {
@@ -82,7 +85,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   useEffect(() => {
     async function handleUserFetch() {
       try {
-        await fetchUser(); 
+        await fetchUser();
       } catch (error) {
         Cookies.remove(StorageToken);
       } finally {
@@ -94,12 +97,12 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   }, [router, fetchUser]);
 
   const bg = useColorModeValue('#FAFAFB', 'navy.900');
-  if(isRehydratingUser) {
-    return <FullScreenLoader />
+  if (isRehydratingUser) {
+    return <FullScreenLoader />;
   }
 
   return (
-    <Box h="100vh" w="100vw" bg={bg} >
+    <Box h="100vh" w="100vw" bg={bg}>
       <SidebarContext.Provider
         value={{
           toggleSidebar,
@@ -109,35 +112,57 @@ export default function AdminLayout(props: DashboardLayoutProps) {
         <Sidebar routes={routes} display="none" {...rest} />
 
         {/* <Show above='lg'> */}
-          <Box w={'100vw'} display={'flex'} alignItems={'center'} pl={'20px'} pr={'24px'} height={'80px'}  backgroundColor={'#FFFFFF'} shadow={'sm'}  pos={'relative'} top={0} zIndex={10} >
-            <Flex w='full' justifyContent={"space-between"} alignItems={"center"}>
-              <IconButton
-                icon={<Armburger />}
-                display={{ base: 'inline-flex', xl: 'none' }}
-                onClick={onOpen}
-                aria-label="Open menu"
-                size="lg"
-                ref={btnRef}
+        <Box
+          w={'100vw'}
+          display={{
+             base: isDashboardSection ? 'flex' : 'none', 
+             md: 'flex' }}
+          alignItems={'center'}
+          pl={'20px'}
+          pr={'20px'}
+          height={{ base: '60px', md: '70px' }}
+          backgroundColor={'#FFFFFF'}
+          shadow={'sm'}
+          pos={'relative'}
+          top={0}
+          zIndex={10}
+        >
+          <Flex w="full" justifyContent={'space-between'} alignItems={'center'}>
+            <IconButton
+              icon={<Armburger />}
+              display={{ base: 'inline-flex', xl: 'none' }}
+              onClick={onOpen}
+              aria-label="Open menu"
+              size="lg"
+              ref={btnRef}
+            />
+            <HeaderLogoIcon />
+            <HStack gap={isMobile ? '30px' : '28px'} align={'center'}>
+              <BellIconFill
+                onClick={() => router.push('/admin/notifications')}
               />
-              <HeaderLogoIcon />
-              <HStack gap={isMobile? '30px': '28px'} align={'center'}>
-                <BellIconFill onClick={()=> router.push('/admin/notifications')} />
-                {isMobile && <ImageIcon />}
-                {!isMobile &&<ImageIconDesktop />}
-              </HStack>
-            </Flex>
-          </Box>
-        
+              {isMobile && <ImageIcon />}
+              {!isMobile && <ImageIconDesktop />}
+            </HStack>
+          </Flex>
+        </Box>
 
-        {isOpen && <Drawer isOpen={isOpen} placement="left" onClose={onClose} finalFocusRef={btnRef}>
+        {isOpen && (
+          <Drawer
+            isOpen={isOpen}
+            placement="left"
+            onClose={onClose}
+            finalFocusRef={btnRef}
+          >
             <DrawerOverlay />
             <DrawerContent bgColor={'#0F454F'}>
-                <DrawerCloseButton color={'white'} />
-                <DrawerBody>
-                    <SidebarContent routes={routes} onClose={onClose}  />
-                </DrawerBody>
+              <DrawerCloseButton color={'white'} />
+              <DrawerBody>
+                <SidebarContent routes={routes} onClose={onClose} />
+              </DrawerBody>
             </DrawerContent>
-        </Drawer>}
+          </Drawer>
+        )}
 
         <Box
           float="right"
@@ -152,11 +177,9 @@ export default function AdminLayout(props: DashboardLayoutProps) {
           transitionDuration=".2s, .2s, .35s"
           transitionProperty="top, bottom, width"
           transitionTimingFunction="linear, linear, ease"
-
         >
           <Portal>
             <Box>
-
               {/*Todo: implement our own navbar*/}
               {/*<Navbar*/}
               {/*  onOpen={onOpen}*/}
@@ -167,7 +190,6 @@ export default function AdminLayout(props: DashboardLayoutProps) {
               {/*  fixed={fixed}*/}
               {/*  {...rest}*/}
               {/*/>*/}
-
             </Box>
           </Portal>
 
@@ -181,9 +203,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
           >
             {children}
           </Box>
-          <Box>
-            {/*<Footer />*/}
-          </Box>
+          <Box>{/*<Footer />*/}</Box>
         </Box>
       </SidebarContext.Provider>
     </Box>

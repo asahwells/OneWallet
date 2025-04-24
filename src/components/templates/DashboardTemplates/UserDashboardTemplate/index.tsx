@@ -44,10 +44,10 @@ const UserDashboardTemplate = () =>  {
     }, []);
 
         return (
-        <Stack pt={{ base: '60px', md: '60px', xl: '10px' }} pl={6} pb={'15px'} gap={5} pr={5} >
+        <Stack pt={'15px'} pl={'20px'} pb={'15px'} gap={3} pr={'20px'} >
 
             <Stack>
-                <Text variant={'base'}>
+                <Text variant={'header'}>
                 {userDetails?.firstName ? `Welcome, ${userDetails.firstName}` : 'No name available'}
                 </Text>
             </Stack>
@@ -59,12 +59,12 @@ const UserDashboardTemplate = () =>  {
             <Stack
                 direction={{ base: 'column', md: 'row' }} // Responsive layout: column on mobile, row on desktop
                 w="full"
-                gap={10}
+                gap={{base: 3, md: 8}}
                 align="stretch" // Ensures children stacks stretch to equal height
             >
                 {/* Left Hand Side */}
-                <Stack spacing={5} flex={1}>
-                    <SimpleGrid columns={{ base: 2, md: 2 }} gap={["20px", '8px']}>
+                <Stack spacing={{base: 5, md: 6}} flex={1}>
+                    <SimpleGrid columns={{ base: 2, md: 2 }} gap={["40px", '8px']}>
                         <AnalyticsCard
                             title="Total Application"
                             value={dashboard ? `${dashboard.data?.totalApplications}`: 'N/A'}    
@@ -83,7 +83,7 @@ const UserDashboardTemplate = () =>  {
                 </Stack>
 
                 {/* Right Hand Side */}
-                <Stack spacing={5} flex={1}>
+                <Stack spacing={3} flex={1}>
                    <Show above={'md'}>
                        <CommissionCard commission={dashboard?.data?.totalCommissions} isLoading={isFetchingDashboard}/>
                    </Show>
@@ -104,7 +104,7 @@ const UserDashboardTemplate = () =>  {
                    <Box w={{
                           base: 'full',
                           md: '35%'
-                   }} h={'95%'} borderRadius={'4px'}>
+                   }} borderRadius={'4px'}>
                        <TransactionReportChart totalTransactionValue={''} rawData={pieChartData} data={getPieChartData([])}
                                                labels={[
                                                    'Active Devices',

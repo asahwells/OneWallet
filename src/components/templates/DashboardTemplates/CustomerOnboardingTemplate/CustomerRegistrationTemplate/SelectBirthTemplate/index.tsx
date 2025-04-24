@@ -20,6 +20,8 @@ import { useAddDateOfBirth } from 'api-services/business-registration-services';
 import { useAppSelector } from '../../../../../../redux/store';
 import {useDispatch} from "react-redux";
 import {setCustomer} from "../../../../../../redux/slices/customer";
+import { TagLabel } from '@chakra-ui/react';
+import BaseButton from 'components/molecules/buttons/BaseButton';
 
 interface SelectBirthtemplateProps {
     onNext: () => void;
@@ -61,10 +63,10 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
             <HeaderBackButton onBack={onBack} />
 
             {/* Main Content */}
-            <Box px={4} pt={4} pb={8}>
+            <Box px={{base: 0, md: 4}} pt={4} pb={8}>
                 <Box
-                    bg="white"
-                    width={isMobile ? '100%' : '600px'}
+                    bg={{base: "", md: "white"}}
+                    width={isMobile ? '100%' : '941px'}
                     mx="auto"
                     borderRadius="8px"
                     boxShadow={isMobile ? 'none' : 'md'}
@@ -104,7 +106,7 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         />
                     </Box>
 
-                    <Button
+                    <BaseButton
                         width="100%"
                         height="48px"
                         borderRadius="8px"
@@ -114,9 +116,8 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         isLoading={isPending}
                         onClick={handleContinue}
                         isDisabled={!selectedDate}
-                    >
-                        Continue
-                    </Button>
+                        text='Continue'
+                    />
                 </Box>
             </Box>
         </Flex>

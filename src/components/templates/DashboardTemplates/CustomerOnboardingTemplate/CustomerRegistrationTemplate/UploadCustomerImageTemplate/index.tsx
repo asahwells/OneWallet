@@ -46,21 +46,19 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
     };
 
     return (
-        <>
-
+        <Flex direction="column" minH="100vh" bg="#F8FAFC">
             <HeaderBackButton onBack={onBack} />
 
-        <Flex
-            direction="column"
-            bg="white"
-            p={isMobile ? 4 : 8}
-            borderRadius="8px"
-            boxShadow={isMobile ? 'none' : 'md'}
-            w={isMobile ? '100%' : '800px'}
-            mx="auto"
-            mt={4}
+        <Box
+           bg={{base: "", md: "white"}}
+           width={isMobile ? '100%' : '941px'}
+           mx="auto" /* centers horizontally */
+           borderRadius={{base: 0, md: "8px"}}
+           boxShadow={isMobile ? 'none' : 'md'}
+           p={isMobile ? '20px' : 8}
         >
             {/* Title / Subtitle */}
+            {!isMobile ? (
             <Heading
                 variant={'headerBold'}
                 fontSize={'18px'}
@@ -69,6 +67,16 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
             >
                 Photo Upload
             </Heading>
+            ): (
+                <Heading
+                variant={'headerBold'}
+                fontSize={'18px'}
+                textAlign={isMobile ? 'left' : 'center'}
+                mb={2}
+            >
+                Verify User Identity
+            </Heading>
+            )}
             <Text
                 variant={'sm'}
                 textAlign={isMobile ? 'left' : 'center'}
@@ -79,8 +87,8 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
 
 
             <Text
-                textAlign={isMobile ? 'left' : 'center'}
-                mb={6}
+                textAlign={'center'}
+                mb={3}
                 mt={10}
                 variant={'base'}
             >
@@ -95,7 +103,7 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
                 textAlign="center"
                 cursor="pointer"
                 bg={'#F8FAFC'}
-                mb={4}
+                mb={{base: 8, md: 4}}
             >
 
 
@@ -114,10 +122,12 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
             </Box>
 
             {/* Red Tip Messages */}
-            <VStack align={{
+            {!isMobile && (
+            <VStack alignItems={{
                 base: 'flex-start',
-                md: 'start',
+                md: 'center',
             }} alignSelf={'center'} spacing={4} mt={4} mb={6}>
+                <Box>
                 <HStack spacing={1}>
                     <ExclamationIcon/>
                     <Text variant={'chartLabel'} color={'#EF4444'}>
@@ -138,7 +148,9 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
                         Ensure the picture is clear and in focus
                 </Text>
                 </HStack>
+                </Box>
             </VStack>
+            )}
 
             {/* Continue Button */}
             <Button
@@ -153,9 +165,9 @@ const UploadCustomerImageTemplate = ({ onContinue, onBack }: PhotoUploadStepProp
             >
                 Continue
             </Button>
-        </Flex>
+        </Box>
 
-        </>
+        </Flex>
     );
 };
 

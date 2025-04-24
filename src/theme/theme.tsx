@@ -18,6 +18,29 @@ import {radioTheme as Radio} from './components/radio';
 export default extendTheme(
 	{ breakpoints,
 		components: {
+			Checkbox: {
+				baseStyle: {
+				  control: {
+					borderColor: '#0F454F',
+				  },
+				},
+				defaultProps: {
+				  colorScheme: 'custom', // Your custom scheme
+				},
+				variants: {
+				  custom: {
+					control: {
+					  _checked: {
+						backgroundColor: '#0F454F',
+						borderColor: '#0F454F',
+					  },
+					  _hover: {
+						borderColor: '#0F454F',
+					  },
+					},
+				  },
+				},
+			  },		  
 			Text,
 			Radio,
 			Tag,
