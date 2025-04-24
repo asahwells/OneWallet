@@ -57,7 +57,7 @@ const RegisterUserForm = () => {
                 setStep(RegisterSteps.SelectBirth);
                 break;
             case RegisterSteps.SelectBirth:
-                setStep(RegisterSteps.ProfileCreated);
+                setStep(RegisterSteps.BvnOrNin);
                 break;
             case RegisterSteps.BvnOrNin:
                 setStep(RegisterSteps.PhotoUpload);
@@ -143,7 +143,7 @@ const RegisterUserForm = () => {
                 <BvnOrNinTemplate
                     onVerify={() => {goToStep(RegisterSteps.DojahVerification)}}
                     onBack={handleBack}
-                    onAttachmentSelect={() => goToStep(RegisterSteps.PhotoUpload)}
+                    onAttachmentSelect={() => goToStep(RegisterSteps.DojahVerification)}
                     onCameraSelect={() => goToStep(RegisterSteps.DojahVerification)}
                 />
             )}
