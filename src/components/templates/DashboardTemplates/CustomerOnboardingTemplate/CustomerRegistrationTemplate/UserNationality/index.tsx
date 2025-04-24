@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Heading, Text, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useBreakpointValue, FormLabelProps } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import BaseFormControlButton from 'components/molecules/buttons/FormControlButton'; // Import your BaseFormControlButton
@@ -49,7 +49,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
       <HeaderBackButton onBack={onBack} header='Business Setup'/>
-      <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
+      <Box px={{base: '20px', md: 4}} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box
           bg={isMobile ? '#F8FAFC' : 'white'}
           width={{base : '100%', lg : '941px'}}
@@ -88,6 +88,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
             defaultValue={businessDetails?.nationality || "Nigeria" }
             items={countries}
             onChange={handleNationalityChange}
+            // isRequired
           />
 
           <BaseButton

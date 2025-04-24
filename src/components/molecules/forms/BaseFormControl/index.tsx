@@ -36,7 +36,7 @@ const BaseFormControl = ({ label, children,labelPt, ...props }: IFormControl) =>
         >
             <FormLabel
                 title={label}
-                top={isFocused || hasValue ? (labelPt || '-1px') : '50%'}
+                top={isFocused || hasValue ? (labelPt || '6px') : '50%'}
                 left={'16px'}
                 fontSize={isFocused || hasValue ? '10px' : '16px'}
                 color={'#344256'}

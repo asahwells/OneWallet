@@ -29,6 +29,7 @@ const TransactionReportChart = ( { rawData, labels, data, h, totalTransactionVal
             alignItems="center"
             flexDirection="column"
             w="100%"
+            h="100%"
             border='0.88px solid #E4E4E7'
             overflowY="auto"
         >

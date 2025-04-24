@@ -45,9 +45,9 @@ const UserBvnDetails = ({
     return (
         <Flex direction="column" bg="#F8FAFC" w="full" mx={'auto'}>
             <HeaderBackButton onBack={onOpen} />
-            <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
+            <Box px={{base: 0, md: 4}} pt={isMobile ? '6px' : '36px'} pb={8}>
                 <Box 
-                    bg={isMobile ? '#F8FAFC' : 'white'}
+                    bg={isMobile ? '' : 'white'}
                     width={{base: '100%', lg: '941px'}}
                     mx="auto"
                     h={isMobile? 'auto' : '749px'}

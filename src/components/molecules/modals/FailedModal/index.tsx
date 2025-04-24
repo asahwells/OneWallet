@@ -38,17 +38,32 @@ const FailedModal = ({
           autoFocus={false}
       >
         <ModalOverlay />
-        <ModalContent height={height || '419.99px'} mx={5} {...props}>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack spacing={8}>
-              <VStack
-                  spacing={1}
-                  alignItems={{ base: 'start', md: 'center' }}
-                  justifyContent={{ base: 'start', md: 'center' }}
-              >
+      <ModalContent borderRadius="26.81px" boxShadow="xl" maxW={"700px"} w="full" borderTopRadius={'26.81px'} borderBottomRadius={'26.81px'} position="relative" pb={4} mx={4}>
+        <ModalCloseButton
+                    color="#475569"
+                    _focus={{ boxShadow: 'none' }}
+                    _hover={{ bg: '#F1F5F9' }}
+                    display={{base: 'none', md: 'flex'}}
+                />
+          <ModalBody p={{md: '20px'}}>
+            <VStack spacing={3} alignItems={{ base: 'start', md: 'center' }}
+                  justifyContent={{ base: 'start', md: 'center' }}>
+              <Flex 
+                justify={{base: "space-between", md: "center"}}
+                align="center"
+                w="100%"
+                position="relative"
+                >
                 <FailedIcon />
-                <Modaltext
+                
+                <ModalCloseButton 
+                    position="relative"
+                    top="unset" 
+                    right="unset"
+                    display={{base: 'inline-block', md: 'none'}}
+                />
+                </Flex>
+                  <Modaltext
                     color="#344256"
                     fontSize="16px"
                     fontWeight="500"
@@ -91,12 +106,11 @@ const FailedModal = ({
                     </Flex>
                   </Box>
                 )}
-              </VStack>
 
               <OutlineButton
                   text="Dismiss"
                   color="#EF4444"
-                  width="full"
+                  width={{base: "full", md: "458px"}}
                   height="56px"
                   mt={5}
                   border="1px solid #EF4444"

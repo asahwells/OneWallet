@@ -111,14 +111,14 @@ const EnterPinTemplate = ({
             )}
 
             {/* Main Content */}
-            <Box px={4} pt={4} pb={8}>
+            <Box px={{base: 0, md: 4}} pt={4} pb={8}>
                 <Box
-                    bg="white"
-                    width={isMobile ? '100%' : '600px'}
+                    bg={{base: "", md: "white"}}
+                    width={isMobile ? '100%' : '941px'}
                     mx="auto" /* centers horizontally */
-                    borderRadius="8px"
+                    borderRadius={{base: 0, md: "8px"}}
                     boxShadow={isMobile ? 'none' : 'md'}
-                    p={isMobile ? 4 : 8}
+                    p={isMobile ? '20px' : 8}
                 >
                     <Text
                         letterSpacing={'-1.2%'}
@@ -154,7 +154,8 @@ const EnterPinTemplate = ({
 
                     {/* Verify Button */}
                     <BaseButton
-                        w="full"
+                        w="100%"
+                        h="48px"
                         borderRadius="8px"
                         bg={otp.length === 4 ? '#0F454F' : '#E2E8F0'}
                         color={otp.length === 4 ? 'white' : '#94A3B8'}

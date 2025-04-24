@@ -12,6 +12,7 @@ import {
   Box,
   CloseButton,
   type ModalProps,
+  ModalCloseButton,
 } from "@chakra-ui/react"
 // import { ConfirmationModalProps } from "components/molecules/inputs/interfaces"
 import QuestionIcon from "components/atoms/icons/QuestionIcon"
@@ -38,11 +39,29 @@ const ConfirmationModal: React.FC<any> = ({
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="md" {...rest}>
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(5px)" />
       <ModalContent borderRadius="26.81px" boxShadow="xl" maxW={"700px"} w="full" borderTopRadius={'26.81px'} borderBottomRadius={'26.81px'} position="relative" pb={4} mx={4}>
-        <CloseButton position="absolute" right={4} top={6} color="" onClick={onClose} size="md" />
-        <ModalBody pt={3} pb={4} px={6}>
-          <Flex direction="column" align={{base: "left", lg: "center"}}>
-            <QuestionIcon />
-
+      <ModalCloseButton
+                          color="#475569"
+                          _focus={{ boxShadow: 'none' }}
+                          _hover={{ bg: '#F1F5F9' }}
+                          display={{base: 'none', md: 'flex'}}
+                      />
+          <ModalBody pt={3} pb={4} px={6}>
+          <Flex direction="column" align={{base: "left", md: "center"}}>
+          <Flex 
+              justify={{base: "space-between", md: "center"}}
+              align="center"
+              w="100%"
+              position="relative"
+            >
+              <QuestionIcon />
+              
+              <ModalCloseButton 
+                position="relative"
+                top="unset" 
+                right="unset"
+                display={{base: 'inline-block', md: 'none'}}
+              />
+            </Flex>
             {/* Title */}
             <Text
               variant={'md'}
@@ -61,7 +80,7 @@ const ConfirmationModal: React.FC<any> = ({
                 variant={"sm2"}
                 mb={4}
                 maxW={'343px'}
-                textAlign={{base: "left", lg: "center"}}
+                textAlign={{base: "left", md: "center"}}
                 position="relative"
                 zIndex={2}
               >
@@ -77,7 +96,7 @@ const ConfirmationModal: React.FC<any> = ({
               bg="#004052"
               color={"white"}
               size="lg"
-              width="100%"
+              width={{base: "full", md: "458px"}}
               mb={4}
               _hover={{ bg: "#00546A" }}
               onClick={onPrimaryAction}
@@ -98,13 +117,15 @@ const ConfirmationModal: React.FC<any> = ({
             <BaseButton
               text={secondaryButtonText} 
               h="56px"
-              w="full"
+              w={{base: "full", md: "458px"}}
               bg="white"
               color={color ?? "#344256"}
               borderRadius="8px"
               fontSize="16px"
               fontWeight="600"
-              border={border ?? "1px solid #0F454F"}
+              border={border ?? "1px solid #EF4444"}
+              _hover={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
+              _focus={{ bg: "rgba(239, 68, 68, 0.1)", borderColor: "#EF4444", color: "#EF4444" }}
               onClick={onSecondaryAction}
             >
               {secondaryButtonText}

@@ -1,24 +1,19 @@
 /* eslint-disable */
-
 // chakra imports
 import { Box, Flex, HStack, Text, useBreakpointValue, useColorModeValue } from '@chakra-ui/react';
 import Link from 'next/link';
 import { IRoute } from '../../../../types/navigation';
 import { usePathname } from 'next/navigation';
 import { cloneElement, useCallback } from 'react';
-
 interface SidebarLinksProps {
   routes: IRoute[];
   onClose?: ()=>void;
 }
-
 export function SidebarLinks(props: SidebarLinksProps) {
   const { routes, onClose } = props;
   const isMobile = useBreakpointValue({ base: true, md: false });
-
   //   Chakra color mode
   const pathname = usePathname();
-
   let activeColor = useColorModeValue('#FFFFFF', '#FFFFFF');
   let activeBg = useColorModeValue('#6F8F95', '#6F8F95');
   let inactiveColor = useColorModeValue(
@@ -28,7 +23,6 @@ export function SidebarLinks(props: SidebarLinksProps) {
   let activeIcon = useColorModeValue('#FFFFFF', 'white');
   let textColor = useColorModeValue('#FFFFFF', 'white');
   let brandColor = useColorModeValue('brand.500', 'brand.400');
-
   // verifies if routeName is the one active (in browser input)
   const activeRoute = useCallback(
     (route: string) => {
@@ -38,10 +32,6 @@ export function SidebarLinks(props: SidebarLinksProps) {
     },
     [pathname],
   );
-
-  
-  
-
   // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
   const createLinks = (routes: IRoute[]) => {
     return routes.map((route, index: number) => {
@@ -140,5 +130,4 @@ export function SidebarLinks(props: SidebarLinksProps) {
   //  BRAND
   return <>{createLinks(routes)}</>;
 }
-
 export default SidebarLinks;

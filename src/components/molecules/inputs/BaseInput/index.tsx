@@ -20,7 +20,7 @@ const BaseInput = ({ value, icon, onFocus, onBlur, ...props }: IInputProps) => {
     return (
         <InputGroup height="100%">
             <Input
-
+            pt={'18px'}
                 value={value}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -31,6 +31,11 @@ const BaseInput = ({ value, icon, onFocus, onBlur, ...props }: IInputProps) => {
                 focusBorderColor="#E2E8F0"
                 _focus={{
                     boxShadow: 'none',
+                }}
+                _autofill= {{
+                    bg: "#FFFFFF",
+                    boxShadow: '0 0 0px 1000px white inset',
+                    WebkitTextFillColor: '#000000',
                 }}
                 position="relative"
                 zIndex="1"
