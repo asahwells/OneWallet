@@ -16,6 +16,7 @@ const FormControlButton: React.FC<IFormControlButton> = ({
                                                              click,         // preserves any external pointerEvents override
                                                              labelPt,
                                                                 isDisabled,
+                                                                value,
                                                              ...props
                                                          }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,6 +29,14 @@ const FormControlButton: React.FC<IFormControlButton> = ({
             setSelectedItem(found);
         }
     }, [items, defaultValue]);
+
+    // 2️⃣: **New**—re‐sync whenever the controlled `value` prop changes
+    useEffect(() => {
+        if (value != null && items.length) {
+            const found = items.find((i) => i.value === value) || null;
+            setSelectedItem(found);
+        }
+    }, [value, items]);
 
     const hasValue = Boolean(selectedItem);
     const isFocused = isModalOpen;

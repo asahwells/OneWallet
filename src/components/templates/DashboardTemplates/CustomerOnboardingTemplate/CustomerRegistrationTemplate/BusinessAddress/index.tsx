@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   Flex,
   Box,
@@ -30,365 +30,282 @@ interface BusinessAddressProps {
   onNext: () => void;
 }
 
-const BusinessAddress = ({ onBack, onNext }: BusinessAddressProps) => {
+const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  
-  // 2) Access relevant slices from Redux (optional – adjust to your slice names)
   const dispatch = useAppDispatch();
-  const {isOpen, onOpen, onClose} = useDisclosure()
-  const { businessDetails } = useAppSelector((state) => state.business);
+  const { businessDetails, fromStep } = useAppSelector((s) => s.business);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // Local form data
+  // track first render vs user state changes
+  const firstRun = useRef(true);
+
+  // form state
   const [formData, setFormData] = useState({
     businessState: businessDetails?.businessState || '',
     businessLga: businessDetails?.businessLga || '',
-    locatedInMarket: businessDetails?.locatedInMarket || '',
+    locatedInMarket: businessDetails?.locatedInMarket ?? false,
     marketName: businessDetails?.marketName || '',
     storeNumber: businessDetails?.storeNumber || '',
     fullShopAddress: businessDetails?.fullShopAddress || '',
     photoUrl: businessDetails?.photoUrl || '',
     isResidentialAddress: businessDetails?.isResidentialAddress || false,
   });
+  const { businessState } = formData;
 
-  const [isResidentialAddress, setIsSameAsResidential] = useState(
-    businessDetails?.isResidentialAddress || false
-  );
-
-  // New state for holding fetched states and LGAs
-  const [states, setStates] = useState<{ name: string, value: string }[]>([]);
-  const [lgas, setLgas] = useState<{ name: string, value: string }[]>([]);
-  const [state, setState] = useState(formData.businessState); // Set initial state from formData
   const [isAttested, setIsAttested] = useState(false);
+  const [states, setStates] = useState<{ name: string; value: string }[]>([]);
+  const [lgas, setLgas] = useState<{ name: string; value: string }[]>([]);
 
-  const handleChange = (name: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === 'businessState') {
-      console.log('State changed:', value);
-      setState(value); // Update state when businessState changes
-    }
-  };
-
-  // Fetch states and LGAs when component mounts or state changes
+  // 1) Load all states once
   useEffect(() => {
-    const fetchData = async () => {
-      const stateData = await fetchStates();
-      setStates(stateData);
+    fetchStates().then(setStates);
+  }, []);
 
-      // Fetch LGAs only if state is selected
-      if (state) {
-        const lgaData = await fetchLGA(state);
-        setLgas(lgaData);
+  // 2) Whenever businessState changes...
+  useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      // Initial: fetch LGAs for existing state but don't clear the formData.businessLga
+      if (businessState) {
+        fetchLGA(businessState).then(setLgas);
       }
-    };
+    } else {
+      // User changed state: clear previous LGA, then fetch new list
+      setFormData((f) => ({ ...f, businessLga: '' }));
+      if (businessState) {
+        fetchLGA(businessState).then(setLgas);
+      } else {
+        setLgas([]);
+      }
+    }
+  }, [businessState]);
 
-    fetchData();
-  }, [state]); // Fetch states and LGAs whenever state changes
+  // 3) Once the initial LGA list arrives AND we had an API-provided businessLga,
+  //    set it into formData so the select shows it.
+  useEffect(() => {
+    if (!firstRun.current && businessDetails?.businessLga && lgas.length) {
+      setFormData((f) => ({
+        ...f,
+        businessLga: businessDetails.businessLga,
+      }));
+    }
+  }, [lgas, businessDetails?.businessLga]);
 
-  const handleAttestationChange = (checked: boolean) => {
-    setIsAttested(checked);
+  const handleChange = (name: keyof typeof formData, value: any) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleContinue = () => {
-    dispatch(
-      setBusiness({
-        ...businessDetails,
-        ...formData,
-      })
-    );
-
+    dispatch(setBusiness({ ...businessDetails, ...formData }));
     onNext();
   };
 
   const isButtonDisabled = useMemo(() => {
     const {
-      businessState,
       businessLga,
-      marketName,
-      storeNumber,
       fullShopAddress,
       photoUrl,
       locatedInMarket,
+      marketName,
+      storeNumber,
     } = formData;
 
-    if (formData.locatedInMarket === 'no' && !isResidentialAddress) {
-      return !businessState || !businessLga || !fullShopAddress || !photoUrl || !isAttested;
-    }
-
-    if (formData.locatedInMarket === 'no' && isResidentialAddress) {
+    if (!locatedInMarket) {
+      if (!formData.isResidentialAddress) {
+        return !businessState || !businessLga || !fullShopAddress || !photoUrl || !isAttested;
+      }
       return !photoUrl || !isAttested;
+    } else {
+      return (
+          !businessState ||
+          !businessLga ||
+          !marketName ||
+          !storeNumber ||
+          !fullShopAddress ||
+          !photoUrl ||
+          !isAttested
+      );
     }
-    // If locatedInMarket is 'yes', check for marketName and storeNumber
-    if (formData.locatedInMarket === 'yes' ) {
-      return !businessState || !businessLga || !marketName || !storeNumber || !fullShopAddress || !photoUrl || !isAttested;
-    }
-
-    if (formData.locatedInMarket === '') {
-      return !locatedInMarket || !isAttested;
-    }
-    
-  }, [formData, isAttested]);
-
-  const handleLocatedInMarketChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      locatedInMarket: value,
-      businessState: '',  // Reset businessState
-      businessLga: '',    // Reset businessLga
-    }));
-    setState(''); // Reset state when locatedInMarket changes
-    setLgas([]); // Reset LGAs when locatedInMarket changes
-  };
-
+  }, [formData, isAttested, businessState]);
 
   return (
-    <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton onBack={onBack} header="Business Setup" />
+      <Flex direction="column" bg="#F8FAFC" w="full">
+        <HeaderBackButton onBack={onBack} header="Business Address" />
 
-      <Box px={{base: '20px', md: 4}} pt={isMobile ? '6px' : '36px'} pb={8}>
-        <Box
-          bg={isMobile ? '#F8FAFC' : 'white'}
-          width={{ base: '100%', lg: '941px' }}
-          mx="auto"
-          h={isMobile ? 'auto' : '1058px'}
-          borderRadius="8px"
-          pt={isMobile ? '15px' : '30px'}
-          pb="30px"
-          px={isMobile ? '0px' : 124}
-          border={isMobile ? 'none' : '0.5px solid #E2E8F0'}
-        >
-          <Text
-            letterSpacing={'-1.2%'}
-            variant={'head'}
-            textAlign={{
-              base: 'left',
-              md: 'center',
-            }}
-            mb={2}
+        <Box px={{ base: '20px', md: 4 }} pt={isMobile ? '6px' : '36px'} pb={8}>
+          <Box
+              bg={isMobile ? '#F8FAFC' : 'white'}
+              width={{ base: '100%', lg: '941px' }}
+              mx="auto"
+              borderRadius="8px"
+              pt={isMobile ? '15px' : '30px'}
+              pb="30px"
+              px={isMobile ? '0' : 124}
+              border={isMobile ? 'none' : '0.5px solid #E2E8F0'}
           >
-            Enter Business Address
-          </Text>
+            <Text
+                letterSpacing="-1.2%"
+                variant="head"
+                textAlign={{ base: 'left', md: 'center' }}
+                mb={2}
+            >
+              Enter Business Address
+            </Text>
+            <Text variant="sm" mb={6} textAlign={{ base: 'left', md: 'center' }}>
+              Enter the address of the business/store
+            </Text>
 
-          <Text
-            variant={'sm'}
-            mb={6}
-            textAlign={{
-              base: 'left',
-              md: 'center',
-            }}
-          >
-            Enter the address of the business/store
-          </Text>
+            <VStack spacing="10px" mt="25px">
+              {/* Market location */}
+              <RadioInputButton
+                  value={formData.locatedInMarket ? 'yes' : 'no'}
+                  label="Is the address located in a market?"
+                  onChange={(val) =>
+                      handleChange('locatedInMarket', val === 'yes')
+                  }
+              />
 
-          <VStack mt="25px" gap="10px">
-            {/* Market location Radio */}
-            <RadioInputButton
-              value={formData.locatedInMarket}
-              label="Is the Customer Business Address located in a market?"
-              onChange={(value) => handleLocatedInMarketChange(value)}
-            />
-
-            {formData.locatedInMarket === 'no' ? (
-              <>
-                <Flex 
-                w="full" 
-                alignItems="center" 
-                justifyContent="space-between" 
-                p="4" 
-                border="1px solid #E2E8F0" 
-                borderRadius="md"
-              >
-                <Switch 
-                  size="md"
-                  sx={{
-                    '& .chakra-switch__track[data-checked]': {
-                      backgroundColor: '#0F454F',
-                    },
-                    '& .chakra-switch__thumb': {
-                      backgroundColor: 'white',
-                    }
-                  }}
-                  isChecked={isResidentialAddress}
-                  onChange={(e) => {
-                    setIsSameAsResidential(e.target.checked);
-                    handleChange('isSameAsResidential', e.target.checked);
-                  }}
-                />
-                <Text variant="base" ml={3}>
-                  {"Store/business address is the same as the business' residential address"}
-                </Text>
-
-              </Flex>
-              {/* State Select with dynamically loaded states */}
-              {!isResidentialAddress && (
-                <>
-                  <FormControlButton
-                    label="State"
-                    items={states.map((state) => ({
-                      value: state.value,
-                      name: state.name,
-                    }))}
-                    onChange={(item) => handleChange('businessState', item.value)}
-                  />
-
-                  {/* LGA Select with dynamically loaded LGAs */}
-                  <FormControlButton
-                    label="LGA"
-                    click={state ? 'auto' : 'none'}
-                    items={lgas.map((lga) => ({
-                      value: lga.value,
-                      name: lga.name,
-                    }))}
-                    onChange={(item) => handleChange('businessLga', item.value)}
-                  />
-
-                  {/* Address Description - always show this regardless of Yes/No selection */}
-                  <BaseFormControl label="Shop Address Description">
-                    <BaseInput
-                      placeholder=""
-                      value={formData.fullShopAddress}
-                      onChange={(e: any) => handleChange('fullShopAddress', e.target.value)}
+              {/* Residential override */}
+              {!formData.locatedInMarket && (
+                  <Flex
+                      w="full"
+                      align="center"
+                      p={4}
+                      border="1px solid #E2E8F0"
+                      borderRadius="md"
+                  >
+                    <Switch
+                        isChecked={formData.isResidentialAddress}
+                        onChange={(e) =>
+                            handleChange('isResidentialAddress', e.target.checked)
+                        }
+                        sx={{
+                          '& .chakra-switch__track[data-checked]': {
+                            bg: '#0F454F',
+                          },
+                        }}
                     />
-                  </BaseFormControl>
-                </>
+                    <Text ml={3} variant="base">
+                      Same as residential address
+                    </Text>
+                  </Flex>
               )}
 
-            {/* Camera for capturing store photo */}
-              <CameraUpload setImage={(imageUrl) => handleChange('photoUrl', imageUrl)} />
-
-            {/* Attestation Checkbox */}
-            <AttestationCheckbox
-              w="full"
-              isChecked={isAttested}
-              onChange={handleAttestationChange}
-              label="I attest that all the information provided is correct"
-            />
-
-              </>
-            ) : (
-              // Show residential address toggle when "No" is selected
-              <>
-              {/* State Select with dynamically loaded states */}
+              {/* State picker */}
               <FormControlButton
                   label="State"
-                  items={states.map((state) => ({
-                    value: state.value,
-                    name: state.name,
-                  }))}
-                  onChange={(item) => handleChange('businessState', item.value)}
-                />
+                  items={states}
+                  defaultValue={businessDetails?.businessState}
+                  value={formData.businessState}
+                  onChange={(it) => handleChange('businessState', it.value)}
+                  isDisabled={
+                      !formData.locatedInMarket || formData.isResidentialAddress
+                  }
+              />
 
-                {/* LGA Select with dynamically loaded LGAs */}
-                <FormControlButton
+              {/* LGA picker */}
+              <FormControlButton
                   label="LGA"
-                  click={state ? 'auto' : 'none'}
-                  items={lgas.map((lga) => ({
-                    value: lga.value,
-                    name: lga.name,
-                  }))}
+                  items={lgas}
+                  defaultValue={businessDetails?.businessLga}
+                  value={formData.businessLga}
+                  onChange={(it) => handleChange('businessLga', it.value)}
+                  isDisabled={!businessState || !formData.locatedInMarket}
                   onClick={() => {
-                    if (!state) {
-                      onOpen();
-                    }
+                    if (!businessState) onOpen();
                   }}
-                  onChange={(item) => handleChange('businessLga', item.value)}
-                />
+              />
 
-                {/* Market Name */}
-                <BaseFormControl border="0px" label="Market Name">
-                  <BaseInput
-                    placeholder=""
-                    value={formData.marketName}
-                    onChange={(e: any) => handleChange('marketName', e.target.value)}
-                  />
-                </BaseFormControl>
-
-                {/* Store Line */}
-                <BaseFormControl label="Store Line/Number">
-                  <BaseInput
-                    placeholder=""
-                    value={formData.storeNumber}
-                    onChange={(e: any) => handleChange('storeNumber', e.target.value)}
-                  />
-                </BaseFormControl>
-
-                {/* Address Description - always show this regardless of Yes/No selection */}
-                <BaseFormControl label="Shop Address Description">
-                  <BaseInput
-                    placeholder=""
+              {/* Address description */}
+              <BaseFormControl label="Shop Address Description">
+                <BaseInput
                     value={formData.fullShopAddress}
-                    onChange={(e: any) => handleChange('fullShopAddress', e.target.value)}
-                  />
-                </BaseFormControl>
+                    onChange={(e) =>
+                        handleChange('fullShopAddress', e.target.value)
+                    }
+                />
+              </BaseFormControl>
 
-                {/* Camera for capturing store photo */}
-                  <CameraUpload setImage={(imageUrl) => handleChange('photoUrl', imageUrl)} />
+              {/* Market-only fields */}
+              {formData.locatedInMarket && (
+                  <>
+                    <BaseFormControl label="Market Name">
+                      <BaseInput
+                          value={formData.marketName}
+                          onChange={(e) =>
+                              handleChange('marketName', e.target.value)
+                          }
+                      />
+                    </BaseFormControl>
 
-                {/* Attestation Checkbox */}
-                <AttestationCheckbox
+                    <BaseFormControl label="Store Line/Number">
+                      <BaseInput
+                          value={formData.storeNumber}
+                          onChange={(e) =>
+                              handleChange('storeNumber', e.target.value)
+                          }
+                      />
+                    </BaseFormControl>
+                  </>
+              )}
+
+              {/* Photo upload */}
+              <CameraUpload
+                  setImage={(url) => handleChange('photoUrl', url)}
+              />
+
+              {/* Attestation */}
+              <AttestationCheckbox
                   w="full"
                   isChecked={isAttested}
-                  onChange={handleAttestationChange}
-                  label="I attest that all the information provided is correct"
-                />
-              </>
-            )}
+                  onChange={setIsAttested}
+                  label="I attest that all info is correct"
+              />
 
-            {/* Continue Button */}
-            <BaseButton
-              variant="ghost"
-              text="Continue"
-              color={'#FCFCFC'}
-              onClick={handleContinue}
-              border="1.2px solid #6F8F95"
-              borderRadius="8px"
-              isDisabled={isButtonDisabled} 
-              w="full"
-              mt="36px"
-              _focus={{ outline: 'none' }}
-              h="56px"
-            />
-          </VStack>
+              <BaseButton
+                  mt="36px"
+                  w="full"
+                  h="56px"
+                  text={fromStep ? "Update": "Continue"}
+                  color={'white'}
+                  variant="ghost"
+                  border="1.2px solid #6F8F95"
+                  borderRadius="8px"
+                  isDisabled={isButtonDisabled}
+                  onClick={handleContinue}
+              />
+            </VStack>
+          </Box>
         </Box>
-      </Box>
 
-      {isOpen &&    <Drawer
-          isOpen={isOpen}
-          placement='bottom'
-          onClose={onClose}
-
-      >
-        <DrawerOverlay />
-        <DrawerContent
-            alignSelf="center"
-            borderTopRadius="8px"
-            w={{ base: "100%", md: "50%" }}
-            maxW="600px"             // optional cap
-            mx="auto"                // ensure it’s centered
-        >
-          <DrawerCloseButton />
-          <DrawerHeader>
-            <Center>
-              <Text color={'#344256'} fontWeight={'500'} fontSize={'16px'} >No Information</Text>
-            </Center>
-          </DrawerHeader>
-
-          <DrawerBody>
-            <Center>
-              <Text color={'#344256'} fontWeight={'400'} fontSize={'14px'} my={'27px'} >
-                Please select a state to proceed
-              </Text>
-            </Center>
-          </DrawerBody>
-
-          {/*<DrawerFooter>*/}
-          {/*    <Button variant='outline' mr={3} onClick={onClose}>*/}
-          {/*        Cancel*/}
-          {/*    </Button>*/}
-          {/*    <Button colorScheme='blue'>Save</Button>*/}
-          {/*</DrawerFooter>*/}
-        </DrawerContent>
-      </Drawer> }
-    </Flex>
+        {/* Drawer for “select a state first” */}
+        <Drawer placement="bottom" isOpen={isOpen} onClose={onClose}>
+          <DrawerOverlay />
+          <DrawerContent
+              alignSelf="center"
+              w={{ base: '100%', md: '50%' }}
+              maxW="600px"
+              mx="auto"
+              borderTopRadius="8px"
+          >
+            <DrawerCloseButton />
+            <DrawerHeader>
+              <Center>
+                <Text color="#344256" fontWeight="500" fontSize="16px">
+                  No Information
+                </Text>
+              </Center>
+            </DrawerHeader>
+            <DrawerBody>
+              <Center>
+                <Text color="#344256" fontWeight="400" fontSize="14px" my="27px">
+                  Please select a state to proceed
+                </Text>
+              </Center>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      </Flex>
   );
 };
 
