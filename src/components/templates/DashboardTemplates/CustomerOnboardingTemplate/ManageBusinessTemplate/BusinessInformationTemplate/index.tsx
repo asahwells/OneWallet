@@ -12,6 +12,7 @@ import {
   useBreakpointValue,
   Avatar,
   useDisclosure,
+  Spinner,
 } from "@chakra-ui/react"
 import { useParams, useRouter } from "next/navigation"
 import OutlineButton from "components/molecules/buttons/OutlineButton"
@@ -43,10 +44,22 @@ const BusinessInformationTemplate = () => {
 
   return (
     <>
+    {isFetchingCustomer ?
+      <Box w={'full'} h={'300px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+        <Spinner size={'lg'}/>
+      </Box>
+      :
       <VStack spacing={4} align="stretch">
         <Flex flexDir={{ base: "column", lg: "row" }} justify={{ lg: "space-between" }} gap={{ base: 5, lg: 20 }}>
-          <OutlineButton text={"Upgrade To Tier 2"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/account-upgrade`)}} />
-          <OutlineButton text={`View Customer's QR`} variant={"outline"} color={"#0F454F"} />
+          {customer?.data?.tier === 'one' ? 
+            <OutlineButton text={"Upgrade To Tier 2"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/account-upgrade`)}} />
+          :
+          customer?.data?.tier === 'two' ? 
+            <OutlineButton text={"Upgrade To Tier 3"} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/upgrade-tier3`)}} />
+            : 
+            <Box></Box>
+          }
+          <OutlineButton text={`View Customer's QR`} variant={"outline"} color={"#0F454F"} onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id}/view-qr`)}} />
         </Flex>
 
         <Box borderY="1px" borderX={"1px"} pt={4} mt={4} borderColor={"#CBD5E1"}>
@@ -55,15 +68,17 @@ const BusinessInformationTemplate = () => {
               <Avatar />
             </Flex>
             <Flex flexDir={{base: 'column', lg: 'row'}} justify={'center'} align={'end'} gap={4}>
-              <StatusBadge status="approved" />
-              {status === 'pending' && <BaseButton
+              
+              <StatusBadge status={customer?.data?.status === 'active' ? 'approved' : null} />
+              
+              {customer?.data?.status === 'pending' && <BaseButton
                 text="Complete Application"
                 color={'#FCFCFC'}
                 borderRadius={'8px'}
                 h={'48px'}
                 w={'239px'}
               />}
-              {status === 'pendingV' && <BaseButton
+              {customer?.data?.status === 'pendingV' && <BaseButton
                 text="View Verification Status"
                 color={'#FCFCFC'}
                 borderRadius={'8px'}
@@ -71,7 +86,7 @@ const BusinessInformationTemplate = () => {
                 w={'239px'}
                 onClick={() => {onOpenOne()}}
               />}
-              {status === 'failed' && <BaseButton
+              {customer?.data?.status === 'failed' && <BaseButton
                 text="View Reason"
                 color={'#FCFCFC'}
                 borderRadius={'8px'}
@@ -92,7 +107,7 @@ const BusinessInformationTemplate = () => {
             <Box>
               <Text variant={"label"}>Account Name</Text>
               <Text variant={"base"} mt={2}>
-                Ejike Fabian
+                {customer?.data?.fullName ?? "N/A"}
               </Text>
             </Box>
             <Box>
@@ -100,14 +115,14 @@ const BusinessInformationTemplate = () => {
                 Account Number
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                8165748921
+                {customer?.data?.accountNumber ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>Verification Type</Text>
               <Text variant={"base"} mt={2}>
-                BVN & NIN
+                {customer?.data?.ninVerified && customer?.data?.bvnVerified ? "BVN & NIN" : customer?.data?.ninVerified ? "NIN" : customer?.data?.bvnVerified ? "BVN" : "N/A"}
               </Text>
             </Box>
             <Box>
@@ -115,14 +130,14 @@ const BusinessInformationTemplate = () => {
                 Phone Number
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                8165473819
+                {customer?.data?.phone ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>Tier Level</Text>
               <Text variant={"base"} mt={2}>
-                Tier 2
+                {customer?.data?.tier === 'one' ? "Tier 1" : customer?.data?.tier === 'two' ? "Tier 2" : customer?.data?.tier === 'three' ? "Tier 3" : "N/A"}
               </Text>
             </Box>
             <Box>
@@ -130,14 +145,14 @@ const BusinessInformationTemplate = () => {
                 State
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                Abia
+                {customer?.data?.state ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
               <Text variant={"label"}>LGA</Text>
               <Text variant={"base"} mt={2}>
-                Isulkwato
+                {customer?.data?.lga ?? "N/A"}
               </Text>
             </Box>
             <Box>
@@ -145,14 +160,14 @@ const BusinessInformationTemplate = () => {
                 Town
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                Acha
+                {customer?.data?.town ?? "N/A"}
               </Text>
             </Box>
 
             <Box>
-              <Text variant={"label"}>Landmark/Nearesy Bustop</Text>
+              <Text variant={"label"}>Landmark/Nearest Bustop</Text>
               <Text variant={"base"} mt={2}>
-                Whitehart Pharmacy
+                {customer?.data?.landmark ?? "N/A"}
               </Text>
             </Box>
             <Box>
@@ -160,7 +175,7 @@ const BusinessInformationTemplate = () => {
                 Street Address
               </Text>
               <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                DD 16, Zambia Avenue, Abia State
+                {customer?.data?.address ?? "N/A"}
               </Text>
             </Box>
           </Grid>
@@ -174,7 +189,7 @@ const BusinessInformationTemplate = () => {
               <GridItem>
                 <Text variant={"label"}>Nationality</Text>
                 <Text variant={"base"} mt={2}>
-                  Nigeria
+                  {customer?.data?.tierOne?.country ?? "N/A"}
                 </Text>
               </GridItem>
             </Grid>
@@ -190,7 +205,7 @@ const BusinessInformationTemplate = () => {
               <GridItem>
                 <Text variant={"label"}>Store Name</Text>
                 <Text variant={"base"} mt={2}>
-                  Mama Nkechi Foods
+                  {customer?.data?.merchant?.name ?? "N/A"}
                 </Text>
               </GridItem>
               <GridItem>
@@ -198,11 +213,11 @@ const BusinessInformationTemplate = () => {
                   Industry Category
                 </Text>
                 <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                  Foods & Services
+                  {customer?.data?.merchant?.category ?? "N/A"}
                 </Text>
               </GridItem>
 
-              <GridItem>
+              {/* <GridItem>
                 <Text variant={"label"}>Number of Stores</Text>
                 <Text variant={"base"} mt={2}>
                   2
@@ -215,7 +230,7 @@ const BusinessInformationTemplate = () => {
                 <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
                   3
                 </Text>
-              </GridItem>
+              </GridItem> */}
             </Grid>
           </Box>
 
@@ -228,14 +243,14 @@ const BusinessInformationTemplate = () => {
               <GridItem colSpan={isMobile ? 1 : 2}>
                 <Text variant={"label"}>Is the Customer Business Address located in a market?</Text>
                 <Text variant={"base"} mt={2}>
-                  Yes
+                {customer?.data?.merchant?.locatedInMarket ?? "N/A"}
                 </Text>
               </GridItem>
 
               <GridItem>
                 <Text variant={"label"}>LGA</Text>
                 <Text variant={"base"} mt={2}>
-                  Garki
+                {customer?.data?.merchant?.lga ?? "N/A"}
                 </Text>
               </GridItem>
               <GridItem>
@@ -243,14 +258,14 @@ const BusinessInformationTemplate = () => {
                   State
                 </Text>
                 <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                  Abuja
+                {customer?.data?.merchant?.state ?? "N/A"}
                 </Text>
               </GridItem>
 
               <GridItem>
                 <Text variant={"label"}>Store Line/Number</Text>
                 <Text variant={"base"} mt={2}>
-                  10A
+                {customer?.data?.merchant?.storeNumber ?? "N/A"}
                 </Text>
               </GridItem>
               <GridItem>
@@ -258,21 +273,21 @@ const BusinessInformationTemplate = () => {
                   Market Name
                 </Text>
                 <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                  Wuse Market
+                {customer?.data?.merchant?.marketName ?? "N/A"}
                 </Text>
               </GridItem>
 
               <GridItem colSpan={isMobile ? 1 : 2}>
                 <Text variant={"label"}>Shop Description</Text>
                 <Text variant={"base"} mt={2}>
-                  No. 5 Beaver Crescent, Sunnyvale Estate, off Maitama bridge, Galadinmawa, Abuja
+                {customer?.data?.merchant?.fullShopAddress ?? "N/A"}
                 </Text>
               </GridItem>
 
               <GridItem colSpan={isMobile ? 1 : 2}>
                 <Text variant={"label"}>Live picture of your shop</Text>
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-mpatLow1q3KICqT451VCS3lURXqzgO.png"
+                  src={customer?.data?.merchant?.photoUrl}
                   alt="Shop Picture"
                   height="100px"
                   objectFit="cover"
@@ -292,7 +307,7 @@ const BusinessInformationTemplate = () => {
               <GridItem colSpan={2}>
                 <Text variant={"sm"}>Is the customer a Politically Exposed Person?</Text>
                 <Text variant={"base"} mt={2}>
-                  No
+                {customer?.data?.merchant?.politicalExposed ?? "N/A"}
                 </Text>
               </GridItem>
             </Grid>
@@ -309,7 +324,7 @@ const BusinessInformationTemplate = () => {
               <GridItem>
                 <Text variant={"sm"}>What is your expected gross annual revenue</Text>
                 <Text variant={"base"} mt={2}>
-                  N1 million - Less than N5 million
+                {customer?.data?.merchant?.annualIncome ?? "N/A"}
                 </Text>
               </GridItem>
               <GridItem>
@@ -317,28 +332,33 @@ const BusinessInformationTemplate = () => {
                   Does the customer have other sources of funds?
                 </Text>
                 <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                  Yes
+                {customer?.data?.merchant?.otherSourceOfIncome ? "Yes" : "No"}
                 </Text>
               </GridItem>
 
-              <GridItem>
-                <Text variant={"sm"}>Other source of revenue</Text>
-                <Text variant={"base"} mt={2}>
-                  Savings
-                </Text>
-              </GridItem>
-              <GridItem>
-                <Text variant={"sm"} textAlign={isMobile ? "left" : "right"}>
-                  Expected annual revenue from other sources
-                </Text>
-                <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
-                  N1 million - Less than N5 million
-                </Text>
-              </GridItem>
+            {customer?.data?.merchant?.otherSourceOfIncome && (
+              <>
+                <GridItem>
+                  <Text variant={"sm"}>Other source of revenue</Text>
+                  <Text variant={"base"} mt={2}>
+                    {customer?.data?.merchant?.otherSourceOfIncome}
+                  </Text>
+                </GridItem>
+                <GridItem>
+                  <Text variant={"sm"} textAlign={isMobile ? "left" : "right"}>
+                    Expected annual revenue from other sources
+                  </Text>
+                  <Text variant={"base"} mt={2} textAlign={isMobile ? "left" : "right"}>
+                    {customer?.data?.merchant?.otherSourceAnnualIncome}
+                  </Text>
+                </GridItem>
+              </>
+            )}
             </Grid>
           </Box>
         </Box>
       </VStack>
+}
 
       {isOpenOne && (
         <WarningModal

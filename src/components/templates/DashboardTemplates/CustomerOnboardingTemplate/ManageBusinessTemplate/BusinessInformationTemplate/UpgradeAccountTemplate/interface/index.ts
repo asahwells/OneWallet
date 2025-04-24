@@ -1,8 +1,8 @@
 
 
 export interface SuccessTemplateProps {
-    onDone: () => void;
-    onViewQR: () => void;
+    onDone?: () => void;
+    onViewQR?: () => void;
     onUpgrade?: () => void;
     userData?: {
         name: string;

@@ -18,7 +18,7 @@ import { useFetchIndustries } from 'api-services/business-registration-services'
 import { ListProps } from 'components/molecules/buttons/interfaces';
 import FormControlButton from 'components/molecules/buttons/FormControlButton';
 import { useAddNextOfKin } from 'api-services/business-services';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 interface IIndustry {
   id: string;
@@ -34,6 +34,7 @@ const NextOfKinTemplate = ({ onBack, onNext }: BusinessDetailsProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const toast = useToast();
   const id = useParams();
+  const router = useRouter()
 
   const { mutateAsync: addNextOfKin, isPending: isAdding } = useAddNextOfKin();
 
@@ -94,7 +95,7 @@ const NextOfKinTemplate = ({ onBack, onNext }: BusinessDetailsProps) => {
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton onBack={onBack} header="Account Upgrade - Tier 2" />
+      <HeaderBackButton onBack={()=> router.back()} header="Account Upgrade - Tier 2" />
 
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box

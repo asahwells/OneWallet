@@ -21,45 +21,45 @@ import { useParams } from 'next/navigation';
 import { useFetchAllTransactions } from 'api-services/business-services';
 
 const TransactionTemplate = () => {
-  const { isOpen, onClose, onToggle } = useDisclosure();
-  const isMobile = useBreakpointValue({ base: true, md: false });
-
-  // Store applied filters
-  const [filters, setFilters] = useState<{ [key: string]: string }>({});
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
-
   const { id } = useParams() as { id: string };
+  const [filters, setFilters] = useState<{ [k: string]: string }>({});
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
-  const { mutateAsync: fetchTransactions, data: transactions, isPending: isFetchingTransactions } = useFetchAllTransactions(id);
+  const {
+    mutateAsync: fetchTransactions,
+    data: transactions,
+    isPending: isLoading,
+  } = useFetchAllTransactions();
 
   useEffect(() => {
-    fetchTransactions();
-  }, []);
+    fetchTransactions({
+      id,
+      page: currentPage,   // Pass as number
+      limit: pageSize,      // Pass as number
+      month: selectedMonth, // Pass as string
+      ...filters,            // Pass other filters as strings
+    });
+  }, [id, currentPage, selectedMonth, filters]);
   
+  
+  // MonthFilter callbacks
   const handleMonthSelect = (month: string) => {
-    console.log('Month selected:', month);
+    setSelectedMonth(month);
+    setCurrentPage(1); // reset page
   };
-
-  // Function to handle clearing selected month
   const handleClearMonth = () => {
-    console.log('Month selection cleared');
+    setSelectedMonth('');
   };
 
-  // Update filters based on what the filter box returns
-  const handleFilterChange = (newFilters: { [key: string]: string }) => {
-    const applied = Object.fromEntries(
-      Object.entries(newFilters).filter(
-        ([key, value]) => value && value.trim() !== '',
-      ),
+  // SelectFilterBox already gives you key/value pairs
+  const handleFilterChange = (newFilters: { [k: string]: string }) =>
+    setFilters(
+      Object.fromEntries(
+        Object.entries(newFilters).filter(([, v]) => v?.trim())
+      )
     );
-    setFilters(applied);
-  };
-
-  const removeFilter = (key: string) => {
-    const updated = { ...filters };
-    delete updated[key];
-    setFilters(updated);
-  };
 
   return (
     <Stack bg="white" spacing={5} p={{ base: 0, md: 4 }}>
@@ -79,26 +79,24 @@ const TransactionTemplate = () => {
           />
         </SimpleGrid>
       {/* Transaction History */}
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        mt={4}
-        direction={{ base: 'row', md: 'row' }}
-        gap={{ base: 4, md: 0 }}
-        w="full"
-      >
+      <Flex justify="space-between" align="center" mt={4}>
         <Text variant={'md'}>
           Transaction History
         </Text>
-
-        <MonthFilter 
-            onMonthSelect={handleMonthSelect}
-            onClearMonth={handleClearMonth}
+        <MonthFilter
+          onMonthSelect={handleMonthSelect}
+          onClearMonth={handleClearMonth}
         />
-    </Flex>
+      </Flex>
 
-      {/* Customer Registration Table / List */}
-      <CustomerTransactionTable data={MockCustomerRegistration} />
+      {/* YOUR TABLE */}
+      <CustomerTransactionTable
+        data={transactions?.data ?? []}
+        isLoading={isLoading}
+        currentPage={transactions?.pagination.currentPage}
+        totalPages={transactions?.pagination.lastPage}
+        onPageChange={() => setCurrentPage}
+      />
     </Stack>
   );
 };

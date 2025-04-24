@@ -1,38 +1,53 @@
-import React, { useState, useRef } from 'react';
-import { Box, Button, useDisclosure, Container, useBreakpointValue, Text, Image, Link } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Box, Button, Container, Text, useBreakpointValue, useDisclosure } from '@chakra-ui/react';
 import SelectField from 'components/organisms/select/SelectField';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import DocumentUploader from 'components/organisms/uploaders/DocumentUploader';
+import { useParams, useRouter } from 'next/navigation';
+import { useUpgradeTierThree } from 'api-services/business-services'; // Import the useUpgradeTierThree hook
 import UploadDocumentModal from 'components/molecules/modals/UploadDocument';
 
 const AddressVerificationFormTemplate = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>('');
-  const [fileUrl, setFileUrl] = useState<string | null>(null); // Store file URL here
-  const { isOpen, onOpen, onClose } = useDisclosure(); // OnOpen will trigger the modal
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedDocumentType, setSelectedDocumentType] = useState<string | null>('');  // Document type state
+  const [fileUrl, setFileUrl] = useState<string | null>(null);  // Store the file URL here
+  const { isOpen, onOpen, onClose } = useDisclosure();  // Modal disclosure for file upload
+  const router = useRouter();
+  const id = useParams();
+  
+  const { mutateAsync: upgradeTierThree, isPending } = useUpgradeTierThree();
 
   const handleFileSelect = (file: string | File) => {
     if (typeof file === 'string') {
-      setFileUrl(file); // URL returned from Firebase
+      setFileUrl(file);  
     } else {
       console.log('File selected:', file);
-      // Handle file if needed (in case of file upload, not URL)
+      
     }
   };
 
-  const handleContinue = () => {
+  
+  const handleContinue = async () => {
     if (selectedDocumentType && fileUrl) {
-      // Proceed with the selected document type and file URL (whether from file or camera)
-      console.log('Document Type:', selectedDocumentType);
-      console.log('File URL:', fileUrl); // Use file URL from Firebase or uploaded file
-      // Continue the flow
+     
+      const payload = {
+        utilityBillType: selectedDocumentType,  
+        utilityBillUrl: fileUrl, 
+        userId: id?.id as string
+      };
+
+      try {
+        await upgradeTierThree(payload);
+        router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id?.id}/success`);
+      } catch (error) {
+        console.error('Upgrade failed:', error);
+      }
     }
   };
 
   return (
     <Box bg="#F8FAFC" minH="100vh">
-      <HeaderBackButton header="Account Upgrade - Tier 3" />
+      <HeaderBackButton header="Account Upgrade - Tier 3" onBack={() => router.back()} />
       <Container maxW="container.md" py={4}>
         <Box borderWidth="1px" borderColor="gray.200" borderRadius="lg" p={6} bg="white" boxShadow="sm">
           <SelectField
@@ -41,30 +56,16 @@ const AddressVerificationFormTemplate = () => {
             value={selectedDocumentType}
             placeholder="Select Document Type"
             options={[
-              { value: 'electricityBill', label: 'Electricity Bill' },
-              { value: 'waterBill', label: 'Water Bill' },
-              { value: 'landUseCharge', label: 'Land Use Charge' },
-              { value: 'bankStatement', label: 'Bank Statement' },
-              { value: 'wasteBill', label: 'Waste Bill' },
+              { value: 'electricity-bill', label: 'Electricity Bill' },
+              { value: 'water-bill', label: 'Water Bill' },
+              { value: 'land-use-charge', label: 'Land Use Charge' },
+              { value: 'bank-statement', label: 'Bank Statement' },
+              { value: 'waste-bill', label: 'Waste Bill' },
             ]}
             onChange={(e: any) => setSelectedDocumentType(e.target.value)}
           />
 
-          {/* Pass the onOpen as onUploadClick to trigger the modal when clicking the upload area */}
-          <DocumentUploader onFileSelect={handleFileSelect} onUploadClick={onOpen} /> 
-
-          {/* Display uploaded file */}
-          {fileUrl && (
-            <Box mt={4} textAlign="center">
-              {fileUrl.includes('.jpg') || fileUrl.includes('.png') ? (
-                <Image src={fileUrl} alt="Uploaded file" maxWidth="300px" mx="auto" />
-              ) : (
-                <Link href={fileUrl} target="_blank" color="blue.500" fontSize="lg">
-                  View Uploaded File
-                </Link>
-              )}
-            </Box>
-          )}
+          <DocumentUploader onFileSelect={handleFileSelect} onUploadClick={onOpen} display={fileUrl} />
 
           <Box mt={4}>
             <Button
@@ -75,6 +76,7 @@ const AddressVerificationFormTemplate = () => {
               height="56px"
               borderRadius="md"
               width="100%"
+              isLoading={isPending}  
             >
               Continue
             </Button>
@@ -86,8 +88,8 @@ const AddressVerificationFormTemplate = () => {
         <UploadDocumentModal
           isOpen={isOpen}
           onClose={onClose}
-          onTakePhoto={(url: string) => handleFileSelect(url)}  // Pass URL from camera capture
-          onSelectFromGallery={(file: File) => handleFileSelect(file)}  // Pass file to handler
+          onTakePhoto={(url: string) => handleFileSelect(url)} // Pass URL from camera capture
+          onSelectFromGallery={(file: File) => handleFileSelect(file)} // Pass file to handler
         />
       )}
     </Box>

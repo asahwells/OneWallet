@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Box, Flex, Heading, HStack, Input, Text, useBreakpointValue, useDisclosure, useToast } from '@chakra-ui/react';
 import BaseButton from 'components/molecules/buttons/BaseButton';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
@@ -6,8 +6,8 @@ import FailedModal from 'components/molecules/modals/FailedModal';
 import SuccessModal from 'components/molecules/modals/SuccessModal';
 import {useAppDispatch, useAppSelector} from "../../../../../../../../redux/store";
 import { setUpgrade } from '../../../../../../../../redux/slices/upgrade';
-import { useParams } from 'next/navigation';
-import { useUpgradeTierTwo } from 'api-services/business-services';
+import { useParams, useRouter } from 'next/navigation';
+import { useFetchCustomer, useUpgradeTierTwo } from 'api-services/business-services';
 
 interface EnterBVNOrNINProps {
     onNext: () => void;
@@ -17,6 +17,7 @@ interface EnterBVNOrNINProps {
 const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isBvn, setIsBvn] = useState(false);
+  const router = useRouter()
 
   const toast = useToast();
   const id = useParams();
@@ -35,6 +36,17 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const { mutateAsync: upgradeTierTwo, isPending: isUpgrading } = useUpgradeTierTwo();
+  const { mutateAsync: fetchCustomer, data: customer, isPending: isFetchingCustomer } = useFetchCustomer(id?.id as string);
+  
+    useEffect(() => {
+      fetchCustomer();
+    }, []);
+
+    useEffect(() => {
+      if (customer) {
+        setIsBvn(customer?.data?.bvnVerified);
+      }
+    }, [customer]);
   
 
   const handleContinue = async () => {
@@ -74,7 +86,7 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton header='Account Upgrade - Tier 2'/>
+      <HeaderBackButton header='Account Upgrade - Tier 2' onBack={()=> router.back()}/>
         <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
             <Box
             bg={isMobile ? '#F8FAFC' : 'white'}

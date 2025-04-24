@@ -14,6 +14,7 @@ import {
     RadioGroup,
     Show,
     SimpleGrid,
+    Spinner,
     Stack,
     Tab,
     TabList,
@@ -31,14 +32,27 @@ import SelectFilterBox from "../../../../organisms/filter/SelectFilterBox";
 import BaseButton from "../../../../molecules/buttons/BaseButton";
 import CustomerRegistrationTable from "../../../../organisms/table/CustomerRegistrationTable";
 import {MockCustomerRegistration} from "../../../../organisms/table/mockData";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import { useFetchAllCustomers } from 'api-services/business-services';
 const CustomerRegistrationDashboardTemplate = () => {
     const { isOpen, onClose, onToggle } = useDisclosure();
     const router = useRouter()
     const isMobile = useBreakpointValue({ base: true, md: false });
     // Store applied filters; keys: tierLevel, registrationStatus, state, registrationBusiness, board, fromDate, toDate
     const [filters, setFilters] = useState<{ [key: string]: string }>({});
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 10;
+    const {
+        mutateAsync: fetchCustomers,
+        data: customers,
+        isPending: isFetchingCustomers,
+    } = useFetchAllCustomers();
+
+  useEffect(() => {
+    fetchCustomers({ page: currentPage, pageSize, ...filters });
+  }, [currentPage, filters]);
 
     // Update filters based on what the filter box returns.
     const handleFilterChange = (newFilters: { [key: string]: string }) => {
@@ -108,9 +122,15 @@ const CustomerRegistrationDashboardTemplate = () => {
                     base: 'full',
                     md: "fit-content"
                 }}>
-                    <Text fontWeight="500" fontSize="18px">
-                        Total Number: {MockCustomerRegistration.length}
-                    </Text>
+                    {(isFetchingCustomers ?          
+                        <Box w={'full'}  display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                            <Spinner size={'md'}/> 
+                        </Box>
+                        :
+                        <Text fontWeight="500" fontSize="18px">
+                        Total Number: {customers?.pagination.total ?? 0}
+                      </Text>
+                      )}
                 </Box>
 
                 {isMobile && <BaseButton
@@ -172,7 +192,14 @@ const CustomerRegistrationDashboardTemplate = () => {
             )}
 
             {/* Customer Registration Table / List */}
-            <CustomerRegistrationTable data={MockCustomerRegistration} />
+            <CustomerRegistrationTable
+                data={customers?.data ?? []}
+                isLoading={isFetchingCustomers}
+                currentPage={customers?.pagination.currentPage}
+                totalPages={customers?.pagination.lastPage}
+                onPageChange={setCurrentPage}
+            />
+          
 
             {/* Mobile Filter Drawer */}
             {isMobile && isOpen &&  (
