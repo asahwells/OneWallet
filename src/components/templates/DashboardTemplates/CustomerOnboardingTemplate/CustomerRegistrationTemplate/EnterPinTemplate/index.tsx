@@ -118,7 +118,7 @@ const EnterPinTemplate = ({
                     mx="auto" /* centers horizontally */
                     borderRadius={{base: 0, md: "8px"}}
                     boxShadow={isMobile ? 'none' : 'md'}
-                    p={isMobile ? 4 : 8}
+                    p={isMobile ? '20px' : 8}
                 >
                     <Text
                         letterSpacing={'-1.2%'}

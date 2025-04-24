@@ -286,11 +286,21 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
           <Box mt={6} p={4}>
             <HStack alignItems="flex-start" spacing={2}>
               <Checkbox
-                colorScheme="teal"
+                // colorScheme="teal"
                 size="md"
                 isChecked={hasAgreed}
                 onChange={(e) => setHasAgreed(e.target.checked)}
                 mt={1}
+                borderRadius={'4px'}
+                sx={{
+                    '.chakra-checkbox__control[data-checked]': {
+                      bg: '#0F454F',
+                    },
+                    // For checkmark color
+                    '.chakra-checkbox__control[data-checked] .chakra-checkbox__icon': {
+                      color: 'white'
+                    }
+                  }}                
               />
               <Text fontSize="14px" color="#344256" lineHeight="20px">
                 This user has read and agreed to OneWallet{' '}
