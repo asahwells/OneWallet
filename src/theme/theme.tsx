@@ -14,6 +14,7 @@ import { breakpoints } from './foundations/breakpoints';
 import { globalStyles } from './styles';
 import {textStyles as Text} from './components/text';
 import {radioTheme as Radio} from './components/radio';
+import {tabsTheme} from './components/tabs';
 
 export default extendTheme(
 	{ breakpoints,
@@ -44,6 +45,8 @@ export default extendTheme(
 			Text,
 			Radio,
 			Tag,
+			Tabs: tabsTheme,
+
 		},
 
 	}, // Breakpoints
@@ -59,6 +62,7 @@ export default extendTheme(
 	switchStyles, // switch styles
 	CardComponent, // card component
 	textStyles,
+
 );
 
 export interface CustomCardProps extends HTMLChakraProps<'div'>, ThemingProps {}

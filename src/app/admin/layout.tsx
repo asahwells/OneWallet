@@ -58,7 +58,7 @@ export default function AdminLayout(props: DashboardLayoutProps) {
   const [isRehydratingUser, setIsRehydratingUser] = useState(true);
   const pathname = usePathname();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const isDashboardSection = pathname === '/admin/dashboard';
+  const isDashboardSection = pathname === '/admin/dashboard' || pathname === '/admin/dashboard/business/customer-onboarding';
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
