@@ -91,10 +91,6 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
               items={countries}
               defaultValue={businessDetails?.nationality || 'Nigeria'}
               onChange={handleNationalityChange}  />
-          <BaseFormControlButton
-            defaultValue={businessDetails?.nationality || "Nigeria"}
-            items={countries}
-            onChange={handleNationalityChange}  />
 
           {/* Back and Continue buttons */}
 

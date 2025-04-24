@@ -29,7 +29,7 @@ const SuccessModal = ({
 }: IUpdateUserModalProps) => {
   const router = useRouter();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="lg" trapFocus={true} autoFocus={false}>
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" trapFocus={true} autoFocus={false} isCentered={true}>
       <ModalOverlay />
       <ModalContent 
         height={{base: '270px', lg: height || '419.99px'}}

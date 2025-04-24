@@ -10,6 +10,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 const FormControlButton: React.FC<IFormControlButton> = ({
                                                              label,
                                                              items,
+                                                             notSearchable,
                                                              defaultValue,
                                                              onChange,
                                                              click,         // preserves any external pointerEvents override
@@ -99,6 +100,7 @@ const FormControlButton: React.FC<IFormControlButton> = ({
             {/* Modal */}
             {isModalOpen && (
                 <SearchableListModal
+                    notSearchable={notSearchable}
                     pt={8}
                     isOpen
                     onClose={close}

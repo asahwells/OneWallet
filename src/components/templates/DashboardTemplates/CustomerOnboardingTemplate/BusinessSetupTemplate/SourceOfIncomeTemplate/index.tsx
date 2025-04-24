@@ -161,6 +161,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             {/* Replaced SelectField with FormControlButton */}
             <FormControlButton
               bg="white"
+              notSearchable={true}
               label="Select annual income"
               items={annualRevenueItems}
               value={annualRevenue}
@@ -182,48 +183,14 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
             >
               <Stack direction="row" spacing={6} mt={4} h={"18px"}>
               <Radio 
-                value="Yes" 
-                colorScheme="teal" 
-                sx={{
-                  '.chakra-radio__control': {
-                    width: '18px',
-                    height: '18px',
-                    minWidth: '18px',
-                    minHeight: '18px',
-                    _checked: {
-                      bg: '#344256',
-                      borderColor: '#344256',
-                    }
-                  },
-                  '.chakra-radio__label': {
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    color: '#0F454F'
-                  }
-                }}
+                variant="radioButton" 
+                value="yes"
               >
                 Yes
               </Radio>
               <Radio 
-                value="No" 
-                colorScheme="teal" 
-                sx={{
-                  '.chakra-radio__control': {
-                    width: '18px',
-                    height: '18px',
-                    minWidth: '18px',
-                    minHeight: '18px',
-                    _checked: {
-                      bg: '#0F454F',
-                      borderColor: '#0F454F',
-                    }
-                  },
-                  '.chakra-radio__label': {
-                    fontSize: '16px',
-                    fontWeight: 400,
-                    color: '#344256'
-                  }
-                }}
+                variant="radioButton" 
+                value="no"
               >
                 No
               </Radio>
@@ -239,6 +206,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
                   Other source of revenue
                 </Text>
                 <FormControlButton
+                  notSearchable={true}
                   value={otherSourceType}
                   label="Select customer's other source of revenue"
                   items={otherSourceTypeItems}
@@ -251,6 +219,7 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
                   Expected annual revenue from other sources
                 </Text>
                 <FormControlButton
+                  notSearchable={true}
                   value={otherSourceRevenue}
                   label="Select customer's other source of revenue"
                   items={otherSourceRevenueItems}
