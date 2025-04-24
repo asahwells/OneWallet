@@ -67,7 +67,7 @@ const ConfirmationModal: React.FC<any> = ({
               variant={'md'}
               my={4}
               textAlign={{base:"left", lg: "center"}}
-              color="#004052"
+              //color="#004052"
               position="relative"
               zIndex={2}
             >

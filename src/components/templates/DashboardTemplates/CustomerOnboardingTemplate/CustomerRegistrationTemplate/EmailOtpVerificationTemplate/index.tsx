@@ -95,10 +95,9 @@ const EmailOtpVerificationTemplate = ({
                 mt={4}
             >
                 {/* Heading */}
-                <Heading
-                    as="h1"
-                    fontSize="18px"
-                    fontWeight="700"
+                <Text
+                    letterSpacing={'-1.2%'}
+                    variant={'head'}
                     textAlign={{
                         base: 'left',
                         md: 'center',
@@ -106,7 +105,7 @@ const EmailOtpVerificationTemplate = ({
                     mb={2}
                 >
                     Email OTP Verification
-                </Heading>
+                </Text>
 
                 <Text
                     fontSize="14px"
@@ -116,6 +115,7 @@ const EmailOtpVerificationTemplate = ({
                         base: 'left',
                         md: 'center',
                     }}
+                    letterSpacing={'-1%'}
                 >
                     Enter the verification code we just sent to the user’s email address{' '}
                     <strong>{userEmail}</strong>. You might need to ask the user to check

@@ -75,20 +75,24 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
                         <VerifyUserIcon />
                     </Center>
 
-                    <Heading
-                        as="h1"
-                        fontSize={isMobile ? "20px" : "24px"}
+                    <Text
+                        letterSpacing={'-1.2%'}
+                        variant={'head'}
+                        lineHeight={'24px'}
+                        mb={2}
                     >
                         Your Consent
-                    </Heading>
+                    </Text>
 
-                    <Heading
-                        as="h1"
-                        fontSize={isMobile ? "20px" : "24px"}
-                        mb={4}
+                    <Text
+                        letterSpacing={'-1.2%'}
+                        fontWeight={700}
+                        fontSize={{base: '14px', lg:'16px'}}
+                        color={'#344256'}
+                        lineHeight={'22px'}
                     >
                         {`OneWallet is helping Verify User's Identity and prevent fraud. `}
-                    </Heading>
+                    </Text>
 
                     <Text
                         variant={'sm'}
@@ -96,6 +100,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
                         mb={2}
                         maxW="600px"
                         mx="auto"
+                        textAlign={'justify'}
                     >
                         OneWallet will create an account for the customer using the information provided. 
                     </Text>
@@ -106,6 +111,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
                         mb={5}
                         maxW="600px"
                         mx="auto"
+                        textAlign={'justify'}
                     >
                         You are required to explain to the customer what this step entails before proceeding. The customer is required to provide you with an OTP to grant consent
                     </Text>

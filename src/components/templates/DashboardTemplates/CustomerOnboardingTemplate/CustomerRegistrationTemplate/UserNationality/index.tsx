@@ -100,6 +100,8 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
               defaultValue={businessDetails?.nationality}
               onChange={handleNationalityChange}  />
 
+          {/* Back and Continue buttons */}
+
           <BaseButton
             variant={'ghost'}
             text={fromStep ? 'Update': 'Continue'}
