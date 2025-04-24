@@ -21,7 +21,10 @@ import { setBusiness } from '../../../../../../redux/slices/business';
 import FormControlButton from 'components/molecules/buttons/FormControlButton';
 import { useSetupBusiness } from 'api-services/business-registration-services';
 
-const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps) => {
+const SourceOfIncomeTemplate = ({
+  onNext,
+  onBack,
+}: SourceOfIncomeTemplateProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const toast = useToast();
 
@@ -29,25 +32,45 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
   const { businessDetails } = useAppSelector((state) => state.business);
 
   // Local State for user’s selections
-  const [annualRevenue, setAnnualRevenue] = useState(businessDetails?.annualIncome || '');
-  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(businessDetails?.hasOtherSources || 'No');
-  const [otherSourceType, setOtherSourceType] = useState(businessDetails?.otherSourceOfIncome || '');
-  const [otherSourceRevenue, setOtherSourceRevenue] = useState(businessDetails?.otherSourceAnnualIncome || '');
+  const [annualRevenue, setAnnualRevenue] = useState(
+    businessDetails?.annualIncome || '',
+  );
+  const [hasOtherSources, setHasOtherSources] = useState<'Yes' | 'No'>(
+    businessDetails?.hasOtherSources || 'No',
+  );
+  const [otherSourceType, setOtherSourceType] = useState(
+    businessDetails?.otherSourceOfIncome || '',
+  );
+  const [otherSourceRevenue, setOtherSourceRevenue] = useState(
+    businessDetails?.otherSourceAnnualIncome || '',
+  );
   // For dispatching to Redux
-
-      
-  
 
   // Pre-defined items for "Annual Revenue"
   const annualRevenueItems = [
     { name: 'Less than N50,000', value: 'Less than N50,000' },
     { name: 'N51,000 - 250,000', value: 'N51,000 - 250,000' },
     { name: 'N251,000 - N500,000', value: 'N251,000 - N500,000' },
-    { name: 'N501,000 - Less than N1 million', value: 'N501,000 - Less than N1 million' },
-    { name: 'N1 million - Less than N5 million', value: 'N1 million - Less than N5 million' },
-    { name: 'N5 million - Less than N10 million', value: 'N5 million - Less than N10 million' },
-    { name: 'N10 million - Less than N20 million', value: 'N10 million - Less than N20 million' },
-    { name: 'N20 million - Less than N100 million', value: 'N20 million - Less than N100 million' },
+    {
+      name: 'N501,000 - Less than N1 million',
+      value: 'N501,000 - Less than N1 million',
+    },
+    {
+      name: 'N1 million - Less than N5 million',
+      value: 'N1 million - Less than N5 million',
+    },
+    {
+      name: 'N5 million - Less than N10 million',
+      value: 'N5 million - Less than N10 million',
+    },
+    {
+      name: 'N10 million - Less than N20 million',
+      value: 'N10 million - Less than N20 million',
+    },
+    {
+      name: 'N20 million - Less than N100 million',
+      value: 'N20 million - Less than N100 million',
+    },
     { name: 'Above N100 million', value: 'Above N100 million' },
   ];
 
@@ -66,11 +89,26 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
     { name: 'Less than N50,000', value: 'Less than N50,000' },
     { name: 'N51,000 - 250,000', value: 'N51,000 - 250,000' },
     { name: 'N251,000 - N500,000', value: 'N251,000 - N500,000' },
-    { name: 'N501,000 - Less than N1 million', value: 'N501,000 - Less than N1 million' },
-    { name: 'N1 million - Less than N5 million', value: 'N1 million - Less than N5 million' },
-    { name: 'N5 million - Less than N10 million', value: 'N5 million - Less than N10 million' },
-    { name: 'N10 million - Less than N20 million', value: 'N10 million - Less than N20 million' },
-    { name: 'N20 million - Less than N100 million', value: 'N20 million - Less than N100 million' },
+    {
+      name: 'N501,000 - Less than N1 million',
+      value: 'N501,000 - Less than N1 million',
+    },
+    {
+      name: 'N1 million - Less than N5 million',
+      value: 'N1 million - Less than N5 million',
+    },
+    {
+      name: 'N5 million - Less than N10 million',
+      value: 'N5 million - Less than N10 million',
+    },
+    {
+      name: 'N10 million - Less than N20 million',
+      value: 'N10 million - Less than N20 million',
+    },
+    {
+      name: 'N20 million - Less than N100 million',
+      value: 'N20 million - Less than N100 million',
+    },
     { name: 'Above N100 million', value: 'Above N100 million' },
   ];
 
@@ -90,50 +128,51 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
     dispatch(
       setBusiness({
         ...businessDetails,
-        annualIncome: annualRevenue,    
-        hasOtherSources,     
+        annualIncome: annualRevenue,
+        hasOtherSources,
         otherSourceOfIncome: otherSourceType,
-        otherSourceAnnualIncome: hasOtherSources === 'Yes' ? otherSourceRevenue : '',
-      })
+        otherSourceAnnualIncome:
+          hasOtherSources === 'Yes' ? otherSourceRevenue : '',
+      }),
     );
 
     onNext();
   };
 
   const isButtonDisabled = useMemo(() => {
-    const isOtherSourceValid = hasOtherSources === 'No' || (otherSourceType && otherSourceRevenue);
+    const isOtherSourceValid =
+      hasOtherSources === 'No' || (otherSourceType && otherSourceRevenue);
     return !annualRevenue || !isOtherSourceValid;
   }, [annualRevenue, hasOtherSources, otherSourceType, otherSourceRevenue]);
-
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
       <HeaderBackButton onBack={onBack} header="Business Setup" />
 
-      <Box px={isMobile ? "0": "4"} pt={4} pb={8}>
+      <Box px={isMobile ? '0' : '4'} pt={4} pb={8}>
         <Box
-          bg={{lg: "white"}}
+          bg={{ lg: 'white' }}
           width={isMobile ? '100%' : '940px'}
           mx="auto"
           borderRadius="8px"
           p={isMobile ? 4 : 8}
           pb={12}
           mb={0}
-          border={{lg: "0.5px solid #E2E8F0"}}
+          border={{ lg: '0.5px solid #E2E8F0' }}
         >
           <Box
             w="full"
             display="flex"
             flexDirection="column"
-            justifyContent={{lg: "center"}}
-            alignItems={{lg: "center"}}
+            justifyContent={{ lg: 'center' }}
+            alignItems={{ lg: 'center' }}
           >
             <Text
               letterSpacing={'-1.2%'}
               variant={'head'}
               textAlign={{
-                  base: 'left',
-                  // md: 'center',
+                base: 'left',
+                // md: 'center',
               }}
               mb={2}
             >
@@ -144,8 +183,8 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
               variant={'sm'}
               mb={6}
               textAlign={{
-                  base: 'left',
-                  // md: 'center',
+                base: 'left',
+                // md: 'center',
               }}
             >
               Please provide the details of the customer&apos;s business income
@@ -181,10 +220,21 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
               mb={4}
             >
               <Stack direction="row" spacing={6} mt={4}>
-                <Radio value="Yes" colorScheme="teal" fontSize="16px" fontWeight={400}>
+                <Radio
+                  value="Yes"
+                  variant='radioButton'
+                  fontSize="16px"
+                  fontWeight={400}
+            
+                >
                   <Text color="#344256">Yes</Text>
                 </Radio>
-                <Radio value="No" colorScheme="teal" fontSize="16px" fontWeight={400}>
+                <Radio
+                  value="No"
+                  variant='radioButton'
+                  fontSize="16px"
+                  fontWeight={400}
+                >
                   <Text color="#344256">No</Text>
                 </Radio>
               </Stack>

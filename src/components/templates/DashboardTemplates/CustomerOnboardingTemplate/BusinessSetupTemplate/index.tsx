@@ -57,7 +57,7 @@ const BusinessSetupTemplate = () => {
 
         switch (currentStep) {
             case BusinessSteps.UserNationality:
-                setStep(BusinessSteps.BusinessAddress);
+                setStep(BusinessSteps.SourceOfIncome);
                 break;
             case BusinessSteps.BusinessAddress:
                 setStep(BusinessSteps.BusinessDetails);
