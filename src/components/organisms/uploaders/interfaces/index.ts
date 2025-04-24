@@ -13,4 +13,5 @@ export interface DocumentUploaderProps {
     fileTypes?: string | string[];
     maxFileSize?: number;
     fileInputRef?: RefObject<HTMLInputElement>;
+    display?: string
   }

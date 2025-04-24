@@ -222,7 +222,7 @@ const SuccessTemplate = ({
                         fontWeight="600"
                         border="1px solid #0F454F"
                         _hover={{ bg: "#F8FAFC" }}
-                        onClick={onViewQR}
+                        onClick={()=>{router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id?.id}/view-qr`)}}
                     />
                     <BaseButton
                         text={'Upgrade to Tier 3'}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     TableContainer,
     Tbody,
@@ -23,16 +23,26 @@ import PaginationComponent from '../../pagination/PaginationComponent';
 import EmptyTaskIcon from 'components/atoms/icons/EmptyTasksIcon';
 import { useRouter } from 'next/navigation';
 import { useFetchAllCustomers } from 'api-services/business-services';
-// import { Icon } from '@chakra-ui/icons'; // or your custom icon
+import { CustomerRegistrationTableProps } from '../interfaces';
 
-const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
+const CustomerRegistrationTable = ({
+    data,
+    isLoading,
+    currentPage = 1,
+    totalPages = 1,
+    onPageChange = () => {},
+  }: CustomerRegistrationTableProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const { mutateAsync: fetchCustomers, data: customers, isPending: isFetchingCustomers } = useFetchAllCustomers();
-    const router = useRouter()
-
-    useEffect(() => {
-        fetchCustomers();
-    }, []);
+    const router = useRouter();
+  
+    // 1. Show spinner if loading
+    if (isLoading) {
+      return (
+        <Center h="350px">
+          <Spinner size="lg" />
+        </Center>
+      );
+    }
 
     if (!data?.length) {
         return (
@@ -48,14 +58,14 @@ const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
     if (isMobile) {
         // MOBILE LIST VIEW
         return (
-            (isFetchingCustomers ?
+            (isLoading ?
             
             <Box w={'full'} h={'350px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
                 <Spinner size={'lg'}/> 
             </Box>
             :
             <Stack spacing={4} mt={4}>
-                {customers?.data.map((row, index) => (
+                {data.map((row, index) => (
                     <Box
                         key={index}
                         borderBottom="1px solid #E2E8F0"
@@ -103,14 +113,18 @@ const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
                 ))}
 
                 {/* Mobile Pagination */}
-                <PaginationComponent totalPages={10} currentPage={1} onPageChange={console.log} />
+                <PaginationComponent
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    onPageChange={onPageChange}
+                />
             </Stack>)
         );
     }
 
     // DESKTOP TABLE VIEW
     return (
-        (isFetchingCustomers ?
+        (isLoading ?
             
             <Box w={'100%'} h={'350px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
                 <Spinner size={'lg'}/> 
@@ -142,7 +156,7 @@ const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
                 </Thead>
                 
                 <Tbody>
-                    {customers?.data.map((row, index) => (
+                    {data.map((row, index) => (
                         <TableRow key={index} style={{ cursor: 'pointer' }} onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${row?.id}`)}}>
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>{row?.fullName ?? 'N/A'}</TableCell>
@@ -158,7 +172,11 @@ const CustomerRegistrationTable = ({ data }: { data: any[] }) => {
                     ))}
                 </Tbody>
             </Table>
-            <PaginationComponent totalPages={10} currentPage={1} onPageChange={console.log} />
+            <PaginationComponent
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageChange={onPageChange}
+            />
         </TableContainer>)
     );
 };

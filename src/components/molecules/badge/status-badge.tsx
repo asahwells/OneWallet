@@ -41,7 +41,7 @@ const StatusBadge = ({ status, ...badgeProps }: StatusBadgeProps) => {
 
   return (
     <Badge
-      bg={config.bg}
+      bg={config?.bg}
       h={"48px"}
       w={"167px"}
       gap={2}
@@ -50,13 +50,13 @@ const StatusBadge = ({ status, ...badgeProps }: StatusBadgeProps) => {
       alignItems="center"
       px={3}
       py={1}
-      color={config.color}
-      border={`1px solid ${config.borderColor}`}
+      color={config?.color}
+      border={`1px solid ${config?.borderColor}`}
       borderRadius="8px"
       {...badgeProps}
     >
-      {config.icon}
-      {config.text}
+      {config?.icon}
+      {config?.text}
     </Badge>
   )
 }

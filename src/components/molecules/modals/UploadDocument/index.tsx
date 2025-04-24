@@ -1,21 +1,8 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Flex,
-  Text,
-  IconButton,
-  Box,
-  useBreakpointValue,
-  Button,
-  useToast
-} from '@chakra-ui/react';
+import React, { useState, useRef, useCallback } from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Flex, Text, IconButton, Box, useBreakpointValue, Button, useToast } from '@chakra-ui/react';
 import { CloseIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import GalleryIcon from 'components/atoms/icons/GalleryIcon';
 import PhotoIcon from 'components/atoms/icons/PhotoIcon';
-import { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { uploadBase64ToFirebase } from 'api-services/firebase-services'; // Firebase upload service
 import { useDropzone } from 'react-dropzone';
@@ -31,9 +18,11 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);  // Store file URL
   const webcamRef = useRef<Webcam | null>(null);
   const toast = useToast();
 
+  // Handle file selection from gallery
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
@@ -43,18 +32,21 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
     }
   }, [onSelectFromGallery, onClose]);
 
+  // Use Dropzone for file selection from gallery
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: 'image/jpeg, image/jpg, image/png, application/pdf',
     maxSize: 2 * 1024 * 1024, // 2MB
   });
 
+  // Capture photo from webcam
   const handleCapture = () => {
     if (webcamRef.current) {
       const capture = webcamRef.current.getScreenshot();
       if (capture) {
         uploadBase64ToFirebase(capture).then((url) => {
-          onTakePhoto(url);  // Pass the URL to parent component
+          setFileUrl(url);  // Set the uploaded file URL
+          onTakePhoto(url); // Pass the URL to parent component
           onClose();
           toast({
             title: 'Photo Captured',
@@ -154,7 +146,34 @@ const UploadDocumentModal = ({ isOpen, onClose, onTakePhoto, onSelectFromGallery
               <input {...getInputProps()} />
             </Flex>
           </Flex>
+
+          {/* Camera view for photo capture */}
+          {isCameraOpen && (
+            <Webcam
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              width="100%"
+            />
+          )}
+
+          {/* Capture photo button */}
+          {isCameraOpen && (
+            <Button onClick={handleCapture}>Capture</Button>
+          )}
         </ModalBody>
+
+        {/* Display the uploaded file URL */}
+        {fileUrl && (
+          <Box mt={4} textAlign="center">
+            {fileUrl.includes('.jpg') || fileUrl.includes('.png') ? (
+              <img src={fileUrl} alt="Uploaded file" style={{ maxWidth: '300px', margin: 'auto' }} />
+            ) : (
+              <Text fontSize="md" color="#344256">
+                Uploaded File: <a href={fileUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#0F454F' }}>View</a>
+              </Text>
+            )}
+          </Box>
+        )}
       </ModalContent>
     </Modal>
   );
