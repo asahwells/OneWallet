@@ -63,7 +63,7 @@ const UserDashboardTemplate = () =>  {
                 align="stretch" // Ensures children stacks stretch to equal height
             >
                 {/* Left Hand Side */}
-                <Stack spacing={{base: 5, md: 8}} flex={1}>
+                <Stack spacing={{base: 5, md: 6}} flex={1}>
                     <SimpleGrid columns={{ base: 2, md: 2 }} gap={["40px", '8px']}>
                         <AnalyticsCard
                             title="Total Application"

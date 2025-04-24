@@ -154,7 +154,8 @@ const EnterPinTemplate = ({
 
                     {/* Verify Button */}
                     <BaseButton
-                        w="full"
+                        w="100%"
+                        h="48px"
                         borderRadius="8px"
                         bg={otp.length === 4 ? '#0F454F' : '#E2E8F0'}
                         color={otp.length === 4 ? 'white' : '#94A3B8'}

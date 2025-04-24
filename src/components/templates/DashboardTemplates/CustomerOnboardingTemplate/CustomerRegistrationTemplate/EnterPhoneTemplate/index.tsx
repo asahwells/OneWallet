@@ -138,6 +138,7 @@ const EnterPhoneTemplate = ({ onNext, onBack }: EnterPhoneTemplateProps) => {
 
                     <BaseButton
                         w="full"
+                        h='48px'
                         borderRadius="8px"
                         bg={phoneNumber.length === 11 ? '#0F454F' : '#E2E8F0'}
                         color={phoneNumber.length === 11 ? 'white' : '#94A3B8'}

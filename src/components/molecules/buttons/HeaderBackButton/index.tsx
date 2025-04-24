@@ -19,9 +19,8 @@ const HeaderBackButton = ({ onBack, header, iconType}: HeaderBackButtonProps) =>
                     h="60px"
                     borderBottom="1px solid #E2E8F0"
                     position="relative"
-                    bg="white"
                     w={'full'}
-                    px={4}
+                    px={'10px'}
 
                 >
                     <Box cursor={'pointer'} onClick={onBack}>

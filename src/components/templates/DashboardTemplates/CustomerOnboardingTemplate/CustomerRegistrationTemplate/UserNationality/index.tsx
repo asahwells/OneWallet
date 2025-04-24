@@ -88,6 +88,7 @@ const UserNationality = ({ onBack, onNext }: UserNationalityProps) => {
             defaultValue={businessDetails?.nationality || "Nigeria" }
             items={countries}
             onChange={handleNationalityChange}
+            // isRequired
           />
 
           <BaseButton

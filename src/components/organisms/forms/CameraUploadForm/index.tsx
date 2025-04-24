@@ -8,6 +8,8 @@ import {
   Text,
   IconButton,
   useToast,
+  VStack,
+  HStack,
 } from '@chakra-ui/react';
 import AddIcon from 'components/atoms/icons/AddIcon';
 import Webcam from 'react-webcam';
@@ -129,17 +131,19 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
 
         {isCameraOpen && (
           <Box
-            position="fixed"
-            top="0"
-            left="0"
-            width="100vw"
-            height="100vh"
-            backgroundColor="rgba(0, 0, 0, 0.9)"
-            zIndex="1000"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
+          position="fixed"
+          inset={0}                
+          w="100%"                  
+          h="100%"                   
+          bg="rgba(0,0,0,0.9)"
+          zIndex="1000"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          px={4}                    
+          pt={4}                
+          pb="env(safe-area-inset-bottom, 16px)"
           >
             <Webcam
               audio={false}
@@ -148,16 +152,24 @@ const CameraUpload: React.FC<CameraUploadProps> = ({ setImage, ...props }) => {
               videoConstraints={{
                 facingMode: 'environment',
               }}
-              style={{ width: '90%', minHeight: '80vh', borderRadius: '8px' }}
+              style={{ width: '100%', maxHeight: '80vh', borderRadius: '8px' }}
             />
-            <Box mt={4}>
-              <Button onClick={handleCapturePhoto} colorScheme="green" mr={2}>
-                Capture Photo
-              </Button>
-              <Button onClick={handleCloseCamera} colorScheme="red">
-                Close Camera
-              </Button>
-            </Box>
+               <HStack spacing={3} mt={4} w="full">
+                  <Button
+                    onClick={handleCapturePhoto}
+                    w="full"                // full width of the VStack
+                    colorScheme="green"
+                  >
+                    Capture Photo
+                  </Button>
+                  <Button
+                    onClick={handleCloseCamera}
+                    w="full"
+                    colorScheme="red"
+                  >
+                    Close Camera
+                  </Button>
+                </HStack>
           </Box>
         )}
       </Box>

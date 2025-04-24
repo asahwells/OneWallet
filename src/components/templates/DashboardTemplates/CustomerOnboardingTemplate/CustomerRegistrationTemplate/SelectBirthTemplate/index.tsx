@@ -21,6 +21,7 @@ import { useAppSelector } from '../../../../../../redux/store';
 import {useDispatch} from "react-redux";
 import {setCustomer} from "../../../../../../redux/slices/customer";
 import { TagLabel } from '@chakra-ui/react';
+import BaseButton from 'components/molecules/buttons/BaseButton';
 
 interface SelectBirthtemplateProps {
     onNext: () => void;
@@ -105,7 +106,7 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         />
                     </Box>
 
-                    <Button
+                    <BaseButton
                         width="100%"
                         height="48px"
                         borderRadius="8px"
@@ -115,9 +116,8 @@ const SelectBirthTemplate = ({ onNext, onBack }: SelectBirthtemplateProps) => {
                         isLoading={isPending}
                         onClick={handleContinue}
                         isDisabled={!selectedDate}
-                    >
-                        Continue
-                    </Button>
+                        text='Continue'
+                    />
                 </Box>
             </Box>
         </Flex>
