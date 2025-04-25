@@ -28,10 +28,14 @@ import OutlineButton from 'components/molecules/buttons/OutlineButton';
 import { useRouter } from 'next/navigation';
 import { VerificationUsersTemplateProps } from '../interfaces';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
+import {useAppDispatch} from "../../../../../../redux/store";
+import {clearBusinessDetails} from "../../../../../../redux/slices/business";
+import {clearCustomerDetails} from "../../../../../../redux/slices/customer";
 
 const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplateProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const router = useRouter()
+    const dispatch = useAppDispatch()
     
     const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -45,6 +49,8 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
 
     const handleConfirm = () => {
         onClose();
+        dispatch(clearBusinessDetails())
+        dispatch(clearCustomerDetails())
         router.replace('/admin/dashboard/')
     };
 
