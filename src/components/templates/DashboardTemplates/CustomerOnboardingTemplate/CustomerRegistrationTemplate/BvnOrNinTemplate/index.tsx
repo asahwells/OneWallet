@@ -174,6 +174,7 @@ const BvnOrNinTemplate: React.FC<BvnOrNinTemplateProps> = ({
                   base: 'left',
                   md: 'center',
                 }}
+                lineHeight={'22px'}
             >
               Please provide either the User’s BVN or NIN Number
             </Text>
