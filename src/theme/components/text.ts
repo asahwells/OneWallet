@@ -35,7 +35,8 @@ export const textStyles = extendTheme({
         md: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '500',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '24px'
         }),
 
         md3: (props: StyleFunctionProps) => ({
@@ -54,19 +55,23 @@ export const textStyles = extendTheme({
         md2: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '600',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '22px'
         }),
 
         base: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '400',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '24px'
+
         }),
 
         base2: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '400',
-            color: '#222B38'
+            color: '#222B38',
+            lineHeight: '24px'
         }),
 
         sm2: (props: StyleFunctionProps) => ({
@@ -90,19 +95,22 @@ export const textStyles = extendTheme({
         lg: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '600',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '24px'
         }),
 
         sml: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '500',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '22px'
         }),
 
         sma: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '600',
-            color: '#222B38'
+            color: '#222B38',
+            lineHeight: '24px'
         }),
 
         norm: (props: StyleFunctionProps) => ({
@@ -126,7 +134,8 @@ export const textStyles = extendTheme({
         dormant: (props: StyleFunctionProps) => ({
             fontSize: '16px',
             fontWeight: '500',
-            color: '#7C92B0'
+            color: '#7C92B0',
+            lineHeight: '24px'
         }),
 
 
@@ -145,19 +154,22 @@ export const textStyles = extendTheme({
         chartLabel: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '700',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '22px'
         }),
 
         label: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '500',
-            color: '#546C8D'
+            color: '#546C8D',
+            lineHeight: '22px'
         }),
 
         tabLabel: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '500',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '22px'
         }),
 
         tableLabel: (props: StyleFunctionProps) => ({
@@ -183,7 +195,8 @@ export const textStyles = extendTheme({
         sideBar: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '400',
-            color: '#0F454F'
+            color: '#0F454F',
+            lineHeight: '22px'
         }),
 
         radioText: (props: StyleFunctionProps) => ({
@@ -208,6 +221,7 @@ export const textStyles = extendTheme({
             fontWeight: '400',
             fontSize: '14px',
             color: '#344256',
+            lineHeight: '22px'
             
         })
 
