@@ -83,10 +83,9 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                 mt={4}
             >
                 {/* Heading */}
-                <Heading
-                    as="h1"
-                    fontSize="18px"
-                    fontWeight="700"
+                <Text
+                    letterSpacing={'-1.2%'}
+                    variant={'head'}
                     textAlign={{
                         base: 'left',
                         md: 'center',
@@ -94,7 +93,7 @@ const EnterEmailTemplate: React.FC<EnterEmailTemplateProps> = ({
                     mb={2}
                 >
                     Enter User’s Email
-                </Heading>
+                </Text>
 
                 <Text
                     fontSize="14px"

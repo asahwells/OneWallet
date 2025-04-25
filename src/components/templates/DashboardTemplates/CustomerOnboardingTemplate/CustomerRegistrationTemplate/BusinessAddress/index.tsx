@@ -192,7 +192,9 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
               )}
 
               {/* State picker */}
-              <FormControlButton
+              {!formData.isResidentialAddress && (
+                <>
+                <FormControlButton
                   label="State"
                   items={states}
                   defaultValue={businessDetails?.businessState}
@@ -225,6 +227,8 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
                     }
                 />
               </BaseFormControl>
+              </>
+            )}
 
               {/* Market-only fields */}
               {formData.locatedInMarket && (
