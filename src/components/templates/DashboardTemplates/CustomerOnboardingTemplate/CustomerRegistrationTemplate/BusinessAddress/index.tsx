@@ -43,7 +43,7 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
   const [formData, setFormData] = useState({
     businessState: businessDetails?.businessState || '',
     businessLga: businessDetails?.businessLga || '',
-    locatedInMarket: businessDetails?.locatedInMarket ?? false,
+    locatedInMarket: businessDetails?.locatedInMarket ?? undefined,
     marketName: businessDetails?.marketName || '',
     storeNumber: businessDetails?.storeNumber || '',
     fullShopAddress: businessDetails?.fullShopAddress || '',
@@ -127,7 +127,7 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
       );
     }
   }, [formData, isAttested, businessState]);
-
+  console.log({formData})
   return (
       <Flex direction="column" bg="#F8FAFC" w="full">
         <HeaderBackButton onBack={onBack} header="Business Address" />
@@ -148,31 +148,36 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
                 variant="head"
                 textAlign={{ base: 'left', md: 'center' }}
                 mb={2}
+                color={'#222B38'}
             >
               Enter Business Address
             </Text>
-            <Text variant="sm" mb={6} textAlign={{ base: 'left', md: 'center' }}>
+            <Text variant="sm" mb={6} textAlign={{ base: 'left', md: 'center' }}               color={'#222B38'}>
               Enter the address of the business/store
             </Text>
 
-            <VStack spacing="10px" mt="25px">
+            <VStack spacing="20px" mt="25px">
               {/* Market location */}
               <RadioInputButton
-                  value={formData.locatedInMarket ? 'yes' : 'no'}
-                  label="Is the address located in a market?"
+                  value={typeof formData.locatedInMarket === 'boolean' ? (formData.locatedInMarket ? 'yes' : 'no') : ''}
+                  label="Is the Customer Business Address located in a market?"
                   onChange={(val) =>
                       handleChange('locatedInMarket', val === 'yes')
                   }
               />
 
+
+             <Box w={'full'}  mt={'24px'}>
+               <Text variant="sm" textAlign={'left'} fontSize={'16px'} color={'#344256'}>
+                 Please provide the Customer's Business Address
+               </Text>
+             </Box>
               {/* Residential override */}
               {!formData.locatedInMarket && (
                   <Flex
                       w="full"
                       align="center"
-                      p={4}
-                      border="1px solid #E2E8F0"
-                      borderRadius="md"
+
                   >
                     <Switch
                         isChecked={formData.isResidentialAddress}
@@ -185,8 +190,8 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
                           },
                         }}
                     />
-                    <Text ml={3} variant="base">
-                      Same as residential address
+                    <Text ml={3} variant="sm" fontSize={'16px'} fontWeight={'400'} lineHeight={'22px'}>
+                      Store/business address is the same as the business’ residential address
                     </Text>
                   </Flex>
               )}
@@ -264,10 +269,11 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
                   isChecked={isAttested}
                   onChange={setIsAttested}
                   label="I attest that all info is correct"
+                  pb={5}
               />
 
               <BaseButton
-                  mt="36px"
+
                   w="full"
                   h="56px"
                   text={fromStep ? "Update": "Continue"}
