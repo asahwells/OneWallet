@@ -124,30 +124,17 @@ const SuccessTemplate = ({
                         opacity="0.1"
                         zIndex="1"
                     />
-                    <Flex
-                        position="absolute"
-                        top="0"
-                        left="0"
+                    <Box
                         w="full"
                         h="full"
                         borderRadius="full"
-                        bg="#0F454F"
-                        align="center"
-                        justify="center"
-                        zIndex="2"
+                        bg="white"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
                     >
-                        <Box
-                            w="70%"
-                            h="70%"
-                            borderRadius="full"
-                            bg="white"
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >
-                            <CongratulationsIcon />
-                        </Box>
-                    </Flex>
+                        <Image src={'/img/dashboards/success.png'} />
+                    </Box>
                 </Box>
 
                 {/* Congratulations Text */}
