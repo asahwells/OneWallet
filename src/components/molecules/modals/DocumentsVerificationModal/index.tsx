@@ -14,7 +14,9 @@ import {
     Center,
     VStack,
     Spinner,
-    Icon
+    Icon,
+    Stack,
+    Flex
 } from '@chakra-ui/react';
 import { CheckCircleIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import {VerificationModalProps} from "../interfaces";
@@ -65,16 +67,45 @@ const VerificationModal = ({
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
             <ModalOverlay />
-            <ModalContent borderRadius="26px" mx={6}>
-                <ModalCloseButton />
-                <ModalHeader textAlign="center" gap={5}>
+                <ModalContent
+                        borderRadius="26.81px"
+                        boxShadow="xl"
+                        maxW={'700px'}
+                        w="full"
+                        borderTopRadius={'26.81px'}
+                        borderBottomRadius={'26.81px'}
+                        position="relative"
+                        pb={4}
+                        mx={4}
+                    >
+                       <ModalCloseButton
+                              color="#475569"
+                              _focus={{ boxShadow: 'none' }}
+                              _hover={{ bg: '#F1F5F9' }}
+                              display={{ base: 'none', md: 'flex' }}
+                            />
+                    <ModalHeader p={{ md: '20px' }}>
+                    <Stack w={'full'} alignItems={'center'}>
+                        <Flex
+                        justify={{ base: 'space-between', md: 'center' }}
+                        align="center"
+                        w="100%"
+                        position="relative"
+                        >
+                            {iconContent}
 
-                    <Center>{iconContent}</Center>
-
+                        <ModalCloseButton
+                            position="relative"
+                            top="unset"
+                            right="unset"
+                            display={{ base: 'inline-block', md: 'none' }}
+                        />
+                        </Flex>
+                    </Stack>
                 </ModalHeader>
                 <ModalBody>
                     <VStack spacing={4}>
-                        <Text  variant={'md'}>
+                        <Text  variant={'md'} w={'full'} fontWeight={600} color="#475569" textAlign={{base: 'start', lg: 'center'}}>
                             {title}
                         </Text>
 
@@ -87,7 +118,7 @@ const VerificationModal = ({
                     {primaryBtnText && (
                         <BaseButton
                             variant={'brand'}
-                            w={'full'}
+                            width={{base: "full", md: "458px"}}
                             h={"56px"}
                             text={primaryBtnText}
                             borderRadius="8px"
