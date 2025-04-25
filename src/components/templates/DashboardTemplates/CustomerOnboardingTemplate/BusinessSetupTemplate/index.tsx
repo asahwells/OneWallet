@@ -160,11 +160,9 @@ const BusinessSetupTemplate = () => {
             {currentStep === BusinessSteps.Success && (
                 <SuccessTemplate onViewQR={handleNext} onDone={() => {
 
-                    router.push('/admin/dashboard/business/customer-onboarding')
-                    setTimeout(() => {
-                        dispatch(clearBusinessDetails())
-                        dispatch(clearCustomerDetails())
-                    }, 2000)
+                    dispatch(clearBusinessDetails())
+                    dispatch(clearCustomerDetails())
+                    router.push('/admin/dashboard')
                 }} />
             )}
             {currentStep === BusinessSteps.QRCode && (
