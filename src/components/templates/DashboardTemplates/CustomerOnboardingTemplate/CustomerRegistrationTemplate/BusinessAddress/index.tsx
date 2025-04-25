@@ -169,7 +169,7 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
 
              <Box w={'full'}  mt={'24px'}>
                <Text variant="sm" textAlign={'left'} fontSize={'16px'} color={'#344256'}>
-                 Please provide the Customer's Business Address
+                 Please provide the Customer&apos;s Business Address
                </Text>
              </Box>
               {/* Residential override */}
