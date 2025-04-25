@@ -47,7 +47,8 @@ export const textStyles = extendTheme({
         sm: (props: StyleFunctionProps) => ({
             fontSize: '14px',
             fontWeight: '400',
-            color: '#344256'
+            color: '#344256',
+            lineHeight: '22px'
         }),
 
         md2: (props: StyleFunctionProps) => ({
