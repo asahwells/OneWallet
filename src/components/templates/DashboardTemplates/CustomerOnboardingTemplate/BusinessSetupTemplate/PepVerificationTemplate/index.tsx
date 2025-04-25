@@ -99,7 +99,7 @@ const PepVerificationTemplate = ({ onNext, onBack }: PepVerificationTemplateProp
             Is the customer a Politically Exposed Person?
           </Text>
 
-          <Text variant="base" fontSize="14px" color="#475569" mb={10} maxW="600px" mx="auto" justifyContent={'left'}>
+          <Text variant="base" fontSize="14px" color="#475569" mb={10} maxW="600px" mx="auto" textAlign={'justify'}>
             A Politically Exposed Person (PEP) is a high-profile individual who holds
             or has previously held a prominent political position or public office.
           </Text>
