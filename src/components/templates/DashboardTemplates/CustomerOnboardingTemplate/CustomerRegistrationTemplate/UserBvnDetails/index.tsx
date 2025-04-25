@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import {useDispatch} from "react-redux";
 import {clearBusinessDetails} from "../../../../../../redux/slices/business";
-import {clearCustomerDetails} from "../../../../../../redux/slices/customer";
+import {clearCustomerDetails, setCurrentStep} from "../../../../../../redux/slices/customer";
 
 interface UserBvnDetailsProps {
   onBack: () => void;
@@ -51,6 +51,7 @@ const UserBvnDetails = ({
     const goTohomepage = () => {
         dispatch(clearBusinessDetails())
         dispatch(clearCustomerDetails())
+        dispatch(setCurrentStep(RegisterSteps.EnterPhone))
         router.push('/admin/dashboard');
     }
     
