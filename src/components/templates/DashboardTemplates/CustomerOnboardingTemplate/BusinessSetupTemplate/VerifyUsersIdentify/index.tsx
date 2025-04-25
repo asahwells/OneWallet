@@ -45,7 +45,7 @@ const VerificationUsersTemplate = ({ onNext, onBack }: VerificationUsersTemplate
 
     const handleConfirm = () => {
         onClose();
-        router.replace('/admin/dashboard/business/customer-onboarding')
+        router.replace('/admin/dashboard/')
     };
 
     const handleGoBack = () => {
