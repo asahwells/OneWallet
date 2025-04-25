@@ -184,13 +184,13 @@ const SourceOfIncomeTemplate = ({ onNext, onBack }: SourceOfIncomeTemplateProps)
               <Stack direction="row" spacing={6} mt={4} h={"18px"}>
               <Radio 
                 variant="radioButton" 
-                value="yes"
+                value="Yes"
               >
                 Yes
               </Radio>
               <Radio 
                 variant="radioButton" 
-                value="no"
+                value="No"
               >
                 No
               </Radio>

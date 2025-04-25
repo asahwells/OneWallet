@@ -198,9 +198,9 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
                   defaultValue={businessDetails?.businessState}
                   value={formData.businessState}
                   onChange={(it) => handleChange('businessState', it.value)}
-                  isDisabled={
-                      !formData.locatedInMarket || formData.isResidentialAddress
-                  }
+                  // isDisabled={
+                  //     !formData.locatedInMarket || formData.isResidentialAddress
+                  // }
               />
 
               {/* LGA picker */}
@@ -210,7 +210,7 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
                   defaultValue={businessDetails?.businessLga}
                   value={formData.businessLga}
                   onChange={(it) => handleChange('businessLga', it.value)}
-                  isDisabled={!businessState || !formData.locatedInMarket}
+                  isDisabled={!businessState}
                   onClick={() => {
                     if (!businessState) onOpen();
                   }}
@@ -279,7 +279,7 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
         </Box>
 
         {/* Drawer for “select a state first” */}
-        <Drawer placement="bottom" isOpen={isOpen} onClose={onClose}>
+        {isOpen && (<Drawer placement="bottom" isOpen={isOpen} onClose={onClose}>
           <DrawerOverlay />
           <DrawerContent
               alignSelf="center"
@@ -304,7 +304,7 @@ const BusinessAddress: React.FC<BusinessAddressProps> = ({ onBack, onNext }) => 
               </Center>
             </DrawerBody>
           </DrawerContent>
-        </Drawer>
+        </Drawer>)}
       </Flex>
   );
 };
