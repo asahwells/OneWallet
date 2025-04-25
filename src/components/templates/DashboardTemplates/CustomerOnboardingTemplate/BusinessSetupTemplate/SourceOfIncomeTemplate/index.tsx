@@ -252,7 +252,7 @@ const SourceOfIncomeTemplate = ({
                 <FormControlButton
                   notSearchable={true}
                   value={otherSourceRevenue}
-                  label="Select customer's other source of revenue"
+                  label="Select annual income"
                   items={otherSourceRevenueItems}
                   onChange={(selected) => setOtherSourceRevenue(selected.value)}
                 />
