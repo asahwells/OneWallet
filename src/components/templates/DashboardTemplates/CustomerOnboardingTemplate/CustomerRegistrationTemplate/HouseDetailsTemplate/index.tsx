@@ -144,15 +144,15 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                 mx="auto"
                 mt={4}
             >
-                <Heading
-                    as="h1"
-                    variant="headerBold"
-                    fontSize="18px"
-                    textAlign="start"
+                <Text
+                    letterSpacing="-1.2%"
+                    variant="head"
+                    textAlign={{ base: 'left', md: 'center' }}
                     mb={2}
+
                 >
                     Enter House Address
-                </Heading>
+                </Text>
                 <Text variant="sm" mb={6} textAlign="start" lineHeight="22px">
                     Ensure the address matches what’s on their Utility Bill.
                 </Text>
@@ -185,6 +185,8 @@ const HouseDetailsTemplate: React.FC<IHouseDetailsTemplateProps> = ({
                                     ? 'Loading LGAs…'
                                     : 'Select an LGA'
                         }
+
+
                         isDisabled={!stateValue || lgasLoading}
                     />
 
