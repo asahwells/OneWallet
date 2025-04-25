@@ -56,7 +56,7 @@ const VerificationModal = ({
 
         case 'SUCCESS':
             title = 'Selfie Capture Complete';
-            description = 'You’ve been successfully captured; you can now proceed.';
+            description = 'You’ve been successfully captured, you can now proceed.';
             primaryBtnText = 'Continue';
             iconContent = <SuccessIcon />
             break;
@@ -105,11 +105,11 @@ const VerificationModal = ({
                 </ModalHeader>
                 <ModalBody>
                     <VStack spacing={4}>
-                        <Text  variant={'md'} w={'full'} fontWeight={600} color="#475569" textAlign={{base: 'start', lg: 'center'}}>
+                        <Text  variant={'md'} w={'full'} fontWeight={600} color="#475569" textAlign={'start'}>
                             {title}
                         </Text>
 
-                        <Text textAlign="start" variant={'sm'}>
+                        <Text textAlign="start" variant={'sm'} lineHeight={'22px'}>
                             {description}
                         </Text>
                     </VStack>
