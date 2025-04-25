@@ -265,30 +265,46 @@ const AttestationTemplate = ({ onNext, onBack }: AttestationTemplateProps) => {
                     </Flex>
                     
                     <Grid templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap={4}>
-                        <Box mb={3}>
+                        {businessDetails?.locatedInMarket &&    <Box mb={3}>
                             <Text variant={'sm'} my={2}>Is the Customer Business Address located in a market?</Text>
                             <Text variant={'md2'} fontWeight="500">{businessDetails?.locatedInMarket === 'yes' ? 'Yes' : "No"}</Text>
-                        </Box>
-                        <Box mb={3} ml={{lg:40}}>
-                            <Text variant={'sm'} my={2}>State</Text>
-                            <Text variant={'md2'} fontWeight="500">{businessDetails?.businessState ?? "N/A"}</Text>
-                        </Box>
-                        <Box mb={3}>
-                            <Text variant={'sm'} my={2}>LGA</Text>
-                            <Text variant={'md2'} fontWeight="500">{businessDetails?.businessLga ?? "N/A"}</Text>
-                        </Box>
-                        <Box mb={3} ml={{lg:40}}>
-                            <Text variant={'sm'} my={2}>Market Name</Text>
-                            <Text variant={'md2'} fontWeight="500">{businessDetails?.marketName ?? "N/A"}</Text>
-                        </Box>
-                        <Box mb={3}>
-                            <Text variant={'sm'} my={2}>Store Line/Number</Text>
-                            <Text variant={'md2'} fontWeight="500">{businessDetails?.storeNumber ?? "N/A"}</Text>
-                        </Box>
-                        <Box mb={3} ml={{lg:40}}>
-                            <Text variant={'sm'} my={2}>Shop Address Description</Text>
-                            <Text variant={'md2'} fontWeight="500">{businessDetails?.fullShopAddress ?? "N/A"}</Text>
-                        </Box>
+                        </Box> }
+
+                        {businessDetails?.businessState  &&
+
+                            <Box mb={3} ml={{lg:40}}>
+                                <Text variant={'sm'} my={2}>State</Text>
+                                <Text variant={'md2'} fontWeight="500">{businessDetails?.businessState ?? "N/A"}</Text>
+                            </Box>}
+
+                        {businessDetails?.businessLga  &&
+                            <Box mb={3}>
+                                <Text variant={'sm'} my={2}>LGA</Text>
+                                <Text variant={'md2'} fontWeight="500">{businessDetails?.businessLga ?? "N/A"}</Text>
+                            </Box>
+                        }
+
+                        {businessDetails?.marketName &&
+                            <Box mb={3} ml={{lg:40}}>
+                                <Text variant={'sm'} my={2}>Market Name</Text>
+                                <Text variant={'md2'} fontWeight="500">{businessDetails?.marketName ?? "N/A"}</Text>
+                            </Box>
+                        }
+
+                        {businessDetails?.storeNumber &&
+                            <Box mb={3}>
+                                <Text variant={'sm'} my={2}>Store Line/Number</Text>
+                                <Text variant={'md2'} fontWeight="500">{businessDetails?.storeNumber ?? "N/A"}</Text>
+                            </Box>
+                        }
+
+                        {businessDetails?.fullShopAddress &&
+                            <Box mb={3} ml={{lg:40}}>
+                                <Text variant={'sm'} my={2}>Shop Address Description</Text>
+                                <Text variant={'md2'} fontWeight="500">{businessDetails?.fullShopAddress ?? "N/A"}</Text>
+                            </Box>
+                        }
+
                     </Grid>
                     
                     <Box mt={2}>
