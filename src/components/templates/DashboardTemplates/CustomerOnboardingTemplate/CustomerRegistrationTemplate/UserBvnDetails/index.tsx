@@ -131,7 +131,7 @@ const UserBvnDetails = ({
                         />
 
                         <BaseButton
-                        onClick={goTohomepage}
+                        onClick={onOpen}
                         backgroundColor="#FFFFFF"
                         color="#0F454F"
                         borderRadius={"8px"}
@@ -150,7 +150,9 @@ const UserBvnDetails = ({
             <UnsaveChangesModal 
             cancelText="No Continue"
             onNoClick={onClose}
-            onYesClick={onBack}
+            onYesClick={() => {
+                goTohomepage()
+            }}
             acceptText="Yes Exit Page"
             px={{base: '1.5px', md: '24px'}}
             isOpen={isOpen}
