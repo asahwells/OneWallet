@@ -64,6 +64,9 @@ const FormControlButton: React.FC<IFormControlButton> = ({
             borderColor={isFocused ? "#CBD5E1" : "#E2E8F0"}
             _hover={{ borderColor: isFocused ? "#CBD5E8" : "#CBD5E1" }}
             _focusWithin={{ borderColor: "#0F454F" }}
+
+            // add fontweight medium to place holder
+            fontWeight={hasValue ? '400' : 'medium'}
             {...props}
 
         >

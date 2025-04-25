@@ -109,7 +109,7 @@ const VerificationModal = ({
                             {title}
                         </Text>
 
-                        <Text textAlign="start" variant={'sm'} lineHeight={'22px'}>
+                        <Text textAlign="left" variant={'sm'} lineHeight={'22px'}>
                             {description}
                         </Text>
                     </VStack>
