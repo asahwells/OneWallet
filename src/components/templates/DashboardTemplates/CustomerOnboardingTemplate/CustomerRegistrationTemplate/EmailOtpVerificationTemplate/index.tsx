@@ -86,7 +86,10 @@ const EmailOtpVerificationTemplate = ({
             {/* Main Card */}
             <Flex
                 direction="column"
-                bg="white"
+                bg={{
+                    base: '#F8FAFC',
+                    md: 'white',
+                }}
                 p={isMobile ? 4 : 8}
                 borderRadius="8px"
                 boxShadow={isMobile ? 'none' : 'md'}
@@ -116,6 +119,7 @@ const EmailOtpVerificationTemplate = ({
                         md: 'center',
                     }}
                     letterSpacing={'-1%'}
+                    lineHeight={'22px'}
                 >
                     Enter the verification code we just sent to the user’s email address{' '}
                     <strong>{userEmail}</strong>. You might need to ask the user to check

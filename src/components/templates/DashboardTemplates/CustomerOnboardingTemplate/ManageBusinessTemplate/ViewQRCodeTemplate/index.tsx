@@ -166,7 +166,7 @@ const ViewQrCodeTemplate = () => {
                         </Table>
                     </Box>
 
-                    <Flex align="center" justify="end" fontSize="14px">
+                    <Flex align="center" justify="end" fontSize="14px" lineHeight={'22px'}>
                         <Text mr={2} color={'#FFFFFF'}>We accept all bank payments and</Text>
                         <Flex>
                             <CardTypeIcons />

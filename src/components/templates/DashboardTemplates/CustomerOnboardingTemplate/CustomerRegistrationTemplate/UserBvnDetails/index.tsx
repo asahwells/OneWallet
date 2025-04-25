@@ -85,6 +85,7 @@ const UserBvnDetails = ({
                         fontSize="14px"
                         color="#344256"
                         fontWeight={400}
+                        lineHeight={'22px'}
                         mb={6}
                         textAlign={isMobile ? 'left' : 'center'}
                     >
