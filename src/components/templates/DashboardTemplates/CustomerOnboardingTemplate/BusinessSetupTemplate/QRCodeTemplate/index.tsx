@@ -66,7 +66,9 @@ const QrCodeTemplate = ({
                 <Box 
                     bg="#0F454F" 
                     //borderRadius="8px" 
-                    p={6} 
+                    px={6}
+                    pt={4}
+                    pb={2}
                     maxW="500px" 
                     w="full" 
                     color="white"
@@ -107,8 +109,8 @@ const QrCodeTemplate = ({
 
                     {/* Can't Scan Text */}
                     <Text 
-                        fontSize="16px" 
-                        fontWeight="400" 
+                        fontSize="13px" 
+                        fontWeight="600" 
                         color={'#FFFFFF'}
                         mb={4}
                         align={'left'}
@@ -176,8 +178,8 @@ const QrCodeTemplate = ({
                         </Table>
                     </Box>
 
-                    <Flex align="center" justify="end" fontSize="14px">
-                        <Text mr={2} color={'#FFFFFF'}>We accept all bank payments and</Text>
+                    <Flex align="center" justify="center">
+                        <Text mr={2} variant={'radioText'} color={'#FFFFFF'}>We accept all bank payments and</Text>
                         <Flex>
                             <CardTypeIcons />
                         </Flex>

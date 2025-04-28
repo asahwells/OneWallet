@@ -18,6 +18,7 @@ import BaseButton from 'components/molecules/buttons/BaseButton';
 import FailedModal from 'components/molecules/modals/FailedModal';
 import { PhoneVerificationTemplateProps } from '../interfaces';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
+import BasePinInput from 'components/molecules/inputs/BasePinInput';
 
 const PhoneVerificationTemplate = ({ onNext, onBack, phoneNumber }: PhoneVerificationTemplateProps) => {
     const [otp, setOtp] = useState('');
@@ -90,68 +91,13 @@ const PhoneVerificationTemplate = ({ onNext, onBack, phoneNumber }: PhoneVerific
                     </Text>
                 </Box>
 
-                <HStack spacing={4} justify="center" mb={8}>
-                    <PinInput 
-                        size="lg" 
-                        value={otp} 
-                        onChange={setOtp} 
-                        otp 
-                        focusBorderColor="#0F454F"
-                    >
-                        <PinInputField 
-                            w="70px"
-                            h="70px"
-                            borderColor="#0F454F"
-                            borderRadius="8px"
-                            fontSize="24px"
-                            fontWeight="600"
-                            color="#0F454F"
-                            _focus={{ 
-                                borderColor: "#0F454F",
-                                boxShadow: "0 0 0 1px #0F454F"
-                            }}
-                        />
-                        <PinInputField 
-                            w="70px"
-                            h="70px"
-                            borderColor="#0F454F"
-                            borderRadius="8px"
-                            fontSize="24px"
-                            fontWeight="600"
-                            color="#0F454F"
-                            _focus={{ 
-                                borderColor: "#0F454F",
-                                boxShadow: "0 0 0 1px #0F454F"
-                            }}
-                        />
-                        <PinInputField 
-                            w="70px"
-                            h="70px"
-                            borderColor="#0F454F"
-                            borderRadius="8px"
-                            fontSize="24px"
-                            fontWeight="600"
-                            color="#0F454F"
-                            _focus={{ 
-                                borderColor: "#0F454F",
-                                boxShadow: "0 0 0 1px #0F454F"
-                            }}
-                        />
-                        <PinInputField 
-                            w="70px"
-                            h="70px"
-                            borderColor="#0F454F"
-                            borderRadius="8px"
-                            fontSize="24px"
-                            fontWeight="600"
-                            color="#0F454F"
-                            _focus={{ 
-                                borderColor: "#0F454F",
-                                boxShadow: "0 0 0 1px #0F454F"
-                            }}
-                        />
-                    </PinInput>
-                </HStack>
+                <HStack justifyContent="center" mb={6}>
+                        <BasePinInput count={4} onChange={setOtp}>
+                            {/* If BasePinInput expects children, you can place them here.
+              If not needed, just remove this empty fragment. */}
+                            <></>
+                        </BasePinInput>
+                    </HStack>
 
                 {/* Verify Button */}
                 <BaseButton
