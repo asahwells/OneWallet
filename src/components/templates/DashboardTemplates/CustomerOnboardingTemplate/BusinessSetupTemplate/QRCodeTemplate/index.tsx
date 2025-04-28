@@ -24,6 +24,7 @@ import { QrCodeTemplateProps } from '../interfaces';
 import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import {useAppSelector} from "../../../../../../redux/store";
 import {useGetCustomerInformation} from "../../../../../../api-services/business-registration-services";
+import QrcodeIcon from 'components/atoms/icons/QrcodeIcon';
 
 const QrCodeTemplate = ({ 
     onBack, 
@@ -97,6 +98,7 @@ const QrCodeTemplate = ({
                         borderRadius="8px" 
                         maxW="300px" 
                         mx="auto" 
+                        position="relative"
                         mb={6}
                     >
                         <Image
@@ -105,6 +107,16 @@ const QrCodeTemplate = ({
                             w="full" 
                             h="auto"
                         />
+                          <Box
+                            position="absolute"
+                            top="50%"
+                            left="50%"
+                            transform="translate(-50%, -50%)"
+                            zIndex={1}
+                        >
+                            <QrcodeIcon /> 
+                        </Box>
+
                     </Box>
 
                     {/* Can't Scan Text */}
