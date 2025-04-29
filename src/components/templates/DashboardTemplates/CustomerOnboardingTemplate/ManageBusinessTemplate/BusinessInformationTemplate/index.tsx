@@ -25,10 +25,15 @@ import ConfirmationModal from "components/molecules/modals/ConfirmModal"
 import WarningModal from "components/molecules/modals/WarningModal"
 import FailedModal from "components/molecules/modals/FailedModal"
 import { useFetchCustomer } from "api-services/business-services"
+import { setUpgrade } from "../../../../../../redux/slices/upgrade"
+import { useAppDispatch, useAppSelector } from "../../../../../../redux/store"
 
 const BusinessInformationTemplate = () => {
   const router = useRouter()
   const { id } = useParams() as { id: string };
+
+  const dispatch = useAppDispatch();
+  const { upgradeDetails } = useAppSelector((state) => state.upgrade);
 
   const isMobile = useBreakpointValue({ base: true, md: false })
   const [status, setStatus] = useState<'approved' | 'pending' | 'pendingV' | 'failed'>('failed')
@@ -41,6 +46,27 @@ const BusinessInformationTemplate = () => {
   useEffect(() => {
     fetchCustomer();
   }, []);
+
+  useEffect(() => {
+    if(customer?.data?.bvnVerified) {
+      dispatch(
+        setUpgrade({
+          ...upgradeDetails,
+          currentVerificationType: 'BVN',
+          currentVerificationStatus: customer?.data?.bvnVerified,
+        }),
+      );
+    }
+    if(customer?.data?.ninVerified) {
+      dispatch(
+        setUpgrade({
+          ...upgradeDetails,
+          currentVerificationType: 'NIN',
+          currentVerificationStatus: customer?.data?.ninVerified,
+        }),
+      );
+    }
+  }, [customer]);
 
   return (
     <>

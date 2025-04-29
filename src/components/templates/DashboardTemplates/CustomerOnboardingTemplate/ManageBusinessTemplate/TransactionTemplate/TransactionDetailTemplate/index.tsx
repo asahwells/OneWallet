@@ -15,7 +15,6 @@ import { TransactionStatus } from 'components/molecules/badge/Status/status.enum
 const TransactionDetailTemplate = () => {
   const statusOptions = ['Successful', 'Pending', 'Failed'];
   const transaction = { ...TransactionData };
-  const router = useRouter()
 
   // Status badge styling
   const getStatusStyles = (status: string) => {
@@ -47,7 +46,7 @@ const TransactionDetailTemplate = () => {
 
   return (
     <Box bg="#FAFAFB" minH="100vh">
-        <HeaderBackButton header='Business' onBack={()=> router.back()}/>
+        <HeaderBackButton header='Business' />
       <Container maxW="container.md" py={4} bg="white">
         {/* Header */}
         <Flex align="center" mb={6}>

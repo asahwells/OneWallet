@@ -27,27 +27,27 @@ export const useFetchCustomer = (id: string) => {
     });
 }
 
-export const useFetchAllTransactions = () =>
-    useMutation({
-      mutationFn: ({
-        id,
-        page,
-        limit,
-        month,
-        pageSize,
-        ...filters
-      }: {
-        id: string;
-        page: number;     // Keep page as a number
-        limit: number;    // Keep limit as a number
-        month?: string;   // Allow month to be a string
-        pageSize?: number; // Keep pageSize as a number
-      } ): Promise<ITransactionsInfoRes> =>
-        HttpClient.get<ITransactionsInfoRes>(BASE_AXIOS, {
-          url: `sales-agent/customers/${id}/transactions`,
-          params: { page, limit, month, ...filters }, // Pass filters as strings
-        }),
-    });
+export const useFetchAllTransactions = (id: string) => {
+  return useMutation<ITransactionsInfoRes, Error, { page: number; month: string }>({
+    mutationFn: ({ page, month }): Promise<ITransactionsInfoRes> => {
+      const params: { page: number; month?: string } = { page };
+
+      if (month) {
+        params.month = month; 
+      }
+
+      return HttpClient.get<ITransactionsInfoRes>(BASE_AXIOS, {
+        url: `sales-agent/customers/${id}/transactions`,
+        params: params,
+      });
+    },
+    onSuccess: (res: ITransactionsInfoRes) => {
+      return res;
+    },
+  });
+};
+
+
   
 export const useUpgradeTierTwo = () => {
 
