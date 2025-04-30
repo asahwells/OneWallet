@@ -6,7 +6,8 @@ import {
   ModalCloseButton,
   ModalBody,
   VStack,
-  Text
+  Text,
+  Flex,
 } from '@chakra-ui/react';
 import ForgotPasswordIcon from 'components/atoms/icons/forgotPasswordIcon';
 import { IUpdateUserModalProps } from '../interfaces';
@@ -27,30 +28,49 @@ const SuccessModal = ({
   btnText,
   ...props
 }: IUpdateUserModalProps) => {
-  const router = useRouter();
+  
   return (
-    <Modal isOpen={isOpen} isCentered={true} onClose={onClose} size="lg" trapFocus={true} autoFocus={false}>
-      <ModalOverlay />
-      <ModalContent 
-        height={{base: '270px', lg: height || '419.99px'}}
-        w={'full'}
-        mx={'7px'}
-        {...props}
-      >
-        <ModalCloseButton />
-        <ModalBody>
-          <VStack spacing={8} mt={-4}>
-            <VStack spacing={1}>
-              <SuccessIcon />
+    <Modal
+    isOpen={isOpen}
+    onClose={onClose}
+    isCentered
+    size="lg"
+    trapFocus={true}
+    autoFocus={false}
+    >
+  <ModalOverlay />
+<ModalContent borderRadius="26.81px" boxShadow="xl" maxW={"700px"} w="full" borderTopRadius={'26.81px'} borderBottomRadius={'26.81px'} position="relative" pb={4} mx={4}>
+  <ModalCloseButton
+              color="#475569"
+              _focus={{ boxShadow: 'none' }}
+              _hover={{ bg: '#F1F5F9' }}
+              display={{base: 'none', md: 'flex'}}
+          />
+    <ModalBody p={{md: '20px'}}>
+      <VStack spacing={3} alignItems={{ base: 'start', md: 'center' }}
+            justifyContent={{ base: 'start', md: 'center' }}>
+        <Flex 
+          justify={{base: "space-between", md: "center"}}
+          align="center"
+          w="100%"
+          position="relative"
+          >
+          <SuccessIcon />
+          
+          <ModalCloseButton 
+              position="relative"
+              top="unset" 
+              right="unset"
+              display={{base: 'inline-block', md: 'none'}}
+          />
+          </Flex>
               <Modaltext title={title} variant={'md'} lineHeight="24px" textAlign={'center'}/>
-              {title2 && <Modaltext title={title2} variant={'sml'} lineHeight="24px" textAlign={'center'}/>}
-            </VStack>
-
+              {title2 && <Modaltext title={title2} variant={'sml'} lineHeight="24px" textAlign={{ base: 'start', md: 'center' }} />} 
             <BaseButton 
                 text={btnText ?? "Continue"}
                 marginTop="28px"
                 color="#FCFCFC"
-                width="full"
+                w={{base: 'full', md: '458px'}}
                 height="56px"
                 borderRadius="8px"
                 padding="12px, 24px, 12px, 24px"

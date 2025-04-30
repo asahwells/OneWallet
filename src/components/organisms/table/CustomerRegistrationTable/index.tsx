@@ -61,7 +61,7 @@ const CustomerRegistrationTable = ({
 
     if (!data?.length) {
         return (
-            <Stack align="center" py={16} spacing={4} w="100%">
+            <Stack bg='red.100' align="center" py={16} spacing={4} w="100%" h="100%">
                 <EmptyTaskIcon />
                 <Text fontSize="16px" fontWeight="500">
                     You do not have any result at this time
@@ -79,14 +79,14 @@ const CustomerRegistrationTable = ({
                 <Spinner size={'lg'}/> 
             </Box>
             :
-            <Stack spacing={0} mt={4} p={0}>
+            <Stack spacing={6} mt={4} p={0}>
                 {data.map((row, index) => (
                     <Box
                         key={index}
                         borderBottom="1px solid #E2E8F0"
-                        pb={3}
+                        // pb={3}
                         // optional top padding to separate items
-                        pt={3}
+                        // pt={3}
                         bg={'white'}
                         style={{ cursor: 'pointer' }} 
                         onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${row?.id}`)}}
@@ -144,7 +144,7 @@ const CustomerRegistrationTable = ({
                 <Spinner size={'lg'}/> 
             </Box>
             :
-            <Box >
+            <Box bg={'white'} gap={4}>
         <TableContainer bg={'white'}  borderTop="0.5px solid #7C92B0">
             <Table pt={6}>
                 <Thead>

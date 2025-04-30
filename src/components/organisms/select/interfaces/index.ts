@@ -21,3 +21,10 @@ export interface IBankSelectorProps {
     bankLogo: string;
   }) => void;
 }
+
+export interface SelectFieldProps {
+  value: string | null;
+  options: { value: string; label: string }[];
+  placeholder: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+};

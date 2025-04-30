@@ -64,7 +64,7 @@ const TransactionTemplate = () => {
 
       {/* Transaction History */}
       <Flex justifyContent="space-between" alignItems="center" mt={4} direction={{ base: 'row', md: 'row' }} gap={{ base: 4, md: 0 }} w="full">
-        <Text variant={'md'}>Transaction History</Text>
+        <Text variant={'md'} letterSpacing={'-1.2%'}>Transaction History</Text>
         <MonthFilter onMonthSelect={handleMonthSelect} onClearMonth={handleClearMonth} />
       </Flex>
 

@@ -226,12 +226,12 @@ const BusinessInformationTemplate = () => {
             <Text variant={"md2"}>Business Details</Text>
              <EditIcon />
                 </Flex>
-                <Grid templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap={4}>
+            <Grid templateColumns={isMobile ? "1fr" : "repeat(2, 1fr)"} gap={4}>
                 <GridItem>
-                <Text variant={"label"} textAlign={isMobile ? "left" : "right"}>
+                <Text variant={"label"}>
                   Store Name
                 </Text>
-                <Text variant={"base"} mt={1} textAlign={isMobile ? "left" : "right"}>
+                <Text variant={"base"} mt={1}>
                   {customer?.data?.merchant?.name ?? "N/A"}
                 </Text>
                 </GridItem>
@@ -252,8 +252,8 @@ const BusinessInformationTemplate = () => {
                 </Box>
               </GridItem>
               <GridItem>
-                <Text variant={"label"}>Number Of Employees</Text>
-                <Text variant={"base"} mt={1}>
+                <Text variant={"label"} textAlign={isMobile ? "left" : "right"}>Number Of Employees</Text>
+                <Text variant={"base"} mt={1} textAlign={isMobile ? "left" : "right"}>
                   {customer?.data?.merchant?.noOfEmployees ?? "N/A"}
                 </Text>
               </GridItem>

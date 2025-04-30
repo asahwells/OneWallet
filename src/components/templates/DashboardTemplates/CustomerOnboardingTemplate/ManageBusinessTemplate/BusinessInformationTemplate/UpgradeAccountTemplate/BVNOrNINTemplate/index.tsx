@@ -120,6 +120,7 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
             </Text>
 
             <Text
+                letterSpacing={'-1%'}
                 variant={'sm'}
                 mb={6}
                 textAlign={{

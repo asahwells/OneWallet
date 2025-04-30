@@ -28,7 +28,7 @@ const CustomerOnboardingTemplate = () =>  {
                     </Tab>
                 </TabList>
 
-                <TabPanels p={0} pb={4}>
+                <TabPanels bg={'white'}  p={0} pb={4}>
                     <TabPanel p={0} pb={4}>
                     <CustomerRegistrationDashboardTemplate />
                     </TabPanel>

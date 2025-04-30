@@ -75,6 +75,8 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
           as={Button}
           rightIcon={<ChevronDownIcon />}
           variant="md"
+          fontWeight={'500'}
+          letterSpacing={'-1.2%'}
           bg="white"
           px={4}
           py={2}
@@ -99,9 +101,11 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
               _focus={{ bg: 'gray.50' }}
               borderBottom="1px solid"
               borderColor="gray.200"
-              fontSize="md"
-              fontWeight="normal"
+              fontSize="16px"
+              fontWeight="500"
               color="#344256"
+              letterSpacing={'-1.2%'}
+              lineHeight={'24px'}
             >
               {/* Display formatted month */}
               {month.charAt(0).toUpperCase() + month.slice(1).toLowerCase()}
