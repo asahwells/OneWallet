@@ -79,14 +79,13 @@ const CustomerRegistrationTable = ({
                 <Spinner size={'lg'}/> 
             </Box>
             :
-            <Stack spacing={6} mt={4} p={0}>
+            <Stack spacing={0} borderTop="1px solid #E2E8F0">
                 {data.map((row, index) => (
                     <Box
                         key={index}
                         borderBottom="1px solid #E2E8F0"
-                        // pb={3}
                         // optional top padding to separate items
-                        // pt={3}
+                        py={2}
                         bg={'white'}
                         style={{ cursor: 'pointer' }} 
                         onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${row?.id}`)}}
@@ -97,7 +96,7 @@ const CustomerRegistrationTable = ({
                             <Box
                                 bg="green.100"
                                 w="20px"
-                                h="20px"
+                                // h="20px"
                                 borderRadius="8px"
                                 display="flex"
                                 alignItems="center"
@@ -107,16 +106,15 @@ const CustomerRegistrationTable = ({
                             </Box>
 
                             <Stack spacing={2}>
-                                <Text fontWeight="700" fontSize="14px">
+                                <Text variant={'chartLabel'}>
                                     {row?.fullName ?? 'N/A'}
                                 </Text>
-                                <Text fontSize="14px"   fontWeight="400">
+                                <Text variant={'sm'}>
                                     {row?.state ? `${row?.state} State` : 'N/A'}
                                 </Text>
-                                <Text fontSize="14px" fontWeight="400">{row?.tier ?? 'N/A'}</Text>
+                                <Text variant={'sm'}>{row?.tier ?? 'N/A'}</Text>
                                 <Text
-                                    fontSize="14px"
-                                    fontWeight="600"
+                                    variant={'md2'}
                                     color={row?.status === 'Pending' ? '#C5B27D' : '#22C55E'}
                                 >
                                     {row?.status ?? 'N/A'}
@@ -127,11 +125,13 @@ const CustomerRegistrationTable = ({
                     </Box>
                 ))}
                   {/* Mobile Pagination */}
+                  <Box mt={6}>
              <PaginationComponent
                     totalPages={totalPages}
                     currentPage={currentPage}
                     onPageChange={onPageChange}
                 />
+                </Box>
             </Stack>)
         );
     }
