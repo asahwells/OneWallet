@@ -93,7 +93,9 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton header='Account Upgrade - Tier 2' onBack={()=> router.back()}/>
+      <Box w={{base:'full', lg:'fit-content'}}>
+        <HeaderBackButton header='Account Upgrade - Tier 2' onBack={()=> router.back()}/>
+      </Box>
         <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
             <Box
             bg={isMobile ? '#F8FAFC' : 'white'}

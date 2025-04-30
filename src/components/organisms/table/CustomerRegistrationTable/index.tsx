@@ -145,9 +145,9 @@ const CustomerRegistrationTable = ({
             </Box>
             :
             <Box bg={'white'} gap={4}>
-        <TableContainer bg={'white'}  borderTop="0.5px solid #7C92B0">
+        <TableContainer bg={'white'}  >
             <Table pt={6}>
-                <Thead>
+                <Thead borderY={'0.5px solid #CFDADC'}>
                     <TableRow>
                         <TableHeaderCell>
                             <Text variant="tableHeader">SN</Text>

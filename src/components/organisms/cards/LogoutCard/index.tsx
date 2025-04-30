@@ -10,6 +10,7 @@ import {clearBusinessDetails, setCurrentBusinessStep} from "../../../../redux/sl
 import {BusinessSteps} from "../../../../redux/slices/business/interfaces";
 import {clearCustomerDetails, setCurrentStep} from "../../../../redux/slices/customer";
 import {RegisterSteps} from "../../../molecules/buttons/interfaces";
+import { clearUpgradeDetails } from '../../../../redux/slices/upgrade';
 
 const LogoutCard = () => {
     const { userDetails } = useAppSelector(state => state.user)
@@ -25,6 +26,7 @@ const LogoutCard = () => {
         dispatch(setCurrentStep(RegisterSteps.EnterPhone))
         dispatch(clearBusinessDetails())
         dispatch(clearCustomerDetails())
+        dispatch(clearUpgradeDetails())
 
         toast({
             title: "Logged out",

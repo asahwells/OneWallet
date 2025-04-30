@@ -75,6 +75,7 @@ const FilterBox = ({ onClose, onFilterChange }: IDownloadBoxProps) => {
                 base: '100%',
                 md: '500px'
             }}
+            height={'56px'}
         >
             {!isMobile &&
 

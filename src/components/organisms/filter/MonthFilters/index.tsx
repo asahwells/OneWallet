@@ -13,6 +13,7 @@ import {
   MenuItem,
   useDisclosure,
   useBreakpointValue,
+  Text,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { MonthFilterProps } from '../interfaces/index';
@@ -81,7 +82,7 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
           px={4}
           py={2}
         >
-          Filter by Month
+          <Text variant="md">Filter by Month</Text>
         </MenuButton>
         <MenuList
           width="390px"

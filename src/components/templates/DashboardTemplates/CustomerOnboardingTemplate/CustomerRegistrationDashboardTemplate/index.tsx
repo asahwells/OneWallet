@@ -77,11 +77,11 @@ const CustomerRegistrationDashboardTemplate = () => {
 
     return (
         <Stack >
-            <Stack bg={'white'} spacing={5} p={4} mb={0} borderBottom="1px solid #E2E8F0">
+            <Stack bg={'white'} spacing={5} p={4} mb={0} >
             {/* Top Row: Search + Filter + Register Button */}
             <HStack w="full" justifyContent="space-between" alignItems="center" p={0}>
                 <HStack w="full" spacing={4}>
-                    <SearchInput placeholder="Search by Customer Name" onChange={console.log} />
+                    <SearchInput h={'56px'} placeholder="Search by Customer Name" onChange={console.log} />
                     <Box position="relative">
                         <FilterButton onClick={onToggle} />
                         {/* Desktop Filter Popover */}
@@ -120,8 +120,10 @@ const CustomerRegistrationDashboardTemplate = () => {
                 }} py={3} borderRadius="4px" w={{
                     base: 'full',
                     md: "fit-content"
-                }}>
-                    <Text fontWeight="500" fontSize="18px">
+                }}
+                h={'44px'}
+                >
+                    <Text fontWeight="500" fontSize={{base: "15px", lg:"18px"}}>
                         Total Number: {customers?.pagination.total ?? 0}
                     </Text>
                 </Box>
@@ -129,7 +131,11 @@ const CustomerRegistrationDashboardTemplate = () => {
                 {isMobile && <BaseButton
                     px={12}
                     py={2}
-                    variant="brand"
+                    h={"44px"}
+                    fontSize={{base: "14px", lg:"16px"}}
+                    fontWeight={400}
+                    color={'#FCFCFC'}
+                    borderRadius={"8px"}
                     text="Register a Customer"
                     onClick={navigateToRegisterCustomer}
                 />}
