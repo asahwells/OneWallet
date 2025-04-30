@@ -47,7 +47,9 @@ const AddressVerificationFormTemplate = () => {
 
   return (
     <Box bg="#F8FAFC" minH="100vh">
+      <Box w={'fit-content'} >
       <HeaderBackButton header="Account Upgrade - Tier 3" onBack={() => router.back()} />
+      </Box>
       <Container maxW="container.md" py={4}>
         <Box borderWidth="1px" borderColor="gray.200" borderRadius="lg" p={6} bg="white" boxShadow="sm">
           <SelectField

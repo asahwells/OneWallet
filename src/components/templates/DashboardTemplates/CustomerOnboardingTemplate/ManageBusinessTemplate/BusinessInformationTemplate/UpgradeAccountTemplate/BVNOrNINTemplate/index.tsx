@@ -8,6 +8,8 @@ import {useAppDispatch, useAppSelector} from "../../../../../../../../redux/stor
 import { setUpgrade } from '../../../../../../../../redux/slices/upgrade';
 import { useParams, useRouter } from 'next/navigation';
 import { useFetchCustomer, useUpgradeTierTwo } from 'api-services/business-services';
+import BaseFormControl from 'components/molecules/forms/BaseFormControl';
+import BaseInput from 'components/molecules/inputs/BaseInput';
 
 interface EnterBVNOrNINProps {
     onNext: () => void;
@@ -36,17 +38,22 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const { mutateAsync: upgradeTierTwo, isPending: isUpgrading } = useUpgradeTierTwo();
-  const { mutateAsync: fetchCustomer, data: customer, isPending: isFetchingCustomer } = useFetchCustomer(id?.id as string);
+  //const { mutateAsync: fetchCustomer, data: customer, isPending: isFetchingCustomer } = useFetchCustomer(id?.id as string);
   
-    useEffect(() => {
-      fetchCustomer();
-    }, []);
+    // useEffect(() => {
+    //   fetchCustomer();
+    // }, []);
 
     useEffect(() => {
-      if (customer) {
-        setIsBvn(customer?.data?.bvnVerified);
+      if (upgradeDetails?.currentVerificationType === 'BVN') {
+        setIsBvn(false);
+        return
       }
-    }, [customer]);
+      if (upgradeDetails?.currentVerificationType === 'NIN') {
+        setIsBvn(true);
+        return
+      }
+    }, [upgradeDetails]);
   
 
   const handleContinue = async () => {
@@ -125,17 +132,23 @@ const BVNOrNINTemplate = ({onNext, onBack}: EnterBVNOrNINProps) => {
 
             {/* Input Field */}
             <Box position="relative" mb={2}>
-                <Input
-                    placeholder={isBvn ? "Enter BVN" : "Enter NIN"}
-                    maxLength={maxLength}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    borderRadius="8px"
-                    borderColor="#E2E8F0"
-                    focusBorderColor="#CBD5E1"
-                    height="48px"
-                    fontSize="16px"
-                />
+                <BaseFormControl
+                  mb={{ base: '20px', md: '24px' }}
+                  label={isBvn ? "Enter BVN" : "Enter NIN"}
+                  >
+                  <BaseInput
+                  placeholder=""
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="\d*"
+                  maxLength={11}
+                  value={inputValue}
+                  onChange={(e: any) => {
+                      const digitsOnly = e.target.value.replace(/\D/g, '');
+                      setInputValue(digitsOnly);
+                  }}
+                  />
+              </BaseFormControl>
             </Box>
 
             {/* Character Count */}

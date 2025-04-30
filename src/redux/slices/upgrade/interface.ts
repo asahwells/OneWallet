@@ -3,6 +3,8 @@ export interface IUser {
     userId: string,
     nin: string,
     bvn: string,
+    currentVerificationType: string,
+    currentVerificationStatus: boolean
 }
 
 

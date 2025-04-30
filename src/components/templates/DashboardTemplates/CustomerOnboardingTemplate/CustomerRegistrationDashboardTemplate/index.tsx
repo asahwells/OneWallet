@@ -121,15 +121,9 @@ const CustomerRegistrationDashboardTemplate = () => {
                     base: 'full',
                     md: "fit-content"
                 }}>
-                    {(isFetchingCustomers ?          
-                        <Box w={'full'}  display={'flex'} justifyContent={'center'} alignItems={'center'}>
-                            <Spinner size={'md'}/> 
-                        </Box>
-                        :
-                        <Text fontWeight="500" fontSize="18px">
+                    <Text fontWeight="500" fontSize="18px">
                         Total Number: {customers?.pagination.total ?? 0}
-                      </Text>
-                      )}
+                    </Text>
                 </Box>
 
                 {isMobile && <BaseButton
