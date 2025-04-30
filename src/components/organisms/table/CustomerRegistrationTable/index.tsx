@@ -14,7 +14,8 @@ import {
     HStack,
     useBreakpointValue,
     Spinner,
-    Center
+    Center,
+    Flex
 } from '@chakra-ui/react';
 import TableCell from 'components/atoms/tableDetails/TableCell';
 import TableHeaderCell from 'components/atoms/tableDetails/TableHeaderCell';
@@ -24,7 +25,21 @@ import EmptyTaskIcon from 'components/atoms/icons/EmptyTasksIcon';
 import { useRouter } from 'next/navigation';
 import { useFetchAllCustomers } from 'api-services/business-services';
 import { CustomerRegistrationTableProps } from '../interfaces';
+import FailedRegIcon from 'components/atoms/icons/FailedRegIcon';
+import ApprovedRegIcon from 'components/atoms/icons/ApprovedRegIcon';
+import PendingRegIcon from 'components/atoms/icons/PendingRegIcon';
 
+const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return <PendingRegIcon />;
+      case 'active':
+        return <ApprovedRegIcon />;
+      default:
+        return <FailedRegIcon />;
+    }
+  };
+  
 const CustomerRegistrationTable = ({
     data,
     isLoading,
@@ -46,7 +61,7 @@ const CustomerRegistrationTable = ({
 
     if (!data?.length) {
         return (
-            <Stack align="center" py={16} spacing={4} w="100%">
+            <Stack bg='red.100' align="center" py={16} spacing={4} w="100%" h="100%">
                 <EmptyTaskIcon />
                 <Text fontSize="16px" fontWeight="500">
                     You do not have any result at this time
@@ -64,32 +79,31 @@ const CustomerRegistrationTable = ({
                 <Spinner size={'lg'}/> 
             </Box>
             :
-            <Stack spacing={4} mt={4}>
+            <Stack spacing={6} mt={4} p={0}>
                 {data.map((row, index) => (
                     <Box
                         key={index}
                         borderBottom="1px solid #E2E8F0"
-                        pb={3}
+                        // pb={3}
                         // optional top padding to separate items
-                        pt={3}
+                        // pt={3}
+                        bg={'white'}
                         style={{ cursor: 'pointer' }} 
                         onClick={() => {router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${row?.id}`)}}
                     >
-                        <HStack alignItems="flex-start" spacing={3}>
+                        <HStack alignItems="flex-start" spacing={3} px={4}>
                             {/* Replace this with any icon you prefer */}
+                            <Flex alignItems={'center'} gap={8}>
                             <Box
                                 bg="green.100"
-                                w="40px"
-                                h="40px"
+                                w="20px"
+                                h="20px"
                                 borderRadius="8px"
                                 display="flex"
                                 alignItems="center"
                                 justifyContent="center"
                             >
-                                {/* Example: <Icon as={SomeIcon} color="green.500" /> */}
-                                <Text fontSize="lg" color="green.700">
-                                    📄
-                                </Text>
+                              {getStatusIcon(row?.status)}
                             </Box>
 
                             <Stack spacing={2}>
@@ -108,12 +122,12 @@ const CustomerRegistrationTable = ({
                                     {row?.status ?? 'N/A'}
                                 </Text>
                             </Stack>
+                            </Flex>
                         </HStack>
                     </Box>
                 ))}
-
-                {/* Mobile Pagination */}
-                <PaginationComponent
+                  {/* Mobile Pagination */}
+             <PaginationComponent
                     totalPages={totalPages}
                     currentPage={currentPage}
                     onPageChange={onPageChange}
@@ -130,8 +144,9 @@ const CustomerRegistrationTable = ({
                 <Spinner size={'lg'}/> 
             </Box>
             :
-        <TableContainer mt="24px" borderTop="0.5px solid #7C92B0">
-            <Table>
+            <Box bg={'white'} gap={4}>
+        <TableContainer bg={'white'}  borderTop="0.5px solid #7C92B0">
+            <Table pt={6}>
                 <Thead>
                     <TableRow>
                         <TableHeaderCell>
@@ -172,12 +187,13 @@ const CustomerRegistrationTable = ({
                     ))}
                 </Tbody>
             </Table>
-            <PaginationComponent
+        </TableContainer>
+        <PaginationComponent
                 totalPages={totalPages}
                 currentPage={currentPage}
                 onPageChange={onPageChange}
             />
-        </TableContainer>)
+        </Box>)
     );
 };
 

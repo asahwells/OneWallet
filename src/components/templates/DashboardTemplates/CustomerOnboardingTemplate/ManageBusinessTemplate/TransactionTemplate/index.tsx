@@ -1,102 +1,90 @@
-'use client';
-
+import React, { useEffect, useState } from 'react';
 import {
-  Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay,
-  Flex, HStack, Icon, Menu, MenuButton, MenuItem, MenuList, Stack, Tag, TagCloseButton,
-  TagLabel, Text, useBreakpointValue, useDisclosure, VStack,
+  Box,
+  Flex,
+  Text,
+  Stack,
+  SimpleGrid,
+  useBreakpointValue,
+  Spinner,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { ChevronDownIcon, CloseIcon } from '@chakra-ui/icons';
-import FilterButton from '../../../../../molecules/buttons/FilterButton';
-import SelectFilterBox from '../../../../../organisms/filter/SelectFilterBox';
-import TotalApplicationIcon from '../../../../../atoms/icons/TotalApplicationIcon/index';
-import AnalyticsCard from '../../../../../molecules/card/AnalyticsCard/index';
-import { MockCustomerRegistration } from '../../../../../organisms/table/mockData';
-import CustomerTransactionTable from '../../../../../organisms/table/CustomerTransactionTable/index';
-import { Select, Button, SimpleGrid } from '@chakra-ui/react';
-import TransactionVolumeIcon from '../../../../../atoms/icons/TransactionVolumeIcon/index';
-import TransactionValueIcon from '../../../../../atoms/icons/TransactionValueIcon/index';
-import MonthFilter from '../../../../../organisms/filter/MonthFilters/index';
 import { useParams } from 'next/navigation';
 import { useFetchAllTransactions } from 'api-services/business-services';
+import CustomerTransactionTable from '../../../../../organisms/table/CustomerTransactionTable/index';
+import MonthFilter from '../../../../../organisms/filter/MonthFilters/index';
+import AnalyticsCard from '../../../../../molecules/card/AnalyticsCard/index';
+import TransactionVolumeIcon from '../../../../../atoms/icons/TransactionVolumeIcon/index';
+import TransactionValueIcon from '../../../../../atoms/icons/TransactionValueIcon/index';
+import PaginationComponent from 'components/organisms/pagination/PaginationComponent';
 
 const TransactionTemplate = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { id } = useParams() as { id: string };
-  const [filters, setFilters] = useState<{ [k: string]: string }>({});
-  const [selectedMonth, setSelectedMonth] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
 
-  const {
-    mutateAsync: fetchTransactions,
-    data: transactions,
-    isPending: isLoading,
-  } = useFetchAllTransactions();
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // Filter states
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [filters, setFilters] = useState<{ [key: string]: string }>({});
+
+  const { mutateAsync: fetchTransactions, data: transactions, isPending: isFetchingTransactions } = useFetchAllTransactions(id);
 
   useEffect(() => {
-    fetchTransactions({
-      id,
-      page: currentPage,   // Pass as number
-      limit: pageSize,      // Pass as number
-      month: selectedMonth, // Pass as string
-      ...filters,            // Pass other filters as strings
-    });
-  }, [id, currentPage, selectedMonth, filters]);
-  
-  
-  // MonthFilter callbacks
+    fetchTransactions({ page: currentPage, month: selectedMonth || '' });
+  }, [currentPage, selectedMonth]);
   const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
-    setCurrentPage(1); // reset page
-  };
-  const handleClearMonth = () => {
-    setSelectedMonth('');
   };
 
-  // SelectFilterBox already gives you key/value pairs
-  const handleFilterChange = (newFilters: { [k: string]: string }) =>
-    setFilters(
-      Object.fromEntries(
-        Object.entries(newFilters).filter(([, v]) => v?.trim())
-      )
-    );
+  const handleClearMonth = () => {
+    setSelectedMonth(null);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Stack bg="white" spacing={5} p={{ base: 0, md: 4 }}>
       {/* Transaction Summary Cards */}
-      <SimpleGrid columns={{ base: 2, md: 2 }} spacing={4} maxW={{ base: "100%", md: "600px" }}>
-      <AnalyticsCard
-            title="Transaction Volume"
-            value="50"
-            // isLoading={isFetchingDashboard}
-            icon={<TransactionVolumeIcon />}
-          />
-          <AnalyticsCard
-            title="Transaction Value"
-            value="₦64,890.23"
-            // isLoading={}
-            icon={<TransactionValueIcon />}
-          />
-        </SimpleGrid>
-      {/* Transaction History */}
-      <Flex justify="space-between" align="center" mt={4}>
-        <Text variant={'md'}>
-          Transaction History
-        </Text>
-        <MonthFilter
-          onMonthSelect={handleMonthSelect}
-          onClearMonth={handleClearMonth}
+      <SimpleGrid columns={{ base: 2, md: 2 }} spacing={4} maxW={{ base: '100%', md: '600px' }}>
+        <AnalyticsCard
+          title="Transaction Volume"
+          value={`0`}
+          icon={<TransactionVolumeIcon />}
         />
+        <AnalyticsCard
+          title="Transaction Value"
+          value={`₦${0}`}
+          icon={<TransactionValueIcon />}
+        />
+      </SimpleGrid>
+
+      {/* Transaction History */}
+      <Flex justifyContent="space-between" alignItems="center" mt={4} direction={{ base: 'row', md: 'row' }} gap={{ base: 4, md: 0 }} w="full">
+        <Text variant={'md'} letterSpacing={'-1.2%'}>Transaction History</Text>
+        <MonthFilter onMonthSelect={handleMonthSelect} onClearMonth={handleClearMonth} />
       </Flex>
 
-      {/* YOUR TABLE */}
-      <CustomerTransactionTable
-        data={transactions?.data ?? []}
-        isLoading={isLoading}
-        currentPage={transactions?.pagination.currentPage}
-        totalPages={transactions?.pagination.lastPage}
-        onPageChange={() => setCurrentPage}
-      />
+      {/* Transaction Table */}
+      <Box mt={4}>
+        {isFetchingTransactions ? (
+          <Box w={'full'} h={'350px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+            <Spinner size={'lg'} />
+          </Box>
+        ) : (
+          <>
+            <CustomerTransactionTable data={transactions?.data || []} isFetchingTransactions={isFetchingTransactions} />
+            <PaginationComponent
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )}
+      </Box>
     </Stack>
   );
 };

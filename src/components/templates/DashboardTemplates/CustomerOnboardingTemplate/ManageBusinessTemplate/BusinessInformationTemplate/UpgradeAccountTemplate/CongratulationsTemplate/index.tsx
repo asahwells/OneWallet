@@ -99,7 +99,7 @@ const SuccessTemplate = ({
                 maxW="600px" 
                 w="full" 
                 px={4} 
-                py={8}
+                py={4}
             >
 
                 {/* User Account Info Card */}
@@ -129,12 +129,12 @@ const SuccessTemplate = ({
 
                                 }
                             </Box>
-                            <Box display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'end'}>
-                                <Box>
+                            <Box display={'flex'} flexDir={'column'} justifyContent={'flex-end'} alignItems={'flex-end'} w="full">
+                                <Box w="full" textAlign="right">
                                     <Text variant={'sm2'} mb={1}>
                                         Account Number
                                     </Text>
-                                    <Flex align="center">
+                                    <Flex align="center" justify="flex-end">
 
                                             {isPending ? < Spinner /> :   <Text variant={'sma'}>
                                                 {customerInfo?.data?.accountNumber || 'not generated'}
@@ -143,9 +143,10 @@ const SuccessTemplate = ({
                                         <Box 
                                             as="button" 
                                             onClick={handleCopy} 
-                                            p={1} 
+                                            py={1} 
                                             borderRadius="4px" 
                                             //bg="#0F454F"
+                                            ml={2}
                                         >
                                             <CopyIcon />
                                         </Box>
@@ -183,8 +184,8 @@ const SuccessTemplate = ({
                                 {userData.dailyLimit}
                             </Text>
                         </Box>
-                        <Box display={'flex'} flexDir={'column'} justifyContent={'center'} alignItems={'end'}>
-                            <Box>
+                        <Box display={'flex'} flexDir={'column'} justifyContent={'flex-end'} alignItems={'flex-end'} w="full">
+                            <Box w="full" textAlign="right">
                                 <Text variant={'base2'} mb={2}>
                                     Maximum Balance
                                 </Text>

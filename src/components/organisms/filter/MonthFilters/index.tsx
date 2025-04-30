@@ -1,10 +1,21 @@
 'use client';
 
 import React, { useState } from 'react';
-import { HStack, Tag, TagLabel, TagCloseButton, Button, Menu, MenuButton, MenuList, MenuItem, useDisclosure, useBreakpointValue } from '@chakra-ui/react';
+import {
+  HStack,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useDisclosure,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { MonthFilterProps } from '../interfaces/index';
-
 
 const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -13,8 +24,12 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
 
   // Handle month selection
   const handleMonthSelect = (month: string) => {
-    setSelectedMonth(month);
-    onMonthSelect(month);
+    // Format the month to be "First letter uppercase, rest lowercase" for display
+    const formattedMonth = month.charAt(0).toUpperCase() + month.slice(1).toLowerCase();
+    setSelectedMonth(formattedMonth);
+
+    // Pass the lowercase month to the parent (backend request)
+    onMonthSelect(month.toLowerCase());
   };
 
   // Clear selected month
@@ -24,12 +39,18 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
   };
 
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July',
-    'August', 'September', 'October', 'November', 'December',
+    'january', 'february', 'march', 'april', 'may', 'june', 'july',
+    'august', 'september', 'october', 'november', 'december',
   ];
 
   return (
-    <HStack spacing={2} display={'flex'} flexDir={{base: 'column-reverse', lg: 'row'}} justify={'start'} alignItems="center">
+    <HStack
+      spacing={2}
+      display={'flex'}
+      flexDir={{ base: 'column-reverse', lg: 'row' }}
+      justify={'start'}
+      alignItems="center"
+    >
       {/* Selected Month Tag */}
       {selectedMonth && (
         <HStack mt={2}>
@@ -54,6 +75,8 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
           as={Button}
           rightIcon={<ChevronDownIcon />}
           variant="md"
+          fontWeight={'500'}
+          letterSpacing={'-1.2%'}
           bg="white"
           px={4}
           py={2}
@@ -78,11 +101,14 @@ const MonthFilter = ({ onMonthSelect, onClearMonth }: MonthFilterProps) => {
               _focus={{ bg: 'gray.50' }}
               borderBottom="1px solid"
               borderColor="gray.200"
-              fontSize="md"
-              fontWeight="normal"
+              fontSize="16px"
+              fontWeight="500"
               color="#344256"
+              letterSpacing={'-1.2%'}
+              lineHeight={'24px'}
             >
-              {month}
+              {/* Display formatted month */}
+              {month.charAt(0).toUpperCase() + month.slice(1).toLowerCase()}
             </MenuItem>
           ))}
         </MenuList>
