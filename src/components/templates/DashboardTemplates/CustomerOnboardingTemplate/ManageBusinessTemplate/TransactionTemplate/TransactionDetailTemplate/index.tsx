@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, Container, Flex, Grid, Heading, Text, Badge,
   IconButton, useBreakpointValue,
@@ -11,11 +11,22 @@ import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import { TransactionData } from '../../../../../mockData';
 import Status from '../../../../../../molecules/badge/Status/status';
 import { TransactionStatus } from 'components/molecules/badge/Status/status.enum';
+import { useFetchSingleTransaction } from 'api-services/business-services';
+import moment from 'moment';
 
 const TransactionDetailTemplate = () => {
   const statusOptions = ['Successful', 'Pending', 'Failed'];
-  const transaction = { ...TransactionData };
+  const { id } = useParams() as { id: string };
+  const { transactionId } = useParams() as { transactionId: string };
 
+  const router = useRouter();
+
+  //const transaction = { ...TransactionData };
+  const { mutateAsync: fetchTransaction, data: transaction, isPending: isFetchingTransactionDetails } = useFetchSingleTransaction(id, transactionId);
+  
+  useEffect(() => {
+    fetchTransaction();
+  }, []);
   // Status badge styling
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -42,16 +53,24 @@ const TransactionDetailTemplate = () => {
     }
   };
 
-  const statusStyles = getStatusStyles(transaction.status);
+  //const statusStyles = getStatusStyles(transaction.status);
+
+  const capitalizeFirstLetter = (str: string | undefined): string => {
+    if (!str) return ''; 
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+  
 
   return (
     <Box bg="#FAFAFB" minH="100vh">
-        <HeaderBackButton header='Business' />
+        <Box w={'fit-content'} >
+          <HeaderBackButton header='Business' onBack={()=> router.back()}/>
+        </Box>
       <Container maxW="container.md" py={4} bg="white">
         {/* Header */}
         <Flex align="center" mb={6}>
           <Heading size="md" color="#344256">
-            Transaction ID: {transaction.id}
+            Transaction ID: {transaction?.data?.id}
           </Heading>
         </Flex>
 
@@ -68,7 +87,7 @@ const TransactionDetailTemplate = () => {
               <Text variant={'md'}>
                 Transaction Details
               </Text>
-              <Status status={transaction.status as TransactionStatus} />
+              <Status status={capitalizeFirstLetter(transaction?.data?.status as string) as TransactionStatus} />
             </Flex>
           </Box>
 
@@ -86,7 +105,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.transactionId}
+                  {transaction?.data?.id || 'N/A'}
                 </Text>
               </Box>
 
@@ -97,7 +116,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.status}
+                  {transaction?.data?.status ? transaction?.data?.status : 'N/A'}
                 </Text>
               </Box>
 
@@ -108,7 +127,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.transactionType}
+                  {transaction?.data?.operation || 'N/A'}
                 </Text>
               </Box>
 
@@ -119,7 +138,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.paymentType}
+                  {transaction?.data?.type || 'N/A'}
                 </Text>
               </Box>
 
@@ -130,7 +149,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.amount}
+                  {transaction?.data?.amount ? `₦${transaction?.data?.amount}` : 'N/A'}
                 </Text>
               </Box>
 
@@ -141,7 +160,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.date}
+                  {transaction?.data?.createdAt ? moment(transaction?.data?.createdAt).format('YYYY-MM-DD HH:mm a') : 'N/A'}
                 </Text>
               </Box>
             </Grid>
@@ -161,7 +180,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.sender.bankName}
+                  {transaction?.data?.senderBankName || 'N/A'}
                 </Text>
               </Box>
 
@@ -172,7 +191,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.sender.accountNumber}
+                  {transaction?.data?.senderSourceAccountNo || 'N/A'}
                 </Text>
               </Box>
 
@@ -183,7 +202,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.sender.accountName}
+                  {transaction?.data?.senderAccountName || 'N/A'}
                 </Text>
               </Box>
             </Grid>
@@ -203,7 +222,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.recipient.bankName}
+                  {transaction?.data?.recipientBankName || 'N/A'}
                 </Text>
               </Box>
 
@@ -214,7 +233,7 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.recipient.accountName}
+                  {transaction?.data?.recipientAccountName || 'N/A'}
                 </Text>
               </Box>
 
@@ -225,14 +244,14 @@ const TransactionDetailTemplate = () => {
               </Box>
               <Box textAlign="right">
                 <Text fontSize="sm" fontWeight="medium" color="#344256">
-                  {transaction.recipient.accountNumber}
+                  {transaction?.data?.recipientAccountNumber || 'N/A'}
                 </Text>
               </Box>
             </Grid>
           </Box>
 
           {/* Note */}
-          {transaction.note && (
+          {transaction?.data?.narration && (
             <Box p={6}>
               <Grid templateColumns="1fr 1fr" gap={4}>
                 <Box>
@@ -242,7 +261,7 @@ const TransactionDetailTemplate = () => {
                 </Box>
                 <Box textAlign="right">
                   <Text fontSize="sm" fontWeight="medium" color="#344256">
-                    {transaction.note}
+                    {transaction?.data?.narration }
                   </Text>
                 </Box>
               </Grid>

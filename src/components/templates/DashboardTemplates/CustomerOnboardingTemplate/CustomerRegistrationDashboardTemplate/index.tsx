@@ -122,7 +122,7 @@ const CustomerRegistrationDashboardTemplate = () => {
                     base: 'full',
                     md: "fit-content"
                 }}>
-                    <Text fontWeight="500" fontSize="18px">
+                    <Text fontWeight="500" fontSize={{base: "15px", lg:"18px"}}>
                         Total Number: {customers?.pagination.total ?? 0}
                     </Text>
                 </Box>
@@ -130,7 +130,11 @@ const CustomerRegistrationDashboardTemplate = () => {
                 {isMobile && <BaseButton
                     px={12}
                     py={2}
-                    variant="brand"
+                    h={"48px"}
+                    fontSize={{base: "14px", lg:"16px"}}
+                    fontWeight={400}
+                    color={'#FCFCFC'}
+                    borderRadius={"8px"}
                     text="Register a Customer"
                     onClick={navigateToRegisterCustomer}
                 />}

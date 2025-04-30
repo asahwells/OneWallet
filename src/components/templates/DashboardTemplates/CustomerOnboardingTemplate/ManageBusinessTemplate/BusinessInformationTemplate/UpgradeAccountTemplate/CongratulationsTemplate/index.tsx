@@ -18,6 +18,8 @@ import Tier2Icon from 'components/atoms/icons/Tier2Icon';
 import { useGetCustomerAccountInformation } from 'api-services/business-services';
 import { useParams, useRouter } from 'next/navigation';
 import { router } from 'next/client';
+import { clearUpgradeDetails } from '../../../../../../../../redux/slices/upgrade';
+import { useAppDispatch } from '../../../../../../../../redux/store';
 
 const SuccessTemplate = ({ 
     onDone, 
@@ -37,6 +39,8 @@ const SuccessTemplate = ({
 
     const id = useParams();
     const toast = useToast();
+
+    const dispatch = useAppDispatch()
     const router = useRouter();
 
     const {data: customerInfo, mutateAsync: fetchCustomerInfo, isPending} = useGetCustomerAccountInformation(id?.id as string)
@@ -207,7 +211,10 @@ const SuccessTemplate = ({
                     fontSize="16px"
                     fontWeight="600"
                     _hover={{ bg: "#0D3A42" }}
-                    onClick={onDone}
+                    onClick={()=>{
+                        router.push(`/admin/dashboard`),
+                        dispatch(clearUpgradeDetails())
+                    }}
                     mb={4}
                 />
                 
@@ -218,7 +225,7 @@ const SuccessTemplate = ({
                         bg="white"
                         color="#0F454F"
                         borderRadius="8px"
-                        fontSize="16px"
+                        fontSize={{base: "14px", lg: "16px"}}
                         fontWeight="600"
                         border="1px solid #0F454F"
                         _hover={{ bg: "#F8FAFC" }}
@@ -230,11 +237,14 @@ const SuccessTemplate = ({
                         bg="white"
                         color="#0F454F"
                         borderRadius="8px"
-                        fontSize="16px"
+                        fontSize={{base: "14px", lg: "16px"}}
                         fontWeight="600"
                         border="1px solid #0F454F"
                         _hover={{ bg: "#F8FAFC" }}
-                        onClick={()=> router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id?.id}/upgrade-tier3`)}
+                        onClick={()=> {
+                            router.push(`/admin/dashboard/business/customer-onboarding/manage-business/${id?.id}/upgrade-tier3`),
+                            dispatch(clearUpgradeDetails())
+                        }}
                     />
                 </Grid>
             </Flex>

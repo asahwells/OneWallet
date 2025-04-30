@@ -10,7 +10,8 @@ import {
     Tbody,
     Tr,
     Td,
-    VStack, Spinner
+    VStack, Spinner,
+    useDisclosure
 } from '@chakra-ui/react';
 import { DownloadIcon } from '@chakra-ui/icons';
 import BaseButton from 'components/molecules/buttons/BaseButton';
@@ -20,8 +21,11 @@ import HeaderBackButton from 'components/molecules/buttons/HeaderBackButton';
 import {useGetCustomerInformation} from "../../../../../../api-services/business-registration-services";
 import { useParams, useRouter } from 'next/navigation';
 import { QrCodeTemplateProps } from '../../BusinessSetupTemplate/interfaces';
+import QrcodeIcon from 'components/atoms/icons/QrcodeIcon';
+import DownloadOptionsModal from 'components/molecules/modals/DownloadOptionsModal';
 
 const ViewQrCodeTemplate = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const router = useRouter()
     useEffect(() => {
@@ -37,11 +41,16 @@ const ViewQrCodeTemplate = () => {
         isPending
     } = useGetCustomerInformation(id);
 
-
+    const handleConfirm = (option: string) => {
+        console.log('Selected option:', option);
+    };
 
     return (
         <Flex direction="column" bg="#F8FAFC" w={'full'} minH="100vh">
-            <HeaderBackButton onBack={()=> router.back()} header='Business Setup' />
+            <Box w={{base:'full', lg:'fit-content'}}>
+                <HeaderBackButton onBack={()=> router.back()} header='QR Codes' />
+            </Box>
+            
 
             {/* Main Content */}
             <Flex 
@@ -56,7 +65,9 @@ const ViewQrCodeTemplate = () => {
                 <Box 
                     bg="#0F454F" 
                     //borderRadius="8px" 
-                    p={6} 
+                    px={6}
+                    pt={4}
+                    pb={2}
                     maxW="500px" 
                     w="full" 
                     color="white"
@@ -85,6 +96,7 @@ const ViewQrCodeTemplate = () => {
                         borderRadius="8px" 
                         maxW="300px" 
                         mx="auto" 
+                        position="relative"
                         mb={6}
                     >
                         <Image
@@ -93,12 +105,22 @@ const ViewQrCodeTemplate = () => {
                             w="full" 
                             h="auto"
                         />
+                          <Box
+                            position="absolute"
+                            top="50%"
+                            left="50%"
+                            transform="translate(-50%, -50%)"
+                            zIndex={1}
+                        >
+                            <QrcodeIcon /> 
+                        </Box>
+
                     </Box>
 
                     {/* Can't Scan Text */}
                     <Text 
-                        fontSize="16px" 
-                        fontWeight="400" 
+                        fontSize="13px" 
+                        fontWeight="600" 
                         color={'#FFFFFF'}
                         mb={4}
                         align={'left'}
@@ -166,8 +188,8 @@ const ViewQrCodeTemplate = () => {
                         </Table>
                     </Box>
 
-                    <Flex align="center" justify="end" fontSize="14px" lineHeight={'22px'}>
-                        <Text mr={2} color={'#FFFFFF'}>We accept all bank payments and</Text>
+                    <Flex align="center" justify="center">
+                        <Text mr={2} variant={'radioText'} color={'#FFFFFF'}>We accept all bank payments and</Text>
                         <Flex>
                             <CardTypeIcons />
                         </Flex>
@@ -187,7 +209,7 @@ const ViewQrCodeTemplate = () => {
                         fontWeight="600"
                         leftIcon={<DownloadIcon />}
                         _hover={{ bg: "#0D3A42" }}
-                        onClick={() => {}}
+                        onClick={onOpen}
                     />
                     
                     <BaseButton
@@ -201,10 +223,17 @@ const ViewQrCodeTemplate = () => {
                         fontWeight="600"
                         border="1px solid #0F454F"
                         _hover={{ bg: "#F8FAFC" }}
-                        onClick={() => router.back()}
+                        onClick={() => {router.back() }}
                     />
                 </VStack>
+
             </Flex>
+
+            {isOpen && <DownloadOptionsModal
+                isOpen={isOpen}
+                onClose={onClose}
+                onConfirm={handleConfirm}
+            />}
         </Flex>
     );
 };

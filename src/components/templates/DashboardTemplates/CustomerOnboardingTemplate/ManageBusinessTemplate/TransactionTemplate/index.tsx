@@ -9,7 +9,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { useParams } from 'next/navigation';
-import { useFetchAllTransactions } from 'api-services/business-services';
+import { useFetchAllTransactions, useFetchTransactionsOverview } from 'api-services/business-services';
 import CustomerTransactionTable from '../../../../../organisms/table/CustomerTransactionTable/index';
 import MonthFilter from '../../../../../organisms/filter/MonthFilters/index';
 import AnalyticsCard from '../../../../../molecules/card/AnalyticsCard/index';
@@ -30,6 +30,11 @@ const TransactionTemplate = () => {
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
 
   const { mutateAsync: fetchTransactions, data: transactions, isPending: isFetchingTransactions } = useFetchAllTransactions(id);
+  const { mutateAsync: fetchTransactionsOverview, data: transactionsOverview, isPending: isFetchingTransactionsOverview } = useFetchTransactionsOverview(id);
+
+  useEffect(() => {
+    fetchTransactionsOverview();
+  }, []);
 
   useEffect(() => {
     fetchTransactions({ page: currentPage, month: selectedMonth || '' });
@@ -52,12 +57,14 @@ const TransactionTemplate = () => {
       <SimpleGrid columns={{ base: 2, md: 2 }} spacing={4} maxW={{ base: '100%', md: '600px' }}>
         <AnalyticsCard
           title="Transaction Volume"
-          value={`0`}
+          isLoading={isFetchingTransactionsOverview}
+          value={`${transactionsOverview?.data?.transactionCount || 'N/A'}`}
           icon={<TransactionVolumeIcon />}
         />
         <AnalyticsCard
           title="Transaction Value"
-          value={`₦${0}`}
+          isLoading={isFetchingTransactionsOverview}
+          value={`${transactionsOverview?.data?.transactionAmount ? `₦${transactionsOverview?.data?.transactionAmount}` : 'N/A'}`}
           icon={<TransactionValueIcon />}
         />
       </SimpleGrid>
@@ -77,11 +84,15 @@ const TransactionTemplate = () => {
         ) : (
           <>
             <CustomerTransactionTable data={transactions?.data || []} isFetchingTransactions={isFetchingTransactions} />
-            <PaginationComponent
+            {transactions?.data?.length ? <PaginationComponent
               totalPages={totalPages}
               currentPage={currentPage}
               onPageChange={handlePageChange}
-            />
+            />: (
+              <Box display={'flex'} justifyContent={'center'} alignItems={'center'} mt={4}>
+                <Text fontSize="16px" fontWeight="500"></Text>
+              </Box>
+            )}
           </>
         )}
       </Box>
