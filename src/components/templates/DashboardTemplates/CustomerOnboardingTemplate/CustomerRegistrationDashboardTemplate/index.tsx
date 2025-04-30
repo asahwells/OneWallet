@@ -81,7 +81,7 @@ const CustomerRegistrationDashboardTemplate = () => {
             {/* Top Row: Search + Filter + Register Button */}
             <HStack w="full" justifyContent="space-between" alignItems="center" p={0}>
                 <HStack w="full" spacing={4}>
-                    <SearchInput placeholder="Search by Customer Name" onChange={console.log} />
+                    <SearchInput h={'56px'} placeholder="Search by Customer Name" onChange={console.log} />
                     <Box position="relative">
                         <FilterButton onClick={onToggle} />
                         {/* Desktop Filter Popover */}
@@ -120,7 +120,9 @@ const CustomerRegistrationDashboardTemplate = () => {
                 }} py={3} borderRadius="4px" w={{
                     base: 'full',
                     md: "fit-content"
-                }}>
+                }}
+                h={'44px'}
+                >
                     <Text fontWeight="500" fontSize={{base: "15px", lg:"18px"}}>
                         Total Number: {customers?.pagination.total ?? 0}
                     </Text>
@@ -129,7 +131,7 @@ const CustomerRegistrationDashboardTemplate = () => {
                 {isMobile && <BaseButton
                     px={12}
                     py={2}
-                    h={"48px"}
+                    h={"44px"}
                     fontSize={{base: "14px", lg:"16px"}}
                     fontWeight={400}
                     color={'#FCFCFC'}
