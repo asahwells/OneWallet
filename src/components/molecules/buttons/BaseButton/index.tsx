@@ -12,6 +12,7 @@ const BaseButton = ({
       _hover={{ bg: '#0C363E', color: 'white' }}
       fontWeight={400}
       fontSize={'16px'}
+      cursor={'pointer'}
       {...props}
     >
       {text}

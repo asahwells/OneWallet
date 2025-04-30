@@ -122,6 +122,61 @@ export interface ITransactionsRes {
     }
 }
 
+export interface ITransactionRes {
+    id: string,
+    active: boolean,
+    createdAt: string,
+    updatedAt: string,
+    deletedAt: null,
+    version: string,
+    amount: string,
+    signedAmount: string,
+    reference: string,
+    description: null,
+    appDescription: string,
+    internalDescription: string,
+    category: string,
+    currency: string,
+    generalReference: string,
+    type: string,
+    operation: string,
+    buyPowerTariffClass: null,
+    electricityToken: null,
+    status: string,
+    paymentProvider: string,
+    isFlagged: boolean,
+    phone: null,
+    meter: null,
+    biller: null,
+    billerLogo: null,
+    tariffDescription: null,
+    senderBankCode: null,
+    dotAiReference: null,
+    dotAiRequestId: null,
+    senderSourceAccountNo: null,
+    senderAccountName: null,
+    transRemark: null,
+    narration: null,
+    senderBankName: null,
+    senderBankLogo: null,
+    recipientBankCode: null,
+    recipientAccountNumber: null,
+    recipientAccountName: null,
+    recipientBankName: null,
+    recipientBankLogo: null,
+    fee: string,
+    balanceAfter: string,
+    balanceBefore: string,
+    metaData: null,
+    buyPowerOrderId: null,
+    buyPowerReceiptNo: null,
+    buyPowerVendReference: null,
+    userId: string,
+    merchantId: null,
+    fundedByAdminId: null,
+    oneTimeReferralCampaignId: null
+}
+
 export interface  ICustomersInfoRes {
     data: ICustomersRes[];
     message?: string;
@@ -159,6 +214,23 @@ export interface  ITransactionsInfoRes {
         lastPage: number,
         total: number,
     }
+    status?: string;
+    state?: number;
+}
+
+export interface  ITransactionsOverviewRes {
+    data: {
+        transactionAmount: number,
+        transactionCount: number
+    };
+    message?: string;
+    status?: string;
+    state?: number;
+}
+
+export interface  ITransactionDetailsRes {
+    data: ITransactionRes;
+    message?: string;
     status?: string;
     state?: number;
 }

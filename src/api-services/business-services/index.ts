@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { BASE_AXIOS, HttpClient } from "api-services/http";
-import { IAddNextOfKinPayload, ICustomerBankInfoResponse, ICustomerInfoRes, ICustomersInfoRes, ITierThreeUpgradePayload, ITierTwoUpgradePayload, ITransactionsInfoRes } from "./interface";
+import { IAddNextOfKinPayload, ICustomerBankInfoResponse, ICustomerInfoRes, ICustomersInfoRes, ITierThreeUpgradePayload, ITierTwoUpgradePayload, ITransactionDetailsRes, ITransactionsInfoRes, ITransactionsOverviewRes } from "./interface";
 import { useToast } from "@chakra-ui/react";
 import { IResponse } from "api-services/business-registration-services/interface";
 
@@ -42,6 +42,36 @@ export const useFetchAllTransactions = (id: string) => {
       });
     },
     onSuccess: (res: ITransactionsInfoRes) => {
+      return res;
+    },
+  });
+};
+
+export const useFetchTransactionsOverview = (id: string) => {
+  return useMutation<ITransactionsOverviewRes, Error>({
+    mutationFn: (): Promise<ITransactionsOverviewRes> => {
+
+      return HttpClient.get<ITransactionsOverviewRes>(BASE_AXIOS, {
+        url: `sales-agent/customers/${id}/transactions/overview`,
+        //params: params,
+      });
+    },
+    onSuccess: (res: ITransactionsOverviewRes) => {
+      return res;
+    },
+  });
+};
+
+export const useFetchSingleTransaction = (id: string, TId: string) => {
+  return useMutation<ITransactionDetailsRes, Error>({
+    mutationFn: (): Promise<ITransactionDetailsRes> => {
+
+      return HttpClient.get<ITransactionDetailsRes>(BASE_AXIOS, {
+        url: `sales-agent/customers/${id}/transactions/${TId}`,
+        //params: params,
+      });
+    },
+    onSuccess: (res: ITransactionDetailsRes) => {
       return res;
     },
   });

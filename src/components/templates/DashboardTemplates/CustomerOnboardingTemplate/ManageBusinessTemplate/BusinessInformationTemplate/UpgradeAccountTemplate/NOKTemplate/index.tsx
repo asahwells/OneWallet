@@ -95,7 +95,9 @@ const NextOfKinTemplate = ({ onBack, onNext }: BusinessDetailsProps) => {
 
   return (
     <Flex direction="column" bg="#F8FAFC" w="full">
-      <HeaderBackButton onBack={()=> router.back()} header="Account Upgrade - Tier 2" />
+      <Box w={{base:'full', lg:'fit-content'}}>
+        <HeaderBackButton onBack={()=> router.back()} header="Account Upgrade - Tier 2" />
+      </Box>
 
       <Box px={4} pt={isMobile ? '6px' : '36px'} pb={8}>
         <Box

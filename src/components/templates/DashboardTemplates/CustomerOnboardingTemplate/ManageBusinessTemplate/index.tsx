@@ -16,7 +16,9 @@ const ManageBusinessTemplate = () =>  {
     const router = useRouter()
     return (
         <Stack bg={'#F8FAFC'} px={{base:0, lg:5}}>
-            <HeaderBackButton header='Business' onBack={()=> router.back()}/>
+            <Box w={{base: 'full', lg:'fit-content'}} >
+                <HeaderBackButton header='Business' onBack={()=> router.back()}/>
+            </Box>
 
             <Tabs mx={{base:0, lg:5}} bg={'white'} py={4} px={{base:0, lg:2}} borderRadius={'8px'}>
                 <TabList  borderBottomColor={'#E5E9EB'}>
