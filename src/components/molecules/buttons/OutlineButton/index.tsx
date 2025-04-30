@@ -8,7 +8,7 @@ const OutlineButton = ({
   return (
     <Button
         borderRadius={'8px'}
-        border={'1px solid #0F454F'}
+        border={'1.2px solid #0F454F'}
         variant={'outline'}
         _disabled={{ bg: '#A0AEC0', cursor: 'not-allowed' }}
         minH={h || '48px'}

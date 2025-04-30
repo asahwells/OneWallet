@@ -37,7 +37,7 @@ const statusStyles = getStatusStyles(status);
   return (
     <Badge
       px={3}
-      py={1}
+      py={2}
       borderRadius="full"
       bg={statusStyles.bg}
       color={statusStyles.color}

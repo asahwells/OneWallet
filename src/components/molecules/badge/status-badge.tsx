@@ -42,7 +42,7 @@ const StatusBadge = ({ status, ...badgeProps }: StatusBadgeProps) => {
   return (
     <Badge
       bg={config?.bg}
-      h={"48px"}
+      h={"40px"}
       w={"167px"}
       gap={2}
       display="flex"
@@ -51,7 +51,7 @@ const StatusBadge = ({ status, ...badgeProps }: StatusBadgeProps) => {
       px={3}
       py={1}
       color={config?.color}
-      border={`1px solid ${config?.borderColor}`}
+      border={`2px solid ${config?.borderColor}`}
       borderRadius="8px"
       {...badgeProps}
     >

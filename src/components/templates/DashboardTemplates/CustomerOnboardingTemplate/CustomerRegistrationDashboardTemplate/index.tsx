@@ -24,6 +24,7 @@ import {
     Text,
     useBreakpointValue,
     useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 import BaseInput from "../../../../molecules/inputs/BaseInput";
 import SearchInput from "../../../../molecules/inputs/SearchInput";
@@ -75,12 +76,10 @@ const CustomerRegistrationDashboardTemplate = () => {
     }
 
     return (
-        <Stack bg="white" spacing={5} p={{
-            base: 0,
-            md: 4
-        }}>
+        <Stack >
+            <Stack bg={'white'} spacing={5} p={4} mb={0} borderBottom="1px solid #E2E8F0">
             {/* Top Row: Search + Filter + Register Button */}
-            <HStack w="full" justifyContent="space-between" alignItems="center">
+            <HStack w="full" justifyContent="space-between" alignItems="center" p={0}>
                 <HStack w="full" spacing={4}>
                     <SearchInput placeholder="Search by Customer Name" onChange={console.log} />
                     <Box position="relative">
@@ -189,16 +188,6 @@ const CustomerRegistrationDashboardTemplate = () => {
                 </HStack>
             )}
 
-            {/* Customer Registration Table / List */}
-            <CustomerRegistrationTable
-                data={customers?.data ?? []}
-                isLoading={isFetchingCustomers}
-                currentPage={customers?.pagination.currentPage}
-                totalPages={customers?.pagination.lastPage}
-                onPageChange={setCurrentPage}
-            />
-          
-
             {/* Mobile Filter Drawer */}
             {isMobile && isOpen &&  (
                 <Drawer isOpen={isOpen} onClose={onClose} placement="right" size="full">
@@ -216,6 +205,16 @@ const CustomerRegistrationDashboardTemplate = () => {
                     </DrawerContent>
                 </Drawer>
             )}
+            </Stack>
+
+             {/* Customer Registration Table / List */}
+             <CustomerRegistrationTable
+                data={customers?.data ?? []}
+                isLoading={isFetchingCustomers}
+                currentPage={customers?.pagination.currentPage}
+                totalPages={customers?.pagination.lastPage}
+                onPageChange={setCurrentPage}
+            />
         </Stack>
     );
 };
