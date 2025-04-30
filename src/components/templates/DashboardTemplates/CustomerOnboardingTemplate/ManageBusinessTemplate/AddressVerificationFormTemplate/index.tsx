@@ -66,7 +66,7 @@ const AddressVerificationFormTemplate = () => {
       </Box>
       <Box px={{ base: '20px', md: 4 }} pt={isMobile ? '6px' : '36px'} pb={8}>
       
-  <Box
+      <Box
               bg={isMobile ? '#F8FAFC' : 'white'}
               width={{ base: '100%', lg: '941px' }}
               mx="auto"

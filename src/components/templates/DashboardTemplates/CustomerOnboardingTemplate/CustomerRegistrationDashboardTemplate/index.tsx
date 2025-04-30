@@ -77,7 +77,7 @@ const CustomerRegistrationDashboardTemplate = () => {
 
     return (
         <Stack >
-            <Stack bg={'white'} spacing={5} p={4} mb={0} borderBottom="1px solid #E2E8F0">
+            <Stack bg={'white'} spacing={5} p={4} mb={0} >
             {/* Top Row: Search + Filter + Register Button */}
             <HStack w="full" justifyContent="space-between" alignItems="center" p={0}>
                 <HStack w="full" spacing={4}>

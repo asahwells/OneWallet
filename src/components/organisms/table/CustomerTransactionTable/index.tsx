@@ -50,7 +50,7 @@ const CustomerTransactionTable = ({
   const { id } = useParams() as { id: string };
 
   // Handle empty state
-  if (!data?.length) {
+  if (!data?.length && isMobile) {
     return (
       <Stack align="center" py={16} spacing={4} w="100%">
         <EmptyTaskIcon />
@@ -144,7 +144,7 @@ const CustomerTransactionTable = ({
       <Spinner size="lg" />
     </Box>
   ) : (
-    <TableContainer mt="24px" borderTop="0.5px solid #7C92B0">
+    <TableContainer mt="24px" border="1px solid #CFDADC" borderRadius={'4px'} minH={'490px'}>
       <Table>
         <Thead>
           <TableRow>
@@ -165,8 +165,21 @@ const CustomerTransactionTable = ({
             </TableHeaderCell>
           </TableRow>
         </Thead>
-        <Tbody>
-          {data.map((row, index) => (
+        <Tbody bg={''} w={'100%'} h={'100%'}>
+          {!data?.length ? (
+            <TableRow>
+            <Td colSpan={5} textAlign="center" height="400px">
+              <Stack align="center" spacing={4} w="100%">
+                <EmptyTaskIcon />
+                <Text fontSize="16px" fontWeight="500">
+                  You do not have any result at this time
+                </Text>
+              </Stack>
+            </Td>
+          </TableRow>
+          )
+          : 
+          data.map((row, index) => (
             <TableRow
               key={index}
               style={{ cursor: 'pointer' }}
@@ -188,7 +201,8 @@ const CustomerTransactionTable = ({
                 {row?.status ?? 'N/A'}
               </TableCell>
             </TableRow>
-          ))}
+          ))
+          }
         </Tbody>
       </Table>
     </TableContainer>

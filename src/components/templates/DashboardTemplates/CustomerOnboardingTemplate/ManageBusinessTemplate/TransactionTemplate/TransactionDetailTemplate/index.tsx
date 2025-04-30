@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import {
   Box, Container, Flex, Grid, Heading, Text, Badge,
   IconButton, useBreakpointValue,
+  Spinner,
 } from '@chakra-ui/react';
 import { ArrowLeftIcon } from '@chakra-ui/icons';
 import { useParams, useRouter } from 'next/navigation';
@@ -59,8 +60,15 @@ const TransactionDetailTemplate = () => {
     if (!str) return ''; 
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
-  
 
+  if (isFetchingTransactionDetails) {
+      return (
+        <Box w={'full'} h={'300px'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+          <Spinner size={'lg'}/>
+        </Box>
+      );
+    }
+  
   return (
     <Box bg="#FAFAFB" minH="100vh">
         <Box w={'fit-content'} >
@@ -70,9 +78,9 @@ const TransactionDetailTemplate = () => {
            mx="auto" py={6} px={{base: 0, md: "90px"}} bg="white" borderRadius={{md: "lg"}} borderColor="gray.200" borderWidth={{md: "1px"}}>
         {/* Header */}
         <Flex align="center" mb={6} px={{base: 4, md: 0}}>
-          <Heading size="md" color="#344256">
+          <Text variant={'md4'} fontSize={{base:'18px', lg:'20'}} fontWeight={500} color={'#344256'} lineHeight={'26px'} letterSpacing={'-3.8%'}>
             Transaction ID: {transaction?.data?.id}
-          </Heading>
+          </Text>
         </Flex>
 
         {/* Main content */}
