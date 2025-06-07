@@ -7,8 +7,13 @@ import { setUserState, setIsAuthenticated } from '../../redux/slices/user';
 export const useFetchDashboard = () => {
   
     return useMutation({
-        mutationFn: (): Promise<IDashboardInfoRes> => {
+        mutationFn: async (): Promise<IDashboardInfoRes> => {
+           try {
            return HttpClient.get(BASE_AXIOS, { url: "sales-agent/dashboard" })
+           } catch (error) {
+             console.error('Dashboard API Error:', error);
+             throw error;
+           }
         },
         onSuccess: (res: IDashboardInfoRes) => {
           return res;
@@ -19,8 +24,13 @@ export const useFetchDashboard = () => {
 export const useFetchDashboardGraph = () => {
   
   return useMutation({
-      mutationFn: (): Promise<IDashboardGraphRes> => {
+      mutationFn: async (): Promise<IDashboardGraphRes> => {
+         try {
          return HttpClient.get(BASE_AXIOS, { url: "sales-agent/dashboard/graph" })
+         } catch (error) {
+           console.error('Dashboard Graph API Error:', error);
+           throw error;
+         }
       },
       onSuccess: (res: IDashboardGraphRes) => {
         return res;
@@ -32,8 +42,13 @@ export const useFetchLoggedInUser = () => {
   const dispatch = useDispatch();
 
   return useMutation({
-      mutationFn: (): Promise<IUserInfomationRes> => {
+      mutationFn: async (): Promise<IUserInfomationRes> => {
+          try {
           return HttpClient.get(BASE_AXIOS, { url: "sales-agent/auth/user" })
+          } catch (error) {
+            console.error('User Info API Error:', error);
+            throw error;
+          }
       },
       onSuccess: (res: IUserInfomationRes) => {
         dispatch(setUserState(res.data));
