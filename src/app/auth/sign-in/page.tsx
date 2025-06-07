@@ -48,6 +48,8 @@ export default function SignIn() {
   );
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+    console.log('BASE_AXIOS')
+
   return (
     <LoginTemplate/>
   );
