@@ -13,7 +13,6 @@ export const BASE_AXIOS = axios.create({
 
 const requestConfig = (config: AxiosRequestConfig) => {
     const token = Cookies.get(StorageToken);
-  console.log(process.env.NEXT_PUBLIC_BASE_URL, 'llllll')
 
     return {
         ...config,
