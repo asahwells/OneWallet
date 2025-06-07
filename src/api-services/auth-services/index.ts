@@ -9,6 +9,7 @@ import {setIsAuthenticated, setUserState} from "../../redux/slices/user";
 import { IResp } from "api-services/interfaces";
 
 export const useLogin = () => {
+  console.log('BASE_AXIOS', BASE_AXIOS)
     const customToast = useToast();
     const dispatch = useDispatch();
 
